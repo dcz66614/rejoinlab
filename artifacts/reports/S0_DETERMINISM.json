@@ -1,0 +1,128 @@
+{
+  "schema": "rejoinlab.s0-determinism/v1",
+  "specVersion": "1.0.2",
+  "generatedAtUtc": "2026-11-24T01:47:34.935Z",
+  "totalRepeats": 2400,
+  "perGolden": {
+    "G01": {
+      "distinctHashes": 1,
+      "hash": "2e86a96c078f783d3c73c6f6830a9c34bb7e10cb88cd639cd3c8c8eb03a0e574",
+      "repeats": 100
+    },
+    "G02": {
+      "distinctHashes": 1,
+      "hash": "38ede218971f6c44a01f3ee0d2edf5ed132d89e0113a348a355f2dc634f656e3",
+      "repeats": 100
+    },
+    "G03": {
+      "distinctHashes": 1,
+      "hash": "525beaa0f2c93b6db7a1e80d2c83e9bc3aa3dbe4bb99351c14aaa9b93c8f3844",
+      "repeats": 100
+    },
+    "G04": {
+      "distinctHashes": 1,
+      "hash": "64b6bd1b94b77c65b2e69bbe43bd6a5751aad7ae0fe25cc67453fad01df322c2",
+      "repeats": 100
+    },
+    "G05": {
+      "distinctHashes": 1,
+      "hash": "5fd65e3e8f2f956a386400fa27004d33a67d2dd9c648bc0ca5711f901ad1180d",
+      "repeats": 100
+    },
+    "G06": {
+      "distinctHashes": 1,
+      "hash": "35e59d53adbddc9238fc5c710fc375ea73adaec4c9f414d3db306457c5001dda",
+      "repeats": 100
+    },
+    "G07": {
+      "distinctHashes": 1,
+      "hash": "e6952406fa97543b3369989c9531fd137b0e45e72477d99257b286aaee701015",
+      "repeats": 100
+    },
+    "G08": {
+      "distinctHashes": 1,
+      "hash": "3946cbeafd248d5b11d46779349ef0e2ea1166e4feea00547c6b8ddd62fb0ba2",
+      "repeats": 100
+    },
+    "N01": {
+      "distinctHashes": 1,
+      "hash": "e45add48cc054b054fc12652cec4ad248a94ad38ea7bb86bee67e8fc9d1b1f2b",
+      "repeats": 100
+    },
+    "N02": {
+      "distinctHashes": 1,
+      "hash": "e42f8d720b268a897e9bdb5c3f84f1d243f70f88f798ca366075ca85d6afb527",
+      "repeats": 100
+    },
+    "N03": {
+      "distinctHashes": 1,
+      "hash": "1de1edfb1cb476d56f53cd194a9a0888131bedec322f1b965ccbb4d4061897a4",
+      "repeats": 100
+    },
+    "N04": {
+      "distinctHashes": 1,
+      "hash": "ca15b75bd59f8f24cd1b9c84b22c4d1c9c0da42e8c27ef13f0a2d5e505127cd7",
+      "repeats": 100
+    },
+    "N05": {
+      "distinctHashes": 1,
+      "hash": "d0a4403cc0b4c9407eb8038dde5261e2ff07b654117365a6c9f09b99db29aa56",
+      "repeats": 100
+    },
+    "N06": {
+      "distinctHashes": 1,
+      "hash": "f1bc1d61513ec50a8ad9fd30404937095b3ffc95ab859c9eb28747a892e3cb9a",
+      "repeats": 100
+    },
+    "N07": {
+      "distinctHashes": 1,
+      "hash": "1ec5bed10112b3908984ca47f98d1247b5c18d5502149d3d2986988938dadb2b",
+      "repeats": 100
+    },
+    "N08": {
+      "distinctHashes": 1,
+      "hash": "17b31cddab94a6cbcc4ed6e778dd3578cd3b311f157179e91b66c944913e143f",
+      "repeats": 100
+    },
+    "N09": {
+      "distinctHashes": 1,
+      "hash": "b342b754ed06330d5565b85b036928c68168a4d49f9aeb40264316eb585a8404",
+      "repeats": 100
+    },
+    "N10": {
+      "distinctHashes": 1,
+      "hash": "536c91501a3a346e8b1a01dd9b965211448dcf3f07c3e2065c9c22b08d4ab4e3",
+      "repeats": 100
+    },
+    "N11": {
+      "distinctHashes": 1,
+      "hash": "94b76e21b7b2c2a2525e99d48a3226ef26271948e5c756a00ba278b5481dca35",
+      "repeats": 100
+    },
+    "N12": {
+      "distinctHashes": 1,
+      "hash": "a19c3502538635296d778c46a1c34844e6c843c44531e8fc0dc78512b3def6d1",
+      "repeats": 100
+    },
+    "N13": {
+      "distinctHashes": 1,
+      "hash": "5f5d4ab9c525fce0316d0d5abdf62bf977f7df5b4c788e7cf6b74ef78902130f",
+      "repeats": 100
+    },
+    "N14": {
+      "distinctHashes": 1,
+      "hash": "5f55f9893ee3aaed65ee00f3b49058a25769a97251ad836d33c797f1215d7e38",
+      "repeats": 100
+    },
+    "N15": {
+      "distinctHashes": 1,
+      "hash": "c9f86263dc62670f725c222904a5092c109899c486fb92229144e7d3b5754d98",
+      "repeats": 100
+    },
+    "N16": {
+      "distinctHashes": 1,
+      "hash": "a071e1ee3fc7a9cfdf5d58d4aa337c5b3aa66774fb4d61dfb07b9f7c0bcbb4d8",
+      "repeats": 100
+    }
+  }
+}

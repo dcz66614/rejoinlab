@@ -1,0 +1,154 @@
+T014 FULL REGRESSION (clean worktree) — 2026-11-23T23:37:23Z HEAD fff999da35b97eb776e6239ab197dbd4ae08baf6
+=== typecheck ===
+
+
+> rejoinlab@1.0.0 typecheck
+> tsc --noEmit
+
+
+TYPECHECK_EXIT:0
+=== npm test (vitest + oracle pytest + run_goldens + e2e) ===
+
+
+> rejoinlab@1.0.0 test
+> npx vitest run && python3 -m pytest -q oracle/tests && python3 -m oracle.run_goldens && npm run test:e2e
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90m/home/hatch/workspace/p031-rejoinlab-wt-f2[39m
+
+ [32m✓[39m tests/parser/normalize.test.ts [2m([22m[2m53 tests[22m[2m)[22m[32m 77[2mms[22m[39m
+ [32m✓[39m tests/core/snapshot.test.ts [2m([22m[2m34 tests[22m[2m)[22m[32m 75[2mms[22m[39m
+ [32m✓[39m tests/core/reducer.test.ts [2m([22m[2m38 tests[22m[2m)[22m[32m 106[2mms[22m[39m
+ [32m✓[39m tests/core/diff/diff.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 175[2mms[22m[39m
+ [32m✓[39m tests/report/json.test.ts [2m([22m[2m39 tests[22m[2m)[22m[33m 2642[2mms[22m[39m
+     [33m[2m✓[22m[39m G01 报告逐值一致 [33m 412[2mms[22m[39m
+     [33m[2m✓[22m[39m Worker 评估与 analyzeFixture 评估同源：报告除 durationMs 外相同 [33m 970[2mms[22m[39m
+ [32m✓[39m tests/core/canonical/canonical.test.ts [2m([22m[2m34 tests[22m[2m)[22m[33m 379[2mms[22m[39m
+ [32m✓[39m tests/ui/analyze.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 182[2mms[22m[39m
+ [32m✓[39m tests/report/export.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 2277[2mms[22m[39m
+     [33m[2m✓[22m[39m 下载 JSON：Blob 内容是通过 Schema 校验的报告，最短序列与 SHA-256 逐值一致 [33m 1575[2mms[22m[39m
+     [33m[2m✓[22m[39m 下载 HTML：Blob 为自包含报告，无脚本标签 [33m 497[2mms[22m[39m
+ [32m✓[39m tests/parser/jsonl.test.ts [2m([22m[2m38 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+ [32m✓[39m tests/ui/App.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 4887[2mms[22m[39m
+     [33m[2m✓[22m[39m JSONL 导入 UI 通过：显示协议版本、文件名与正确事件数量 [33m 559[2mms[22m[39m
+     [33m[2m✓[22m[39m 三种恢复策略选择通过 [33m 365[2mms[22m[39m
+     [33m[2m✓[22m[39m 故障注入配置 8 种可选：8 个复选框，带参数的算子展开参数输入 [33m 401[2mms[22m[39m
+     [33m[2m✓[22m[39m 开始运行：正常轨迹显示裁决“一致（CONSISTENT）”，无诊断 [33m 328[2mms[22m[39m
+     [33m[2m✓[22m[39m 开始运行：注入 REPLAY_PREFIX 的故障轨迹显示“不一致”与 CRITICAL 诊断 [33m 469[2mms[22m[39m
+     [33m[2m✓[22m[39m 清空：100% 清除界面数据（文件、事件、配置、结果） [33m 382[2mms[22m[39m
+     [33m[2m✓[22m[39m F2：断线位置文案写明已交付条数（选 i 交付 i+1 条），运行后回显同步 [33m 397[2mms[22m[39m
+     [33m[2m✓[22m[39m F3：运行后改动配置，回显与结果保持运行时刻快照 [33m 326[2mms[22m[39m
+     [33m[2m✓[22m[39m F5：勾选 REPLAY_PREFIX 且未设置断线位置时显示不生效提示；设置断线位置后提示消失 [33m 301[2mms[22m[39m
+ [32m✓[39m tests/report/fix-r1-null-paths.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 208[2mms[22m[39m
+ [32m✓[39m tests/report/html.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 597[2mms[22m[39m
+ [32m✓[39m tests/core/canonical/oracle-parity.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 405[2mms[22m[39m
+ [32m✓[39m tests/timeline/Timeline.test.tsx [2m([22m[2m15 tests[22m[2m)[22m[33m 1898[2mms[22m[39m
+     [33m[2m✓[22m[39m G01：两条轨道各为一条完整轨道，事件按 sourceIndex 升序 [33m 616[2mms[22m[39m
+ [32m✓[39m tests/report/schema.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/worker/client.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 274[2mms[22m[39m
+ [32m✓[39m tests/replay/planner.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 123[2mms[22m[39m
+ [32m✓[39m tests/replay/inject.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 84[2mms[22m[39m
+ [32m✓[39m tests/worker/parity.test.ts [2m([22m[2m53 tests[22m[2m)[22m[33m 889[2mms[22m[39m
+ [32m✓[39m tests/parser/sse.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 91[2mms[22m[39m
+[90mstdout[2m | tests/s0/performance.test.ts[2m > [22m[2mperformance — single trace < 1,000 ms[2m > [22m[2m40-event max trace (snapshot + disconnect) evaluates + analyzes < 1,000 ms
+[22m[39mT-40 evaluate max 64.3 ms, analyze max 172.2 ms over 5 runs
+
+[90mstdout[2m | tests/s0/performance.test.ts[2m > [22m[2mperformance — single trace < 1,000 ms[2m > [22m[2mlargest Golden (N09, 13 events) analyzes < 1,000 ms
+[22m[39mN09 analyze max 69.2 ms over 5 runs
+
+[90mstdout[2m | tests/s0/performance.test.ts[2m > [22m[2mperformance — single trace < 1,000 ms[2m > [22m[2mevery Golden analyzes < 1,000 ms (worst case recorded)
+[22m[39mworst Golden analyze: G01 71.6 ms
+
+[90mstdout[2m | tests/s0/performance.test.ts[2m > [22m[2msize bounds — 40 / 41 events and BFS node budget[2m > [22m[2mfull-budget BFS on every Golden stays within 5,000 nodes
+[22m[39mmax BFS visited across 24 Goldens: 8 (limit 5000)
+
+ [32m✓[39m tests/s0/performance.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 1215[2mms[22m[39m
+     [33m[2m✓[22m[39m 40-event max trace (snapshot + disconnect) evaluates + analyzes < 1,000 ms [33m 432[2mms[22m[39m
+     [33m[2m✓[22m[39m every Golden analyzes < 1,000 ms (worst case recorded) [33m 400[2mms[22m[39m
+ [32m✓[39m tests/ui/components.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 620[2mms[22m[39m
+ [32m✓[39m tests/replay/duplicate-result.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 90[2mms[22m[39m
+ [32m✓[39m tests/worker/host.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 435[2mms[22m[39m
+ [32m✓[39m tests/replay/golden.test.ts [2m([22m[2m75 tests[22m[2m)[22m[33m 668[2mms[22m[39m
+ [32m✓[39m tests/core/determinism/determinism.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 798[2mms[22m[39m
+     [33m[2m✓[22m[39m identical paths locate no divergence over 100 runs [33m 403[2mms[22m[39m
+ [32m✓[39m tests/timeline/AppTimeline.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 2190[2mms[22m[39m
+     [33m[2m✓[22m[39m 开始后双轨时间线出现，两条轨道各 6 条事件，终态哈希一致 [33m 788[2mms[22m[39m
+     [33m[2m✓[22m[39m 逐事件回放：逐步推进到末尾始终一致 [33m 309[2mms[22m[39m
+     [33m[2m✓[22m[39m REPLAY_PREFIX 故障轨迹：不一致 + 首个分歧标记与 StateDiff 同值 [33m 676[2mms[22m[39m
+ [32m✓[39m tests/replay/search.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 684[2mms[22m[39m
+     [33m[2m✓[22m[39m BFS is deterministic across all 24 goldens [33m 411[2mms[22m[39m
+ [32m✓[39m tests/replay/edge-t003.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/parser/determinism.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+ [32m✓[39m tests/ui/security.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m tests/worker/protocol.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/replay/determinism.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 3831[2mms[22m[39m
+     [33m[2m✓[22m[39m 100x the same shortest sequence (G01) [33m 2091[2mms[22m[39m
+     [33m[2m✓[22m[39m 100x the same canonical state hashes (G01 dual track) [33m 383[2mms[22m[39m
+     [33m[2m✓[22m[39m 100x analyzeFixture agrees (G02) [33m 1206[2mms[22m[39m
+ [32m✓[39m tests/s0/gate.test.ts [2m([22m[2m57 tests[22m[2m)[22m[33m 27674[2mms[22m[39m
+     [33m[2m✓[22m[39m 100 repeats per Golden, report hash (durationMs excluded) unique [33m 25556[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m34 passed[39m[22m[90m (34)[39m
+[2m      Tests [22m [1m[32m669 passed[39m[22m[90m (669)[39m
+[2m   Start at [22m 23:37:30
+[2m   Duration [22m 36.18s[2m (transform 6.38s, setup 0ms, import 20.08s, tests 53.77s, environment 10.75s)[22m
+
+........................................................................ [ 40%]
+........................................................................ [ 81%]
+.................................                                        [100%]
+177 passed in 1.62s
+P031 RejoinLab — T006 Oracle Golden run
+date: 2026-11-23 23:38:09 GMT (UTC)
+fixtures: /home/hatch/workspace/p031-rejoinlab-wt-f2/fixtures/golden
+expected: /home/hatch/workspace/p031-rejoinlab-wt-f2/oracle/golden_expected.json (hand-derived)
+
+G01 PASS verdict=INCONSISTENT diagnostics=['DUPLICATE_TOOL_CALL'] firstDivergence=4 shortest=['REPLAY_PREFIX'] fullHash=b401373d4859 resumeHash=70db4752ee94 durationMs=9
+G02 PASS verdict=INCONSISTENT diagnostics=['MESSAGE_REORDER'] firstDivergence=7 shortest=['MESSAGE_ID_REMAP'] fullHash=a708422d6c77 resumeHash=0b62567f05f5 durationMs=4
+G03 PASS verdict=INCONSISTENT diagnostics=['MESSAGE_REORDER'] firstDivergence=10 shortest=['MESSAGE_ID_REMAP'] fullHash=a6d4fb1b27e7 resumeHash=f8599abd91b5 durationMs=6
+G04 PASS verdict=INCONSISTENT diagnostics=['LOST_EVENT'] firstDivergence=3 shortest=['DROP_EVENT'] fullHash=a3bde4daf353 resumeHash=65ca335e34c4 durationMs=2
+G05 PASS verdict=INCONSISTENT diagnostics=['OUT_OF_ORDER'] firstDivergence=4 shortest=['SWAP_ADJACENT'] fullHash=8d97b62723fb resumeHash=3853c26c23f5 durationMs=6
+G06 PASS verdict=INCONSISTENT diagnostics=['SNAPSHOT_MISMATCH'] firstDivergence=2 shortest=['STALE_SNAPSHOT'] fullHash=0c9465ab69e9 resumeHash=9d92e1f7d743 durationMs=5
+G07 PASS verdict=INCONSISTENT diagnostics=['SUSPECTED_DUPLICATE'] firstDivergence=2 shortest=['DUPLICATE_EVENT'] fullHash=53782c850fd2 resumeHash=990dd6890482 durationMs=4
+G08 PASS verdict=INCOMPLETE_TRACE diagnostics=['TRUNCATED_RUN'] firstDivergence=4 shortest=[] fullHash=0e85448bd751 resumeHash=80bbc15600f3 durationMs=2
+N01 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=b1302766e256 resumeHash=b1302766e256 durationMs=1
+N02 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=906932fca980 resumeHash=906932fca980 durationMs=2
+N03 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=4801b04778aa resumeHash=4801b04778aa durationMs=4
+N04 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=a3d0eb2ab841 resumeHash=a3d0eb2ab841 durationMs=7
+N05 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=ac5da2b3b921 resumeHash=ac5da2b3b921 durationMs=1
+N06 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=cb37e2ad399f resumeHash=cb37e2ad399f durationMs=2
+N07 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=6bdc12ca8efc resumeHash=6bdc12ca8efc durationMs=2
+N08 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=9cd67c451318 resumeHash=9cd67c451318 durationMs=2
+N09 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=92699dfeabd6 resumeHash=92699dfeabd6 durationMs=7
+N10 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=d6790ba3fc46 resumeHash=d6790ba3fc46 durationMs=5
+N11 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=abe90b73fa8c resumeHash=abe90b73fa8c durationMs=2
+N12 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=e5fc41d4789f resumeHash=e5fc41d4789f durationMs=2
+N13 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=53782c850fd2 resumeHash=53782c850fd2 durationMs=1
+N14 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=dbb9d6f91769 resumeHash=dbb9d6f91769 durationMs=3
+N15 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=941657592dee resumeHash=941657592dee durationMs=7
+N16 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=72643e0a0e35 resumeHash=72643e0a0e35 durationMs=1
+
+golden: 24/24 PASS; failed: none
+parity with production TypeScript: VERIFIED by S0 gate (T007 PASS, 24/24; see artifacts/reports/S0_GATE.json)
+
+> rejoinlab@1.0.0 test:e2e
+> playwright test
+
+
+Running 12 tests using 1 worker
+
+  ✓   1 tests/e2e/rejoinlab.spec.ts:255:1 › 01 首页正常加载 (887ms)
+  ✓   2 tests/e2e/rejoinlab.spec.ts:265:1 › 02 JSONL 文件导入 (835ms)
+  ✓   3 tests/e2e/rejoinlab.spec.ts:273:1 › 03 SSE 文件导入 (711ms)
+  ✓   4 tests/e2e/rejoinlab.spec.ts:281:1 › 04 正常轨迹运行 (1.1s)
+  ✓   5 tests/e2e/rejoinlab.spec.ts:294:1 › 05 重复工具调用诊断（G01，FULL_REPLAY，断线 4） (1.2s)
+  ✓   6 tests/e2e/rejoinlab.spec.ts:308:1 › 06 消息重排诊断（normal，断线 11，MESSAGE_ID_REMAP 留空默认） (1.2s)
+  ✓   7 tests/e2e/rejoinlab.spec.ts:329:1 › 07 状态快照不一致诊断（双快照轨迹，断线 4，STALE_SNAPSHOT） (1.1s)
+  ✓   8 tests/e2e/rejoinlab.spec.ts:342:1 › 08 断线位置修改生效 (793ms)
+  ✓   9 tests/e2e/rejoinlab.spec.ts:356:1 › 09 故障注入修改生效（断线 2，先无注入一致，再加 DROP_EVENT@4） (994ms)
+  ✓  10 tests/e2e/rejoinlab.spec.ts:374:1 › 10 分析取消和重新运行 (971ms)
+  ✓  11 tests/e2e/rejoinlab.spec.ts:420:1 › 11 JSON 与 HTML 下载（内容校验） (1.0s)
+  ✓  12 tests/e2e/rejoinlab.spec.ts:485:1 › 12 清空内存及窄屏检查 (887ms)
+
+  12 passed (17.6s)
+
+NPM_TEST_EXIT:0

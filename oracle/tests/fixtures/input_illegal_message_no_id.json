@@ -1,0 +1,73 @@
+{
+ "schema": "rejoinlab.input-fixture/v1",
+ "scenarioId": "input_illegal_message_no_id",
+ "title": "input message without id",
+ "specRef": "PROJECT_BOOK §3.3",
+ "events": [
+  {
+   "sourceIndex": 0,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_STARTED",
+    "threadId": "thread-1",
+    "runId": "run-1",
+    "input": {
+     "threadId": "thread-1",
+     "runId": "run-1",
+     "messages": [
+      {
+       "role": "user",
+       "content": "x"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "sourceIndex": 1,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 2,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg-1",
+    "delta": "hi"
+   }
+  },
+  {
+   "sourceIndex": 3,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 4,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_FINISHED",
+    "threadId": "thread-1",
+    "runId": "run-1"
+   }
+  }
+ ],
+ "recovery": {
+  "strategy": "RESUME_FROM_CHECKPOINT",
+  "disconnectAfter": 2,
+  "resumeAfterSourceIndex": 2,
+  "checkpoint": null,
+  "injections": []
+ }
+}

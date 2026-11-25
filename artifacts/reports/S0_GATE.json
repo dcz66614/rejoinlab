@@ -1,0 +1,265 @@
+{
+  "schema": "rejoinlab.s0-gate/v1",
+  "specVersion": "1.0.2",
+  "generatedAtUtc": "2026-11-24T01:47:42.241Z",
+  "gitHead": "44d59df757e92025908d1fe6d637fa175c659a15",
+  "environment": {
+    "node": "v24.22.1",
+    "npm": "10.9.4",
+    "python": "Python 3.12.3"
+  },
+  "verdict": "PASS",
+  "failItems": [],
+  "matrix": [
+    {
+      "id": "M-01",
+      "metric": "Golden 正确分类",
+      "measured": "24/24",
+      "threshold": "24/24",
+      "pass": true,
+      "evidence": "S0_PARITY.json（verdict 三方一致）"
+    },
+    {
+      "id": "M-02",
+      "metric": "已知故障检出（G01–G08）",
+      "measured": "8/8",
+      "threshold": "8/8",
+      "pass": true,
+      "evidence": "S0_PARITY.json；G08 为 INCOMPLETE_TRACE（截断流本身）"
+    },
+    {
+      "id": "M-03",
+      "metric": "正常轨迹正确通过（N01–N16）",
+      "measured": "16/16",
+      "threshold": "16/16",
+      "pass": true,
+      "evidence": "S0_PARITY.json"
+    },
+    {
+      "id": "M-04",
+      "metric": "False Positive",
+      "measured": 0,
+      "threshold": "0",
+      "pass": true,
+      "evidence": "M-03 的补数"
+    },
+    {
+      "id": "M-05",
+      "metric": "False Negative",
+      "measured": 0,
+      "threshold": "0",
+      "pass": true,
+      "evidence": "M-02 的补数"
+    },
+    {
+      "id": "M-06",
+      "metric": "Oracle parity（§13.2 字段集）",
+      "measured": "24/24",
+      "threshold": "24/24",
+      "pass": true,
+      "evidence": "S0_PARITY.json；24/24 三方一致（历史 FAIL 项 F-01 已闭合，见 §3）"
+    },
+    {
+      "id": "M-07",
+      "metric": "合法恢复收敛率",
+      "measured": "24/24",
+      "threshold": "24/24（100%）",
+      "pass": true,
+      "evidence": "S0_PARITY.json legalBaselineConverged；G08 合法基线为 INCOMPLETE_TRACE 但双路径哈希一致"
+    },
+    {
+      "id": "M-08",
+      "metric": "确定性重复执行（报告哈希唯一）",
+      "measured": "2400 次重复，每条 Golden 恰 1 个哈希值",
+      "threshold": "100/100 每条",
+      "pass": true,
+      "evidence": "S0_DETERMINISM.json；哈希定义 A-02（剔除 durationMs）"
+    },
+    {
+      "id": "M-09",
+      "metric": "最大事件轨迹",
+      "measured": "40 条事件（含快照与断线标记）正常评估",
+      "threshold": "40 条",
+      "pass": true,
+      "evidence": "tests/s0/performance.test.ts T-40；41 条 → INCONCLUSIVE_LIMIT"
+    },
+    {
+      "id": "M-10",
+      "metric": "单轨迹性能",
+      "measured": "最慢 42.8 ms（T-40 analyze 42.8 ms；最慢 Golden G05 10.7 ms）",
+      "threshold": "< 1,000 ms",
+      "pass": true,
+      "evidence": "test:performance 输出（见 T007_PRODUCTION.log）"
+    },
+    {
+      "id": "M-11",
+      "metric": "搜索节点上限",
+      "measured": "最多 8 节点；maxNodes=1 探针返回 limitExceeded",
+      "threshold": "≤ 5,000；超限返回 INCONCLUSIVE_LIMIT",
+      "pass": true,
+      "evidence": "S0_PARITY.json maxBfsVisited；tests/s0/gate.test.ts + performance.test.ts 探针"
+    },
+    {
+      "id": "M-12",
+      "metric": "离线运行外部请求",
+      "measured": "0 个网络调用点（src/ 扫描）",
+      "threshold": "0",
+      "pass": true,
+      "evidence": "src/ 扫描 fetch(/XMLHttpRequest/WebSocket/node:http(s)/node:net；npm ci 的注册表下载属环境安装，非产品运行"
+    },
+    {
+      "id": "M-13",
+      "metric": "真人参与",
+      "measured": 0,
+      "threshold": "0",
+      "pass": true,
+      "evidence": "全部输入为 fixtures/golden/ 下的合成 JSON；无真人受试者、无真实用户数据"
+    }
+  ],
+  "suites": {
+    "npmCi": {
+      "exit": 0
+    },
+    "typecheckSrcErrors": 0,
+    "typecheckExit": 0,
+    "testCore": {
+      "passed": 137,
+      "failed": null,
+      "total": 137,
+      "filesPassed": 6
+    },
+    "testCanonical": {
+      "passed": 37,
+      "failed": null,
+      "total": 37,
+      "filesPassed": 2
+    },
+    "testReplay": {
+      "passed": 127,
+      "failed": null,
+      "total": 127,
+      "filesPassed": 7
+    },
+    "testDeterminism": {
+      "passed": 5,
+      "failed": null,
+      "total": 5,
+      "filesPassed": 1
+    },
+    "testOracle": {
+      "passed": 75,
+      "failed": null,
+      "total": 75,
+      "filesPassed": 1
+    },
+    "testPerformance": {
+      "passed": 7,
+      "failed": null,
+      "total": 7,
+      "filesPassed": 1
+    },
+    "gateTest": {
+      "passed": 66,
+      "failed": null,
+      "total": 66,
+      "filesPassed": 1
+    },
+    "oraclePytestPassed": 177,
+    "oraclePytest": {
+      "exit": 0,
+      "passed": 177,
+      "failed": 0,
+      "skipped": null,
+      "errors": null,
+      "total": 177,
+      "unavailable": false,
+      "summary": "177 passed in 1.58s"
+    },
+    "oracleRunGoldensPassed": 24,
+    "tsconfigProbeErrors": 40,
+    "tsconfigProbeExit": 2
+  },
+  "performance": {
+    "t40EvaluateMs": 13.8,
+    "t40AnalyzeMs": 42.8,
+    "n09AnalyzeMs": 8.2,
+    "worstGoldenId": "G05",
+    "worstGoldenMs": 10.7,
+    "maxBfsVisitedPerf": 8
+  },
+  "firstDivergence": {
+    "definition": "T004 step comparison (PROJECT_BOOK §8.6)",
+    "matchesOracleValue": 24,
+    "total": 24,
+    "knownDivergence": []
+  },
+  "adjudications": [
+    {
+      "id": "A-01",
+      "title": "G01 首个分歧：FIX-R1 后三方一致为 4（以 TS 步进比较为准）",
+      "ruling": "采用 T004 步进比较（PROJECT_BOOK §8.6：按 sourceIndex 对齐、从检查点起逐事件步进规范化状态、首个不同位置）作为 S0 首分歧定义，G01 = 4。FIX-R1（P1-R1-01）已闭合 T007 的定义分歧：Oracle 的 _first_divergence 现实现同一 §8.6 步进比较（从检查点切片，检查点以下不可比），G01 的 Oracle 值由 2 改为 4；手工预期亦为 4。三方一致 24/24，首分歧现计入 parity 字段集（§10.4 全量），不再另列。DUPLICATE_TOOL_CALL 诊断本身在双方均带 sourceIndex 2——诊断 sourceIndex（2）与首分歧 sourceIndex（4）是两个不同数值，不得混同。分类 24/24 不受影响。",
+      "evidence": "tests/s0/gate.test.ts（TS_FIRST_DIVERGENCE；firstDivergenceMatchesOracle 24/24）；oracle/replay.py _first_divergence 文档字符串；artifacts/reports/S0_PARITY.json traces.G01（ts/oracle/expected 首分歧均为 4）与 summary.firstDivergenceOracleMatches 24/24"
+    },
+    {
+      "id": "A-02",
+      "title": "报告哈希定义：冻结为剔除 metrics.durationMs 的 JCS 哈希",
+      "ruling": "报告哈希 = TS canonicalHash（JCS）作用于 rejoinlab.report/v1 报告对象，其中 metrics.durationMs 被剔除（该字段每 run 波动；Oracle 侧本次运行 1–7 ms，历史区间 5–51 ms）；metrics.visitedStates 保留（确定性计数）。Oracle 没有报告哈希函数（只有 state_hash），故报告哈希是 TS 侧定义、TS canonicalHash 实现。确定性用该定义重测：24 条 Golden × 100 次重复 = 2400 次，每条恰 1 个哈希值。",
+      "evidence": "src/core/canonical.ts（Report-hash note）；tests/s0/gate.test.ts reportHash()；artifacts/reports/S0_DETERMINISM.json"
+    },
+    {
+      "id": "A-03",
+      "title": "BFS 目标 = 轨迹的主诊断码，不是“任意分歧”",
+      "ruling": "冻结。故障夹具的 BFS 目标是该夹具的主诊断码；正常夹具目标为任意分歧（偏离 CONSISTENT）。若目标为“任意分歧”，通用 DROP_EVENT 几乎能分歧每条轨迹，全部最短序列都会变成 [\"DROP_EVENT\"]，与计划 §13.3 的 G01 样本 [\"REPLAY_PREFIX\"] 矛盾，且不能说明被测故障。实测 24/24 最短序列与手工预期一致。",
+      "evidence": "src/replay/search.ts 模块头；oracle/replay.py 模块头（Judgment calls）；artifacts/reports/S0_PARITY.json（shortest 24/24）"
+    },
+    {
+      "id": "A-04",
+      "title": "诊断码映射：UNCLOSED_STREAM_ITEM → TRUNCATED_RUN（仅当流确实缺终结事件）",
+      "ruling": "一致。折叠层 UNCLOSED_STREAM_ITEM（CRITICAL，T003 本地码，run 结束时仍有未闭项）永不直出报告；报告层仅当全流缺终结事件（full runStatus RUNNING/NOT_STARTED 且有事件）时映射为 TRUNCATED_RUN（WARNING）。实测：G08 双方均为 [TRUNCATED_RUN] WARNING sourceIndex 4；N12（RUN_ERROR 终结、存在未闭项）双方均无 TRUNCATED_RUN。",
+      "evidence": "src/replay/planner.ts 模块头 + classifyDualTrack；src/core/state.ts（Reducer 永不发 TRUNCATED_RUN）；artifacts/reports/S0_PARITY.json traces.G08/N12"
+    },
+    {
+      "id": "A-05",
+      "title": "Oracle RUN_STARTED 输入缺口：FIX-R1 已闭合（P1-R1-02）",
+      "ruling": "FIX-R1（P1-R1-02）已闭合：Oracle 现实现 RUN_STARTED input 播种（oracle/reference.py _seed_run_input，按 PROJECT_BOOK §3.3：首个 RUN_STARTED 采用其 input.state 播种 sharedState，input.messages 播种消息态与归属），与 TS（reducer.ts reduceRunStarted + lifecycle.seedRunInput）一致。覆盖：oracle/tests/test_run_started_input.py（播种消息/状态/归属、重复播种、非法 input 拒绝）与 oracle/tests/fixtures/input_*.json 专用夹具；tests/s0/gate.test.ts 以这些夹具证明 TS 与 Oracle 的跨语言 parity。24 条 Golden 本身仍不含 input（全文 grep 0 处），但缺口已有专用夹具与测试覆盖，不再是未闭合项，不阻塞 S0。",
+      "evidence": "oracle/reference.py _seed_run_input；oracle/tests/test_run_started_input.py；oracle/tests/fixtures/input_*.json；tests/s0/gate.test.ts（input 夹具 parity）；T007 探针：同一探针轨迹 TS 与 Oracle 现均播种 sharedState {count: 7}"
+    },
+    {
+      "id": "A-06",
+      "title": "tsconfig include 不扩大到 tests",
+      "ruling": "不扩大。探查（本脚本每 run 重做）：include [\"src\", \"tests\"] 报 19 错——15 处缺 @types/node（node:fs/crypto/child_process/os/path/url 模块解析 13 处、Buffer 2 处），4 处真实测试代码类型错，全部为 T002/T005 既有（tests/parser/normalize.test.ts 从 normalize.js 导入 protocol/types.ts 才有的 NormalizedEvent 类型；tests/replay/inject.test.ts 两处 as 强转；tests/replay/planner.test.ts 把 STEP_STARTED 传给类型化 helper）。T007 新增的 tests/s0/ 两文件已修到零真实类型错（仅剩 node: 模块解析类）。扩大需新增 dev 依赖并改 T002/T005 测试代码，超出 T007 门禁范围。src typecheck 保持 0 错；测试由 vitest 执行（不做类型检查）。风险已记录：测试代码类型错是潜伏的，目前运行时全绿。",
+      "evidence": "本脚本 tsconfig 探查步骤（见 T007_PRODUCTION.log 尾部）；artifacts/logs/T007_TSCONFIG_PROBE.log"
+    },
+    {
+      "id": "A-07",
+      "title": "Oracle canonicalize_state() 字段名映射 + StateDiff/FirstDivergence 多余字段",
+      "ruling": "Parity 须做折叠层字段名映射，不直接比状态哈希：Oracle 投影用 Oracle 内部字段名（messages: id/role/name/content/segments/toolCalls/open/incomplete；toolCalls: toolCallId/toolCallName/parentMessageId/args/result/resultMessageId/open/incomplete/duplicate；runs: runId/threadId/status；timeline: kind/messageId/toolCallId/delta/text/name），TS 投影用冻结 RejoinState 字段名（MessageState.status/owner、ToolCallState.id/name/arguments/status/hasResult/resultContent/runId、RunState 含 parentRunId/protocolVersion/outcome/result/error、TimelineItem.kind/eventType/messageId/toolCallId/runId/text）。直接互喂会静默丢字段。跨语言一致性以“折叠层字段逐项相等 + 通用 JCS canonicalize() 同值同字节（oracle-parity.test.ts）”建立。StateDiff 多余 kind 字段、FirstDivergence 多余字段（eventType/messageId/toolCallId/runId/note）记为遗留：T010 输出 rejoinlab.report/v1 时须剥离/容忍（§13.2 differences 只有 jsonPointer/expected/actual；firstDivergence 只有 sourceIndex/fullStateHash/resumeStateHash/differences）。不阻塞 S0。",
+      "evidence": "src/core/canonical.ts（State projection 注释）；oracle/canonical.py canonicalize_state()；tests/s0/gate.test.ts pathFields() 折叠映射；S0_REPORT.md 附表"
+    },
+    {
+      "id": "A-08",
+      "title": "wire 快照丢段边界：已证实的遗留限制，不阻塞 S0",
+      "ruling": "已证实：messageStateToAGUI 不带 segments（src/core/state.ts:384–395，注释已写明“AG-UI Message schema 没有 segments，只有 content 随 wire 走”；makeCheckpoint 的 messagesSnapshot 经此函数生成，src/core/snapshot.ts:536）。当前恢复路径用 capturedState（段完整）或 foldPrefix 重放（段重建），故不影响 T005/T007；未来任何从 wire messagesSnapshot 单独重建状态的路径会丢段边界。记为遗留限制，不阻塞 S0；T008/T009 若用 messagesSnapshot 恢复须先补 segments 往返。",
+      "evidence": "src/core/state.ts messageStateToAGUI 注释；src/core/snapshot.ts:536；src/replay/planner.ts resolveCheckpoint（用 capturedState）"
+    }
+  ],
+  "legacyForLaterTasks": [
+    "T010：StateDiff 的 kind 字段、FirstDivergence 的 eventType/messageId/toolCallId/runId/note 字段在输出 rejoinlab.report/v1 时剥离/容忍（A-07）。",
+    "T008/T009：任何从 wire messagesSnapshot 单独重建状态的路径须先补 segments 往返，否则丢段边界（A-08）。",
+    "A-05 已闭合（FIX-R1，P1-R1-02）：Oracle 已实现 RUN_STARTED input 播种，见 oracle/tests/test_run_started_input.py 与 oracle/tests/fixtures/input_*.json 专用夹具。",
+    "后续（协调员定）：tsconfig 是否扩大到 tests——需先补 @types/node 并修 4 处测试代码类型错（A-06）。",
+    "F-01 已闭合（FIX-T007-F01，docs/ADR-F01-pending-derived.md）：G05 pendingToolCallIds 为派生状态，Oracle 已按规格 §3.14/§5.5 修正，parity 24/24。"
+  ],
+  "evidenceFiles": [
+    "artifacts/reports/S0_GATE.json",
+    "artifacts/reports/S0_REPORT.md",
+    "artifacts/reports/S0_PARITY.json",
+    "artifacts/reports/S0_DETERMINISM.json",
+    "artifacts/logs/T007_PRODUCTION.log",
+    "artifacts/logs/T007_ORACLE.log",
+    "artifacts/logs/T007_PARITY.log",
+    "artifacts/logs/T007_TSCONFIG_PROBE.log",
+    "artifacts/manifests/S0_SHA256SUMS.txt"
+  ],
+  "note": "S0 = PASS：矩阵 13/13 全过（分类 24/24、收敛 24/24、确定性 2400/2400、性能与边界均通过），T008–T014 可以启动。历史：T007 首次运行为 FAIL（唯一未过项 M-06，F-01，G05 pendingToolCallIds），经 FIX-T007-F01（docs/ADR-F01-pending-derived.md）修复 Oracle 派生规则后复跑 PASS。"
+}

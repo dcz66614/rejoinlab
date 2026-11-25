@@ -1,0 +1,79 @@
+{
+  "schema": "rejoinlab.golden/v1",
+  "scenarioId": "N05",
+  "title": "normal STATE_SNAPSHOT + STATE_DELTA",
+  "specRef": "PROJECT_BOOK §9.3 N05",
+  "events": [
+    {
+      "sourceIndex": 0,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "RUN_STARTED",
+        "threadId": "thread-1",
+        "runId": "run-1"
+      }
+    },
+    {
+      "sourceIndex": 1,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "STATE_SNAPSHOT",
+        "snapshot": {
+          "theme": "dark",
+          "count": 0
+        }
+      }
+    },
+    {
+      "sourceIndex": 2,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "STATE_DELTA",
+        "delta": [
+          {
+            "op": "replace",
+            "path": "/count",
+            "value": 3
+          }
+        ]
+      }
+    },
+    {
+      "sourceIndex": 3,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "STATE_DELTA",
+        "delta": [
+          {
+            "op": "add",
+            "path": "/items",
+            "value": [
+              "a"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "sourceIndex": 4,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "RUN_FINISHED",
+        "threadId": "thread-1",
+        "runId": "run-1"
+      }
+    }
+  ],
+  "recovery": {
+    "strategy": "RESUME_FROM_CHECKPOINT",
+    "disconnectAfter": 1,
+    "resumeAfterSourceIndex": 1,
+    "checkpoint": null,
+    "injections": []
+  }
+}

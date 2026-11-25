@@ -1,0 +1,118 @@
+{
+  "schema": "rejoinlab.golden/v1",
+  "scenarioId": "G05",
+  "title": "adjacent TOOL_CALL_ARGS fragments swapped",
+  "specRef": "PROJECT_BOOK §9.2 G05",
+  "events": [
+    {
+      "sourceIndex": 0,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "RUN_STARTED",
+        "threadId": "thread-1",
+        "runId": "run-1"
+      }
+    },
+    {
+      "sourceIndex": 1,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_START",
+        "messageId": "msg-1"
+      }
+    },
+    {
+      "sourceIndex": 2,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_CONTENT",
+        "messageId": "msg-1",
+        "delta": "Hello "
+      }
+    },
+    {
+      "sourceIndex": 3,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_START",
+        "toolCallId": "call-1",
+        "toolCallName": "search",
+        "parentMessageId": "msg-1"
+      }
+    },
+    {
+      "sourceIndex": 4,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_ARGS",
+        "toolCallId": "call-1",
+        "delta": "{\"q\":"
+      }
+    },
+    {
+      "sourceIndex": 5,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_ARGS",
+        "toolCallId": "call-1",
+        "delta": "\"x\"}"
+      }
+    },
+    {
+      "sourceIndex": 6,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_END",
+        "toolCallId": "call-1"
+      }
+    },
+    {
+      "sourceIndex": 7,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_CONTENT",
+        "messageId": "msg-1",
+        "delta": "done."
+      }
+    },
+    {
+      "sourceIndex": 8,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_END",
+        "messageId": "msg-1"
+      }
+    },
+    {
+      "sourceIndex": 9,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "RUN_FINISHED",
+        "threadId": "thread-1",
+        "runId": "run-1"
+      }
+    }
+  ],
+  "recovery": {
+    "strategy": "RESUME_FROM_CHECKPOINT",
+    "disconnectAfter": 3,
+    "resumeAfterSourceIndex": 3,
+    "checkpoint": null,
+    "injections": [
+      {
+        "op": "SWAP_ADJACENT",
+        "sourceIndex": 4
+      }
+    ]
+  }
+}

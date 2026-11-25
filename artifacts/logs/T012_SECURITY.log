@@ -1,0 +1,90 @@
+T012 SECURITY — RejoinLab 安全验证
+startedAt(UTC): 2026-11-24T01:46:42.116Z
+HEAD: 44d59df757e92025908d1fe6d637fa175c659a15
+node: v24.22.1 (linux/x64)
+
+1. HTML injection (payload in message content + scenarioId):
+  rendered bytes: 8245
+  tags present: body, code, details, footer, h1, h2, h3, h4, head, html, li, meta, ol, p, pre, span, style, summary, table, tbody, td, th, thead, title, tr, ul
+  escaped payload present: true / true
+  [PASS] 注入后 HTML 无 script/img/svg 等注入标签 — tags ⊆ template allowlist
+  [PASS] 注入后 HTML 无事件处理属性 — no on*= attribute in any tag
+  [PASS] 注入后 HTML 无 href=/src= 属性（标签内） — no href/src attribute in any tag (escaped payload text may still contain the substring)
+  [PASS] 注入后 HTML 无 javascript: 伪协议 — no javascript: substring
+  [PASS] 载荷以转义文本出现（&lt;script&gt; / &lt;img） — escaped payload visible as text
+  [PASS] 场景名载荷已转义（无 <svg onload） — scenarioId escaped in <title>/<h1>
+  [PASS] 同一报告两次渲染字节相同 — 8245 bytes both runs
+
+2. escapeHtml unit:
+  escapeHtml("<>&\" '") = &lt;&gt;&amp;&quot;&#39;
+  [PASS] 五字符全转义 — &lt;&gt;&amp;&quot;&#39;
+
+3. Oversized JSON input (§8.1: 1 MiB total, 64 KiB/event):
+  >1 MiB: threw ParseError code=INCONCLUSIVE_LIMIT
+  [PASS] >1 MiB 输入 → ParseError INCONCLUSIVE_LIMIT（拒绝，不截断） — Input exceeds the 1 MiB size limit (1048625 bytes > 1048576 bytes); input is rejected, never silently truncated.
+  >64 KiB event: threw ParseError code=INCONCLUSIVE_LIMIT
+  [PASS] >64 KiB 单事件 → ParseError INCONCLUSIVE_LIMIT（拒绝，不截断） — Single event exceeds the 64 KiB size limit (71738 bytes > 65536 bytes); event is rejected, never silently truncated.
+
+4. Deep nesting:
+  10,000-deep text: threw ParseError code=INVALID_INPUT
+  [PASS] 10,000 层 JSON 文本 → ParseError（进程存活） — no crash, no hang
+  500-deep object in RUN_STARTED input.state: 1.05 ms, preserved=true
+  [PASS] 500 层嵌套共享状态归约完成且值不变 — 1.05 ms
+  [PASS] 500 层嵌套归约 < 1,000 ms — 1.05 ms
+
+5. Illegal JSON Patch:
+  unknown op "explode": ok=true, discarded=[{"index":0,"op":"explode"}], doc unchanged=true
+  [PASS] 未知 op 被丢弃且文档不变 — discarded=1
+  remove missing path: ok=false, reason=MISSING_PATH, value is original=true
+  [PASS] 删除不存在路径 → 失败且返回原文档 — reason=MISSING_PATH
+  invalid pointer "count": ok=false, reason=INVALID_POINTER
+  [PASS] 非法指针 → 失败且原文档不变 — reason=INVALID_POINTER
+  STATE_DELTA unknown op: UNKNOWN_PATCH_OP diagnostics=1, sharedState unchanged=true
+  [PASS] STATE_DELTA 未知 op → UNKNOWN_PATCH_OP 且共享状态不变 — diagnostics=1
+  STATE_DELTA failing op: SNAPSHOT_MISMATCH diagnostics=1, sharedState unchanged=true
+  [PASS] STATE_DELTA 失败 op → SNAPSHOT_MISMATCH 且共享状态不变 — diagnostics=1
+
+6. Over event limit (41 events):
+  events: 41
+  verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  [PASS] 41 事件 → INCONCLUSIVE_LIMIT — verdict=INCONCLUSIVE_LIMIT
+
+7. Worker cancel:
+  host responses after ANALYZE+CANCEL: [CANCELLED:t012-cancel-1]
+  [PASS] host 层取消 → 只收到 CANCELLED、无 RESULT — [CANCELLED:t012-cancel-1]
+  client cancel() → WorkerCancelledError: true
+  [PASS] client 层 cancel() → WorkerCancelledError — promise rejected with WorkerCancelledError
+
+8. Unknown / unsupported events:
+  FOO_UNKNOWN: threw code=INVALID_INPUT
+  [PASS] 未知 type → ParseError INVALID_INPUT — Unknown event type "FOO_UNKNOWN": not in the AG-UI 1.0 Schema EventType enum (31 values).
+  STEP_STARTED: threw code=INCONCLUSIVE_LIMIT
+  [PASS] 已知但 MVP 不支持的 type → ParseError INCONCLUSIVE_LIMIT — Unsupported event type STEP_STARTED at line 1: AG-UI 1.0 defines it but RejoinLab MVP does not implement it (AGUI_SCOPE 
+
+9. Static source scan (comments stripped):
+  innerHTML: 0 hits
+  [PASS] 源码无 innerHTML — 0 hits
+  dangerouslySetInnerHTML: 0 hits
+  [PASS] 源码无 dangerouslySetInnerHTML — 0 hits
+  eval(: 0 hits
+  [PASS] 源码无 eval( — 0 hits
+  new Function: 0 hits
+  [PASS] 源码无 new Function — 0 hits
+  document.write: 0 hits
+  [PASS] 源码无 document.write — 0 hits
+  localStorage: 0 hits
+  [PASS] 源码无 localStorage — 0 hits
+  sessionStorage: 0 hits
+  [PASS] 源码无 sessionStorage — 0 hits
+  indexedDB: 0 hits
+  [PASS] 源码无 indexedDB — 0 hits
+  fetch(: 0 hits
+  [PASS] 源码无 fetch( — 0 hits
+  XMLHttpRequest: 0 hits
+  [PASS] 源码无 XMLHttpRequest — 0 hits
+  WebSocket: 0 hits
+  [PASS] 源码无 WebSocket — 0 hits
+  scanned 33 files
+
+RESULT: PASS (0 failure(s))
+finishedAt(UTC): 2026-11-24T01:46:42.688Z

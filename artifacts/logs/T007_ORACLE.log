@@ -1,0 +1,49 @@
+P031 RejoinLab — T007 S0 gate, Oracle
+generated: 2026-11-24T01:47:42.241Z (UTC)
+git HEAD: 44d59df757e92025908d1fe6d637fa175c659a15
+
+===== python -m pytest -q oracle/tests =====
+$ python3 -m pytest -q oracle/tests
+exit: 0
+........................................................................ [ 40%]
+........................................................................ [ 81%]
+.................................                                        [100%]
+177 passed in 1.58s
+
+
+===== python -m oracle.run_goldens =====
+$ python3 -m oracle.run_goldens
+exit: 0
+P031 RejoinLab — T006 Oracle Golden run
+date: 2026-11-24 01:47:15 GMT (UTC)
+fixtures: /home/hatch/workspace/p031-rejoinlab-wt-f3/fixtures/golden
+expected: /home/hatch/workspace/p031-rejoinlab-wt-f3/oracle/golden_expected.json (hand-derived)
+
+G01 PASS verdict=INCONSISTENT diagnostics=['DUPLICATE_TOOL_CALL'] firstDivergence=4 shortest=['REPLAY_PREFIX'] fullHash=b401373d4859 resumeHash=70db4752ee94 durationMs=13
+G02 PASS verdict=INCONSISTENT diagnostics=['MESSAGE_REORDER'] firstDivergence=7 shortest=['MESSAGE_ID_REMAP'] fullHash=a708422d6c77 resumeHash=0b62567f05f5 durationMs=6
+G03 PASS verdict=INCONSISTENT diagnostics=['MESSAGE_REORDER'] firstDivergence=10 shortest=['MESSAGE_ID_REMAP'] fullHash=a6d4fb1b27e7 resumeHash=f8599abd91b5 durationMs=9
+G04 PASS verdict=INCONSISTENT diagnostics=['LOST_EVENT'] firstDivergence=3 shortest=['DROP_EVENT'] fullHash=a3bde4daf353 resumeHash=65ca335e34c4 durationMs=2
+G05 PASS verdict=INCONSISTENT diagnostics=['OUT_OF_ORDER'] firstDivergence=4 shortest=['SWAP_ADJACENT'] fullHash=8d97b62723fb resumeHash=3853c26c23f5 durationMs=5
+G06 PASS verdict=INCONSISTENT diagnostics=['SNAPSHOT_MISMATCH'] firstDivergence=2 shortest=['STALE_SNAPSHOT'] fullHash=0c9465ab69e9 resumeHash=9d92e1f7d743 durationMs=3
+G07 PASS verdict=INCONSISTENT diagnostics=['SUSPECTED_DUPLICATE'] firstDivergence=2 shortest=['DUPLICATE_EVENT'] fullHash=53782c850fd2 resumeHash=990dd6890482 durationMs=3
+G08 PASS verdict=INCOMPLETE_TRACE diagnostics=['TRUNCATED_RUN'] firstDivergence=4 shortest=[] fullHash=0e85448bd751 resumeHash=80bbc15600f3 durationMs=3
+N01 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=b1302766e256 resumeHash=b1302766e256 durationMs=1
+N02 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=906932fca980 resumeHash=906932fca980 durationMs=2
+N03 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=4801b04778aa resumeHash=4801b04778aa durationMs=4
+N04 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=a3d0eb2ab841 resumeHash=a3d0eb2ab841 durationMs=7
+N05 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=ac5da2b3b921 resumeHash=ac5da2b3b921 durationMs=1
+N06 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=cb37e2ad399f resumeHash=cb37e2ad399f durationMs=2
+N07 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=6bdc12ca8efc resumeHash=6bdc12ca8efc durationMs=2
+N08 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=9cd67c451318 resumeHash=9cd67c451318 durationMs=2
+N09 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=92699dfeabd6 resumeHash=92699dfeabd6 durationMs=8
+N10 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=d6790ba3fc46 resumeHash=d6790ba3fc46 durationMs=4
+N11 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=abe90b73fa8c resumeHash=abe90b73fa8c durationMs=2
+N12 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=e5fc41d4789f resumeHash=e5fc41d4789f durationMs=2
+N13 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=53782c850fd2 resumeHash=53782c850fd2 durationMs=1
+N14 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=dbb9d6f91769 resumeHash=dbb9d6f91769 durationMs=3
+N15 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=941657592dee resumeHash=941657592dee durationMs=12
+N16 PASS verdict=CONSISTENT diagnostics=[] firstDivergence=None shortest=['DROP_EVENT'] fullHash=72643e0a0e35 resumeHash=72643e0a0e35 durationMs=2
+
+golden: 24/24 PASS; failed: none
+parity with production TypeScript: VERIFIED by S0 gate (T007 PASS, 24/24; see artifacts/reports/S0_GATE.json)
+

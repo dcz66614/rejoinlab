@@ -1,0 +1,200 @@
+# T003 证据日志 — 确定性参考 Reducer
+# 项目 P031 RejoinLab / 任务 T003 / 施工会话（全新会话）
+# 基线：HEAD a2ad0191f06128828a4c3f01de87d2731785bb3e（T001+T002 已提交）
+# 环境：Node v24.22.1 / npm 10.9.4 / TypeScript 5.9.3 / Vitest 4.1.12
+# 日期：2026-11-23（UTC）/ 本日志生成于验收命令最后一次完整运行后
+# 注意：未 git commit（由协调员统一提交）；oracle/ 未读取、未触碰。
+
+## 1. 交付文件（字节数为最后一次验收时的 wc -c）
+- src/core/state.ts        15042  RejoinState/RunState/MessageState/ToolCallState/
+  TimelineItem/ReducerDiagnostic/initialState/cloneState/jsonDeepEqual/ReducerError
+- src/core/reducer.ts      17377  reduceEvent/reduceEvents/reduceExpandedEvents/
+  reduceNormalizedEvents；RUN_STARTED/FINISHED/ERROR 分发；chunk 未展开时抛错
+- src/core/snapshot.ts     22946  RFC 6902 applyJsonPatch（原子）/applyStateSnapshot/
+  applyStateDelta/reconcileMessagesSnapshot/makeCheckpoint
+- src/core/lifecycle.ts    24436  消息/工具调用/run 生命周期纯函数；pending 推导；
+  RUN_STARTED input 幂等合并
+- tests/core/helpers.ts     2335  事件构造器（ev/norm/run/runNorm/runStart/runFinish）
+- tests/core/reducer.test.ts  16500  36 测试：run/消息/chunk/timeline/确定性
+- tests/core/snapshot.test.ts 21342  33 测试：工具调用/pending/STATE/MESSAGES_SNAPSHOT/
+  检查点/15 事件全覆盖 sweep
+- package.json（仅改动一处）：scripts 增加 "test:core": "vitest run tests/core"
+- src/protocol/types.ts（仅改动一处）：RecoveryCheckpoint 补回
+  `readonly capturedState: RejoinState`（EVENT_SCHEMA §8 D-05；type-only import，
+  编译期擦除，无运行时循环依赖）。其余内容一字未动。
+- 未创建：src/core/canonical.ts、src/core/diff.ts、src/replay/、src/report/、
+  src/ui/、src/worker/。未改动：parser/、docs/、01_project_book/、
+  02_implementation_plan/、00_control/、oracle/。
+  （git status 中 00_control/PROJECT_STATE.md 的修改与 oracle/、fixtures/、
+  artifacts/logs/T006_ORACLE.log 的未跟踪文件在 T003 开工前已存在，属并行
+  T006/协调员的工作，不是 T003 的改动。）
+
+## 2. 验收命令真实输出（全文附于 §6；此处为摘要）
+- npm run test:core  → Test Files 2 passed (2)；Tests 69 passed (69)；exit 0
+- npm run typecheck  → tsc --noEmit 无输出；exit 0
+- npm run test:parser（回归确认，未改动 parser）→ 4 files / 88 passed；exit 0
+
+## 3. 消息生命周期日志摘要（来自通过的测试，ID 与 delta 均为字面值）
+### 3.1 基本生命周期（tests/core/reducer.test.ts "START/CONTENT/END ..."）
+  RUN_STARTED(t1/r1)
+  TEXT_MESSAGE_START m1 role=assistant
+  TEXT_MESSAGE_CONTENT m1 delta="Hel"
+  TEXT_MESSAGE_CONTENT m1 delta="lo"
+  TEXT_MESSAGE_END m1
+  RUN_FINISHED(t1/r1)
+  => messages[0] = { id:"m1", role:"assistant", content:"Hello", status:"closed" }
+  空 delta 合法：CONTENT delta="" 不产生文本、不产生诊断（keep-alive）。
+  时间戳不排序：timestamp 300/100/200 的三条事件仍按到达顺序拼成 "first-second"。
+### 3.2 合法重开（G03 模式；同一测试文件 "keeps TEXT_A / TOOL_CALL_* / TEXT_B"）
+  orderedTimeline（每条展开事件恰一项，交错完整保留）：
+    RUN_STARTED:r1
+    TEXT_MESSAGE_START:m1
+    TEXT_MESSAGE_CONTENT:m1 ("A")
+    TEXT_MESSAGE_END:m1
+    TOOL_CALL_START:m1/tc1
+    TOOL_CALL_ARGS:/tc1
+    TOOL_CALL_END:/tc1
+    TOOL_CALL_RESULT:tm1/tc1
+    TEXT_MESSAGE_START:m1            <- 合法重开，未判违规
+    TEXT_MESSAGE_CONTENT:m1 ("B")
+    TEXT_MESSAGE_END:m1
+    RUN_FINISHED:r1
+  => messages m1 content="AB"（两段按到达顺序连接）；timeline 未坍缩成 TEXT_AB。
+
+## 4. 工具调用生命周期日志摘要（tests/core/snapshot.test.ts）
+### 4.1 同 run 结果
+  TOOL_CALL_START tc1 name=search parentMessageId=m1
+  TOOL_CALL_ARGS tc1 delta='{"q":' ; TOOL_CALL_ARGS tc1 delta='"x"}'
+  TOOL_CALL_END tc1  => status="closed", pendingToolCallIds=["tc1"]
+  TOOL_CALL_RESULT tm1 tc1 content="42"
+  => status="resulted", hasResult=true, pendingToolCallIds=[]
+  => tool message tm1 { role:"tool", content:"42", toolCallId:"tc1" }
+### 4.2 前端工具跨 run（§3.14 修正）
+  run r1: START/ARGS/END tc1；RUN_FINISHED outcome={type:"success",
+  pendingToolCallIds:["tc1"]} => runStatus FINISHED，pending=["tc1"]，无诊断
+  run r2: RUN_STARTED input.messages=[{id:"tm1", role:"tool",
+  content:"result-via-input", toolCallId:"tc1"}]
+  => tc1 status="resulted"，pending=[]；tool message tm1 已记录
+### 4.3 RUN_ERROR 不伪造结果
+  run 内 m1（open，content="part"）+ tc1（open，args="{}"）后 RUN_ERROR
+  => run status=ERROR；m1/tc1 status="incomplete"；hasResult=false；
+  pendingToolCallIds=[]；无 tool message；diagnostics 含 RUN_ERROR（CRITICAL）
+  与 UNCLOSED_STREAM_ITEM（CRITICAL，逐项各一）。
+### 4.4 非法生命周期一律抛 ReducerError（code 带在 message 前缀中）
+  CONTENT/END 对未打开消息 -> [CONTENT_WITHOUT_START]/[END_WITHOUT_START]
+  ARGS/END 对未打开调用 -> [ARGS_WITHOUT_START]/[END_WITHOUT_START]
+  已打开时重复 START -> [DUPLICATE_MESSAGE_START]/[DUPLICATE_TOOL_CALL_START]
+  重开改 role/name/parent -> [MESSAGE_REOPEN_ROLE_MISMATCH]/
+  [MESSAGE_REOPEN_NAME_MISMATCH]/[TOOL_CALL_REOPEN_NAME_MISMATCH]/
+  [TOOL_CALL_ID_REUSE]
+  同一逻辑执行第二次 RESULT -> [DUPLICATE_TOOL_CALL_RESULT]
+  RESULT 对未知调用 -> [RESULT_WITHOUT_CALL]
+  outcome.pendingToolCallIds 与本 run 未结果调用不一致 ->
+  [PENDING_TOOL_CALL_MISMATCH]
+  RUN_FINISHED 无 run/错 run -> [FINISH_WITHOUT_START]/[FINISH_WRONG_RUN]
+  RUN_STARTED 运行时重入/runId 复用/换 thread -> [RUN_ALREADY_RUNNING]/
+  [DUPLICATE_RUN_ID]/[THREAD_MISMATCH]
+
+## 5. 状态快照与 Patch 日志摘要
+- STATE_SNAPSHOT 两次：{a:1,b:{c:2}} -> {b:3}，完整替换，无合并残留。
+- STATE_DELTA 顺序应用（add/replace/remove/move/copy/test 全体一次通过）：
+  {a:1,list:[1,2],nested:{x:"x"}} + patch -> {a:9,list:[1,2,3],nested:{},moved:"x"}
+  （move 只移走成员，不删除父对象——RFC 6902 正确行为，测试期望据此修正。）
+- 原子性：patch [replace /a 99, remove /missing] 失败 -> sharedState 保持 {a:1,b:2}，
+  诊断 [SNAPSHOT_MISMATCH] CRITICAL；test 失败同理整 patch 丢弃。
+- 未知 op：[{op:"frobnicate"...},{op:"add",path:"/b",value:2}] -> add 生效，
+  诊断 [UNKNOWN_PATCH_OP] WARNING，run 继续。
+- 无基线 STATE_DELTA -> [SNAPSHOT_MISMATCH] CRITICAL，sharedState 保持 undefined；
+  RUN_STARTED 无 input.state 时基线默认为 {}，其后 delta 正常应用。
+- MESSAGES_SNAPSHOT 四规则 + per-role 自撤销（各一条独立测试）：
+  同 id 原位替换；新 id 按快照顺序追加；缺席 producer 消息移除；
+  客户端 activity 在快照无 activity 时保留、快照带任一 activity 时删除；
+  reasoning 同理且与 activity 独立判定。
+- 检查点：makeCheckpoint(state, 5, {sharedState:true, messages:true})
+  -> stateSnapshot {a:1}、messagesSnapshot ["m1"]、capturedState 与 state 深相等
+  且为深拷贝（篡改 checkpoint 不影响 live state）；coverage 全 false 时两个
+  快照字段缺席，capturedState 仍在。
+
+## 6. 验收命令完整输出（逐字粘贴，下接 §7 判断记录）
+
+> rejoinlab@1.0.0 test:core
+> vitest run tests/core
+
+
+ RUN  v4.1.12 /home/hatch/workspace/p031-rejoinlab
+
+ ✓ tests/core/reducer.test.ts (36 tests) 25ms
+ ✓ tests/core/snapshot.test.ts (33 tests) 27ms
+
+ Test Files  2 passed (2)
+      Tests  69 passed (69)
+   Start at  14:32:22
+   Duration  839ms (transform 738ms, setup 0ms, import 907ms, tests 52ms, environment 0ms)
+
+test:core exit=0
+
+> rejoinlab@1.0.0 typecheck
+> tsc --noEmit
+
+typecheck exit=0
+
+> rejoinlab@1.0.0 test:parser
+> vitest run tests/parser
+
+
+ RUN  v4.1.12 /home/hatch/workspace/p031-rejoinlab
+
+ ✓ tests/parser/sse.test.ts (15 tests) 63ms
+ ✓ tests/parser/jsonl.test.ts (38 tests) 86ms
+ ✓ tests/parser/normalize.test.ts (29 tests) 99ms
+ ✓ tests/parser/determinism.test.ts (6 tests) 11ms
+
+ Test Files  4 passed (4)
+      Tests  88 passed (88)
+   Start at  14:32:26
+   Duration  1.25s (transform 739ms, setup 0ms, import 991ms, tests 259ms, environment 0ms)
+
+test:parser exit=0
+
+## 7. 判断记录（ADR 式：规格未明说处，写明依据与选择，供终审/复核裁决）
+J-01 重开后内容是追加还是重置：PROJECT_BOOK §5.4 只说“文本片段必须按事件到达
+  顺序连接”，§3.8/§3.12 只要求重开保持描述字段一致，均未说重置。T003 选择追加
+  （消息 content、工具 arguments 皆然），与 §5.4/§5.5 的“按到达顺序连接/拼接”一致。
+  orderedTimeline 无论如何保留交错，G03 检查不受影响。如终审裁决为重置，改动点
+  只有 lifecycle.ts 的 openMessage/openToolCall 两处（重开时清空累积值）。
+J-02 流式事件必须在 run 内：§5.4“每个 run 结束时，必须按协议处理所有打开的
+  消息”以消息属于 run 为前提；T003 对 TEXT_*/TOOL_CALL_*（除 RESULT 的输入
+  播种外）在无运行中 run 时抛 [EVENT_WITHOUT_RUN]。STATE_SNAPSHOT/STATE_DELTA/
+  MESSAGES_SNAPSHOT 例外：它们是不开/关任何项的独立事件（EVENT_SCHEMA §4.1），
+  run 外出现仍归约。RUN_ERROR 前置（run 外）按 §3.5 合法处理。
+J-03 RejoinState 增加 diagnostics 字段：计划 §5.3 列 8 字段、无诊断通道，但
+  EVENT_SCHEMA §6.2 要求 STATE_DELTA 失败“记录 SNAPSHOT_MISMATCH……必须浮现失败，
+  不得悄悄吞掉”，且 reduceEvent 签名无诊断返回值。T003 增加第 9 个字段
+  diagnostics（仅本地记账，非协议状态；§5.3 要求 canon 排除本地元数据，T004
+  须将其排除；T006 parity 只比 8 个协议字段）。硬违规不走此字段，一律抛错。
+J-04 冻结诊断代码之外新增的 T003 本地代码：UNCLOSED_STREAM_ITEM（run 结束时
+  仍有未关项，CRITICAL）、UNKNOWN_PATCH_OP（§6.2 明文要求丢弃+告警，WARNING）、
+  TOOL_CALL_RESULT_UNMATCHED_INPUT（run 输入中的 tool 消息对应 trace 未见过的
+  调用，WARNING）。其余诊断尽量用冻结 §6 代码（SNAPSHOT_MISMATCH、RUN_ERROR）。
+J-05 RUN_STARTED input.state 与 live 基线冲突：§5.7“快照恢复不能覆盖在其之后
+  已经发生的有效状态更新”。T003：基线不存在时采纳 input.state（无 input.state
+  时基线为 {}，§6.2）；基线已存在且 input.state 不同时保留 live 基线并记
+  [SNAPSHOT_MISMATCH]。input.messages 的合并是幂等的：已存在 id 跳过（流式
+  状态优先）；tool 消息只在调用处于 pending 时才标记结果，已结果/未见过调用
+  的一律不再新建结果状态。
+J-06 待核实的类型层缺口（非 T003 可改，需协调员/T001 裁决）：T001 冻结的
+  AGUIMessage 联合只有 assistant/user/system/developer/tool 五种变体，没有
+  activity/reasoning 变体；但 T002 运行时校验允许 messages 数组含这两个角色，
+  且 §6.3 规则 4 要求归约它们。T003 在 lifecycle.ts/snapshot.ts 内按字符串
+  比较处理这两个角色（附注释），未改 types.ts 的消息联合（超出 T003 授权）。
+  建议：T001 补一个 activity/reasoning 消息变体，或由 T004/T007 确认现状可接受。
+J-07 pending 一致性检查的范围：§3.14 要求 outcome.pendingToolCallIds 与“当前
+  run 中尚未收到结果的调用”一致；T003 只比对本 run 发起的未结果调用（runId
+  匹配），更早 run 遗留的 pending 调用不计入本 run 的 outcome 校验，但仍保留在
+  全局 pendingToolCallIds 中，直到结果到达。
+J-08 工具调用重开后 hasResult 重置：同一 toolCallId 合法重开即新逻辑执行，
+  故允许它再收一个结果；但“同一调用 ID 不得因重放而被误认为多个不同调用”
+  （§3.14）的重放检测是 T004/T005 的诊断职责，Reducer 只保证合法重开可归约、
+  非法重开（改名/改 parent/开着又开）抛错。
+J-09 无协议解释冲突需要提交正式 ADR：实现中未遇到与 AG-UI 1.0 原文/Schema
+  相抵触之处；J-01～J-08 均为规格未明说处的执行选择，已如上记录。

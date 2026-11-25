@@ -1,0 +1,142 @@
+{
+ "schema": "rejoinlab.input-fixture/v1",
+ "scenarioId": "input_tool_no_content",
+ "title": "tool input message without content: both sides reject with INVALID_INPUT (FIX-R2, P1-R2-01)",
+ "specRef": "PROJECT_BOOK §3.3",
+ "events": [
+  {
+   "sourceIndex": 0,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_STARTED",
+    "threadId": "thread-1",
+    "runId": "run-1"
+   }
+  },
+  {
+   "sourceIndex": 1,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 2,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TOOL_CALL_START",
+    "toolCallId": "call-1",
+    "toolCallName": "search",
+    "parentMessageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 3,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TOOL_CALL_ARGS",
+    "toolCallId": "call-1",
+    "delta": "{\"q\":\"weather\"}"
+   }
+  },
+  {
+   "sourceIndex": 4,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TOOL_CALL_END",
+    "toolCallId": "call-1"
+   }
+  },
+  {
+   "sourceIndex": 5,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 6,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_FINISHED",
+    "threadId": "thread-1",
+    "runId": "run-1"
+   }
+  },
+  {
+   "sourceIndex": 7,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_STARTED",
+    "threadId": "thread-1",
+    "runId": "run-2",
+    "input": {
+     "threadId": "thread-1",
+     "runId": "run-2",
+     "messages": [
+      {
+       "id": "msg-r1",
+       "role": "tool",
+       "toolCallId": "call-1"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "sourceIndex": 8,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg-2"
+   }
+  },
+  {
+   "sourceIndex": 9,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg-2",
+    "delta": "Done."
+   }
+  },
+  {
+   "sourceIndex": 10,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg-2"
+   }
+  },
+  {
+   "sourceIndex": 11,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_FINISHED",
+    "threadId": "thread-1",
+    "runId": "run-2"
+   }
+  }
+ ],
+ "recovery": {
+  "strategy": "RESUME_FROM_CHECKPOINT",
+  "disconnectAfter": 6,
+  "resumeAfterSourceIndex": 6,
+  "checkpoint": null,
+  "injections": []
+ }
+}

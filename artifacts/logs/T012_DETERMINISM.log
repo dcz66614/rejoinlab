@@ -1,0 +1,47 @@
+T012 DETERMINISM — RejoinLab 确定性验证
+startedAt(UTC): 2026-11-24T01:47:01.431Z
+HEAD: 44d59df757e92025908d1fe6d637fa175c659a15
+node: v24.22.1 (linux/x64)
+repeats per fixture: 100
+
+G01 (events=9, target=DUPLICATE_TOOL_CALL):
+  report SHA-256 (durationMs excluded): e59641cbc723db0276ac8f1852e79d10f2b07ee0a376109d5e5633e88293d64a
+  source SHA-256: b51db61ea2ae401e86bd9b9622db676e8ac71dda2e6b3af187b5bf9c33786f28
+  shortestInjectionSequence: ["REPLAY_PREFIX"]
+  firstDivergence: {"sourceIndex":4,"fullStateHash":"dd246c59e58bab21309b80697498820112a82a1ee180d8494223908ca255c10f","resumeStateHash":"d473123f619c3c1defcb477a59fd0bde6418830148300fc4d17f6da77c0fe5d6","differences":[{"jsonPointer":"/orderedTimeline/5","expected":null,"actual":{"kind":"run","eventType":"RUN_STARTED","runId":"run-1"}},{"jsonPointer":"/orderedTimeline/6","expected":null,"actual":{"kind":"tool-call","eventType":"TOOL_CALL_START","toolCallId":"call-1","messageId":"msg-1"}},{"jsonPointer":"/orderedTimeline/7","expected":null,"actual":{"kind":"tool-call","eventType":"TOOL_CALL_ARGS","toolCallId":"call-1","text":"{\"q\":\"weather\"}"}},{"jsonPointer":"/orderedTimeline/8","expected":null,"actual":{"kind":"tool-call","eventType":"TOOL_CALL_END","toolCallId":"call-1"}},{"jsonPointer":"/toolCalls/1","expected":null,"actual":{"id":"call-1","name":"search","parentMessageId":"msg-1","arguments":"{\"q\":\"weather\"}","status":"closed","hasResult":false,"runId":"run-1"}}]}
+  diagnostics order: ["DUPLICATE_TOOL_CALL"]
+  verdicts seen: INCONSISTENT
+  100-run total: 923.1 ms (mean 9.23 ms/run)
+  [PASS] G01 报告 SHA-256 100 次完全相同 — distinct=1
+  [PASS] G01 最短故障序列 100 次完全相同 — distinct=1
+  [PASS] G01 首个分歧位置 100 次完全相同 — distinct=1
+  [PASS] G01 诊断代码顺序 100 次完全相同 — distinct=1
+
+G03 (events=12, target=MESSAGE_REORDER):
+  report SHA-256 (durationMs excluded): 2eb665612c845f37859650dcaddecbaa11aa2091fbde2b51b49d2ef015311ca9
+  source SHA-256: 1c7e67d8cbddbdafa8a38c1e2042ae67b262e489e91a3cb827773ff570009dec
+  shortestInjectionSequence: ["MESSAGE_ID_REMAP"]
+  firstDivergence: {"sourceIndex":10,"fullStateHash":"feb7c1367eb2a83561e44c4562944439c27203a5fec1d87dfe395d612912975f","resumeStateHash":"0bf8c710f05e015ad0e0339f3bdd434ae0864e44a73a58a5bf6492165dc593d7","differences":[{"jsonPointer":"/messages/0/segments/0/text","expected":"Hello, ","actual":"Hello, it is sunny."},{"jsonPointer":"/messages/0/segments/1","expected":{"text":"it is sunny."},"actual":null}]}
+  diagnostics order: ["MESSAGE_REORDER"]
+  verdicts seen: INCONSISTENT
+  100-run total: 704.7 ms (mean 7.05 ms/run)
+  [PASS] G03 报告 SHA-256 100 次完全相同 — distinct=1
+  [PASS] G03 最短故障序列 100 次完全相同 — distinct=1
+  [PASS] G03 首个分歧位置 100 次完全相同 — distinct=1
+  [PASS] G03 诊断代码顺序 100 次完全相同 — distinct=1
+
+N09 (events=13, target=null):
+  report SHA-256 (durationMs excluded): b2a4f7b985899f8974f2d61a577552c9c7914996dfc9a044e97b403d33b8a3b5
+  source SHA-256: 0caea36cc46eefbaa9c17890f3e41cecee33cbc197c4a7e6e789992b119cecfa
+  shortestInjectionSequence: ["DROP_EVENT"]
+  firstDivergence: null
+  diagnostics order: []
+  verdicts seen: CONSISTENT
+  100-run total: 513.9 ms (mean 5.14 ms/run)
+  [PASS] N09 报告 SHA-256 100 次完全相同 — distinct=1
+  [PASS] N09 最短故障序列 100 次完全相同 — distinct=1
+  [PASS] N09 首个分歧位置 100 次完全相同 — distinct=1
+  [PASS] N09 诊断代码顺序 100 次完全相同 — distinct=1
+
+RESULT: PASS (0 failure(s), 300 total runs)
+finishedAt(UTC): 2026-11-24T01:47:03.654Z

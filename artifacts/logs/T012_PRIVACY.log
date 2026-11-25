@@ -1,0 +1,60 @@
+T012 PRIVACY — RejoinLab 隐私验证
+startedAt(UTC): 2026-11-24T01:46:38.744Z
+HEAD: 44d59df757e92025908d1fe6d637fa175c659a15
+node: v24.22.1 (linux/x64)
+
+chromium: 159.0.8154.6
+1. App loaded (production build, vite preview):
+  workers seen at load: 0 (Worker is created on demand at first analysis, checked again after run)
+  [PASS] 无 in-process 回退提示 — worker-mode-note count=0
+2. Import + analyze (normal.jsonl, 13 events):
+  event-count: 13 条
+  [PASS] 导入 13 条事件 — 13 条
+  run-status 已完成: true
+  [PASS] 分析运行完成 — run-status reached 已完成
+  workers seen after run: 1 (http://127.0.0.1:4173/assets/rejoin.worker-DTc0gUTp.js)
+  [PASS] 真实 Worker 线程已创建（rejoin.worker） — 1 worker(s)
+3. No spontaneous export (user gesture required):
+  downloads without any click: 0 (total downloads so far: 0)
+  [PASS] 无点击时不发生下载（导出须用户主动触发） — 0 spontaneous download(s)
+4. Export JSON + HTML (click-triggered downloads):
+  JSON: 3249 bytes, sha256=50fdab5680890528…, schema=rejoinlab.report/v1, verdict=CONSISTENT
+  [PASS] JSON 导出内容为 rejoinlab.report/v1 — schema=rejoinlab.report/v1
+  HTML: 10653 bytes, has <script: false, has http(s)://: false
+  [PASS] HTML 导出无 <script 且无 http(s):// 远程引用 — self-contained
+5. Storage / network counters after import + analyze + export:
+  localStorage writes=0, length=0
+  sessionStorage writes=0, length=0
+  IndexedDB opens=0, deletes=0, databases=[]
+  total requests=4, external=0 (none)
+  page errors=0 (none)
+  [PASS] localStorage 写入 0 — 0
+  [PASS] localStorage 长度 0 — 0
+  [PASS] sessionStorage 写入 0 — 0
+  [PASS] sessionStorage 长度 0 — 0
+  [PASS] IndexedDB 打开 0 — 0
+  [PASS] IndexedDB 数据库 0 — []
+  [PASS] 外部网络请求 0 — none
+  [PASS] 浏览器未处理异常 0 — none
+6. Clear (清空） removes originals + derived state:
+  event-count after clear: 0 条; run-status: 未运行; localStorage length: 0
+  export section: 导出报告 运行分析后可导出 JSON 与独立 HTML 报告。
+  body still contains imported content "sunny, 21C": false; contains "Hello, ": false
+  storage writes after clear: ls=0, ss=0, idb=0
+  [PASS] 清空后事件数 0 — 0 条
+  [PASS] 清空后运行状态回到未运行 — 未运行
+  [PASS] 清空后导出区回到“运行分析后可导出” — export section reset
+  [PASS] 清空后原始事件内容无残留（工具结果文本消失） — derived content removed
+  [PASS] 清空后消息文本无残留 — message content removed
+  [PASS] 清空后 localStorage 仍为 0 — 0
+  [PASS] 清空未产生存储写入 — ls=0 ss=0 idb=0
+7. Static source scan (comments stripped, src/):
+  localStorage: 0 hits
+  [PASS] 源码无 localStorage — 0 hits
+  sessionStorage: 0 hits
+  [PASS] 源码无 sessionStorage — 0 hits
+  indexedDB: 0 hits
+  [PASS] 源码无 indexedDB — 0 hits
+
+RESULT: PASS (0 failure(s))
+finishedAt(UTC): 2026-11-24T01:46:41.757Z

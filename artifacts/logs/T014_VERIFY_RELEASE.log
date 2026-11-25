@@ -1,0 +1,67 @@
+
+> rejoinlab@1.0.0 verify:release
+> esbuild scripts/verify-release.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify-release.mjs --log-level=error && node scripts/.verify-tmp/verify-release.mjs
+
+  (pinned freeze commit: 44d59df757e92025908d1fe6d637fa175c659a15)
+verify:release: 60 checks passed, 0 failed
+  PASS source.zip exists
+  PASS source.zip passes unzip -t
+  PASS zip inventory read
+  PASS manifest has header path,sha256,bytes,source
+  PASS manifest rows parsed
+  PASS manifest set == zip set
+  PASS manifest sha256 matches zip entries
+  PASS manifest bytes match zip entries
+  PASS all zip paths under rejoinlab-1.0.0/
+  PASS pinned freeze commit exists
+  PASS manifest has git-sourced rows
+  PASS manifest sha256 matches pinned freeze blobs
+  PASS package.json in zip
+  PASS package-lock.json in zip
+  PASS package.json name rejoinlab / version 1.0.0
+  PASS lockfile name/version match package.json
+  PASS 24 golden fixtures in zip
+  PASS golden_expected.json in zip
+  PASS oracle complete (14 files) in zip
+  PASS no node_modules/dist/.git/.vite/__pycache__/.tmp/test-results/.verify-tmp in zip
+  PASS no .env/.pem/.key/credentials file names in zip
+  PASS no secret assignments in zip text contents
+  PASS full-regression.log vitest 678 contains "678 passed"
+  PASS full-regression.log e2e 12 contains "12 passed"
+  PASS full-regression.log goldens 24/24 contains "golden: 24/24 PASS"
+  PASS T012 determinism log contains "RESULT: PASS"
+  PASS T012 determinism 300 runs contains "300 total runs"
+  PASS T012 performance log contains "RESULT: PASS"
+  PASS T012 offline log contains "RESULT: PASS"
+  PASS T012 privacy log contains "RESULT: PASS"
+  PASS T012 security log contains "RESULT: PASS"
+  PASS T006 oracle log contains "golden: 24/24 PASS"
+  PASS T007 parity log contains "66 passed"
+  PASS T014 verify:docs log contains "RESULT=PASS"
+  PASS T014 verify:licenses log contains "RESULT=PASS"
+  PASS S0_GATE.json verdict PASS
+  PASS delivery file exists: README.md
+  PASS delivery file exists: LICENSE
+  PASS delivery file exists: THIRD_PARTY_NOTICES.md
+  PASS delivery file exists: SECURITY.md
+  PASS delivery file exists: docs/USER_GUIDE.md
+  PASS delivery file exists: docs/LIMITATIONS.md
+  PASS delivery file exists: docs/ALGORITHM.md
+  PASS delivery file exists: docs/MODEL_CONTRACT.md
+  PASS delivery file exists: 01_project_book/PROJECT_BOOK.md
+  PASS delivery file exists: 02_implementation_plan/IMPLEMENTATION_PLAN.md
+  PASS delivery file exists: artifacts/review/REVIEW_INDEX.md
+  PASS delivery file exists: artifacts/review/REVIEW_PACK_01.md
+  PASS delivery file exists: artifacts/review/REVIEW_PACK_02.md
+  PASS delivery file exists: artifacts/release/RELEASE_MANIFEST.json
+  PASS SHA256SUMS.txt lines well-formed
+  PASS SHA256SUMS.txt agrees with manifest
+  PASS SHA256SUMS.txt agrees with pinned freeze blobs
+  PASS sha256sum -c passes on fresh extraction of source.zip
+  PASS dist.zip exists
+  PASS dist.zip passes unzip -t
+  PASS dist.zip contains index.html
+  PASS GitBundle.bundle exists
+  PASS git bundle verify passes
+  PASS bundle contains pinned freeze commit
+verify:release: RESULT=PASS

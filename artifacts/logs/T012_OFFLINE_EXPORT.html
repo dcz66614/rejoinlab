@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>RejoinLab 报告 — normal</title>
+<style>
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.6;margin:2em auto;max-width:960px;padding:0 1em;color:#1a1a1a;background:#fff}
+h1{font-size:1.5em;border-bottom:2px solid #1a1a1a;padding-bottom:.3em}
+h2{font-size:1.2em;margin-top:2em;border-bottom:1px solid #ccc;padding-bottom:.2em}
+table{border-collapse:collapse;width:100%;margin:.5em 0}
+th,td{border:1px solid #ccc;padding:.4em .6em;text-align:left;vertical-align:top}
+th{background:#f0f0f0}
+pre{background:#f6f6f6;padding:.8em;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+code{word-break:break-all}
+.verdict{font-size:1.1em;font-weight:bold;padding:.4em .8em;border:2px solid #1a1a1a;display:inline-block}
+.verdict-consistent{border-color:#1a7f37;background:#e6f4ea}
+.verdict-inconsistent{border-color:#b3261e;background:#fce8e6}
+.verdict-incomplete{border-color:#b06000;background:#fef3e2}
+.verdict-invalid{border-color:#b3261e;background:#fce8e6}
+.verdict-limit{border-color:#b06000;background:#fef3e2}
+.muted{color:#555}
+footer{margin-top:3em;border-top:1px solid #ccc;padding-top:1em;color:#555;font-size:.9em}
+@media (max-width:480px){body{margin:1em auto}table{font-size:.9em}}
+</style>
+</head>
+<body>
+<h1>RejoinLab 报告 — normal</h1>
+<p class="muted">Schema rejoinlab.report/v1 · 规格 v1.0.2 · 协议 v1.0</p>
+<h2>裁决</h2>
+<p><span class="verdict verdict-consistent">CONSISTENT · 一致</span></p>
+<p>双轨规范化状态相等，无 CRITICAL 诊断。</p>
+<h2>摘要</h2>
+<table><tbody>
+<tr><th>场景</th><td>normal</td></tr>
+<tr><th>输入格式</th><td>JSONL</td></tr>
+<tr><th>事件数</th><td>13</td></tr>
+<tr><th>输入 SHA-256</th><td>2c0c64739b43982fe9b5693b2c987e9e15ddabbfdb7a9e0db7bc8eee3e99b3a2</td></tr>
+<tr><th>恢复策略</th><td>RESUME_FROM_CHECKPOINT</td></tr>
+<tr><th>断线位置</th><td>不断线</td></tr>
+<tr><th>恢复游标</th><td>未指定</td></tr>
+<tr><th>分析耗时</th><td>12 毫秒（仅作展示，不进入报告哈希）</td></tr>
+<tr><th>访问状态数</th><td>26</td></tr>
+<tr><th>BFS 访问节点数</th><td>3</td></tr>
+<tr><th>报告哈希（剔除 durationMs）</th><td>c49aac8b1b29870d9aee81ae3e0dd656ab605d64cc90ba6970e687b6433f7693</td></tr>
+</tbody></table>
+<h2>双轨终态</h2>
+<h3>完整路径</h3>
+<p>终态哈希：<code>4b85e926c654b855dce764409e14c637d0d19ba0006bfea3e2afcd3ca0b9e17b</code> · 终态 runStatus：FINISHED</p>
+<p>消息 2 条 · 工具调用 1 条 · 待处理工具调用：无</p>
+<table><thead><tr><th>消息 id</th><th>角色</th><th>内容</th></tr></thead><tbody><tr><td>msg-1</td><td>assistant</td><td>Hello, world.</td></tr><tr><td>msg-2</td><td>tool</td><td>sunny, 21C</td></tr></tbody></table>
+<table><thead><tr><th>工具调用 id</th><th>名称</th><th>状态</th><th>已有结果</th></tr></thead><tbody><tr><td>call-1</td><td>get_weather</td><td>resulted</td><td>是</td></tr></tbody></table>
+<h4>共享状态</h4><pre>{
+  &quot;city&quot;: &quot;Paris&quot;,
+  &quot;units&quot;: &quot;metric&quot;
+}</pre>
+<h3>恢复路径</h3>
+<p>终态哈希：<code>4b85e926c654b855dce764409e14c637d0d19ba0006bfea3e2afcd3ca0b9e17b</code> · 终态 runStatus：FINISHED</p>
+<p>消息 2 条 · 工具调用 1 条 · 待处理工具调用：无</p>
+<table><thead><tr><th>消息 id</th><th>角色</th><th>内容</th></tr></thead><tbody><tr><td>msg-1</td><td>assistant</td><td>Hello, world.</td></tr><tr><td>msg-2</td><td>tool</td><td>sunny, 21C</td></tr></tbody></table>
+<table><thead><tr><th>工具调用 id</th><th>名称</th><th>状态</th><th>已有结果</th></tr></thead><tbody><tr><td>call-1</td><td>get_weather</td><td>resulted</td><td>是</td></tr></tbody></table>
+<h4>共享状态</h4><pre>{
+  &quot;city&quot;: &quot;Paris&quot;,
+  &quot;units&quot;: &quot;metric&quot;
+}</pre>
+<h2>首个分歧</h2>
+<p>无首个分歧：逐事件步进比较未发现状态差异。</p>
+<h2>诊断</h2>
+<p>无诊断。注意：无诊断不等于 Agent 后端正确，只说明本次双轨比较未发现可证实的不一致。</p>
+<h2>最短故障注入序列</h2>
+<ol><li><code>DROP_EVENT</code></li></ol>
+<h2>假设</h2>
+<ul><li>使用 AG-UI 1.0 事件语义</li><li>事件到达顺序为权威顺序</li><li>恢复游标为 RejoinLab 本地 sourceIndex；AG-UI 1.0 HTTP+SSE 本身不支持流恢复</li><li>检查点状态来自断线前缀折叠或显式检查点 capturedState</li></ul>
+<h2>能力边界与局限</h2>
+<ul><li>不证明真实 Agent 后端 exactly-once</li><li>不执行真实网络重连</li><li>不证明真实 Agent 后端业务逻辑正确</li><li>不证明真实服务端支持断点恢复</li><li>不覆盖超过 40 条事件的轨迹</li></ul>
+<p>本报告只证明：在给定的 AG-UI 1.0 事件子集、已导入事件序列、初始状态、快照语义、恢复游标、有界事件轨迹与固定故障注入规则范围内，完整事件流与恢复事件流产生的规范化状态是否相等、首个可定位的状态分歧在哪里、以及最短故障注入序列是什么。CONSISTENT 的正确解释是“在本次给定轨迹与规则下两条路径得到相同的规范化状态”，不等于这个 Agent 在所有真实网络故障下都不会丢消息或重复调用工具；INCONCLUSIVE_LIMIT 的正确解释是“搜索边界不足以支持一致性结论”，不是“没有找到错误，所以安全”。</p>
+<h2>完整 JSON 报告</h2>
+<details><summary>展开查看 rejoinlab.report/v1 JSON 原文</summary><pre id="report-json">{
+  &quot;schema&quot;: &quot;rejoinlab.report/v1&quot;,
+  &quot;specVersion&quot;: &quot;1.0.2&quot;,
+  &quot;protocolVersion&quot;: &quot;1.0&quot;,
+  &quot;scenarioId&quot;: &quot;normal&quot;,
+  &quot;verdict&quot;: &quot;CONSISTENT&quot;,
+  &quot;input&quot;: {
+    &quot;sourceFormat&quot;: &quot;JSONL&quot;,
+    &quot;eventCount&quot;: 13,
+    &quot;sourceSha256&quot;: &quot;2c0c64739b43982fe9b5693b2c987e9e15ddabbfdb7a9e0db7bc8eee3e99b3a2&quot;
+  },
+  &quot;recovery&quot;: {
+    &quot;strategy&quot;: &quot;RESUME_FROM_CHECKPOINT&quot;
+  },
+  &quot;fullPath&quot;: {
+    &quot;finalStateHash&quot;: &quot;4b85e926c654b855dce764409e14c637d0d19ba0006bfea3e2afcd3ca0b9e17b&quot;,
+    &quot;messages&quot;: [
+      {
+        &quot;id&quot;: &quot;msg-1&quot;,
+        &quot;role&quot;: &quot;assistant&quot;,
+        &quot;content&quot;: &quot;Hello, world.&quot;,
+        &quot;segments&quot;: [
+          {
+            &quot;text&quot;: &quot;Hello, world.&quot;
+          }
+        ],
+        &quot;status&quot;: &quot;closed&quot;,
+        &quot;owner&quot;: &quot;producer&quot;
+      },
+      {
+        &quot;id&quot;: &quot;msg-2&quot;,
+        &quot;role&quot;: &quot;tool&quot;,
+        &quot;content&quot;: &quot;sunny, 21C&quot;,
+        &quot;segments&quot;: [
+          {
+            &quot;text&quot;: &quot;sunny, 21C&quot;
+          }
+        ],
+        &quot;toolCallId&quot;: &quot;call-1&quot;,
+        &quot;status&quot;: &quot;closed&quot;,
+        &quot;owner&quot;: &quot;producer&quot;
+      }
+    ],
+    &quot;toolCalls&quot;: [
+      {
+        &quot;id&quot;: &quot;call-1&quot;,
+        &quot;name&quot;: &quot;get_weather&quot;,
+        &quot;parentMessageId&quot;: &quot;msg-1&quot;,
+        &quot;arguments&quot;: &quot;{\&quot;city\&quot;: \&quot;Paris\&quot;}&quot;,
+        &quot;status&quot;: &quot;resulted&quot;,
+        &quot;hasResult&quot;: true,
+        &quot;runId&quot;: &quot;run-1&quot;,
+        &quot;resultMessageId&quot;: &quot;msg-2&quot;,
+        &quot;resultContent&quot;: &quot;sunny, 21C&quot;
+      }
+    ],
+    &quot;sharedState&quot;: {
+      &quot;city&quot;: &quot;Paris&quot;,
+      &quot;units&quot;: &quot;metric&quot;
+    },
+    &quot;pendingToolCallIds&quot;: []
+  },
+  &quot;resumePath&quot;: {
+    &quot;finalStateHash&quot;: &quot;4b85e926c654b855dce764409e14c637d0d19ba0006bfea3e2afcd3ca0b9e17b&quot;,
+    &quot;messages&quot;: [
+      {
+        &quot;id&quot;: &quot;msg-1&quot;,
+        &quot;role&quot;: &quot;assistant&quot;,
+        &quot;content&quot;: &quot;Hello, world.&quot;,
+        &quot;segments&quot;: [
+          {
+            &quot;text&quot;: &quot;Hello, world.&quot;
+          }
+        ],
+        &quot;status&quot;: &quot;closed&quot;,
+        &quot;owner&quot;: &quot;producer&quot;
+      },
+      {
+        &quot;id&quot;: &quot;msg-2&quot;,
+        &quot;role&quot;: &quot;tool&quot;,
+        &quot;content&quot;: &quot;sunny, 21C&quot;,
+        &quot;segments&quot;: [
+          {
+            &quot;text&quot;: &quot;sunny, 21C&quot;
+          }
+        ],
+        &quot;toolCallId&quot;: &quot;call-1&quot;,
+        &quot;status&quot;: &quot;closed&quot;,
+        &quot;owner&quot;: &quot;producer&quot;
+      }
+    ],
+    &quot;toolCalls&quot;: [
+      {
+        &quot;id&quot;: &quot;call-1&quot;,
+        &quot;name&quot;: &quot;get_weather&quot;,
+        &quot;parentMessageId&quot;: &quot;msg-1&quot;,
+        &quot;arguments&quot;: &quot;{\&quot;city\&quot;: \&quot;Paris\&quot;}&quot;,
+        &quot;status&quot;: &quot;resulted&quot;,
+        &quot;hasResult&quot;: true,
+        &quot;runId&quot;: &quot;run-1&quot;,
+        &quot;resultMessageId&quot;: &quot;msg-2&quot;,
+        &quot;resultContent&quot;: &quot;sunny, 21C&quot;
+      }
+    ],
+    &quot;sharedState&quot;: {
+      &quot;city&quot;: &quot;Paris&quot;,
+      &quot;units&quot;: &quot;metric&quot;
+    },
+    &quot;pendingToolCallIds&quot;: []
+  },
+  &quot;diagnostics&quot;: [],
+  &quot;shortestInjectionSequence&quot;: [
+    &quot;DROP_EVENT&quot;
+  ],
+  &quot;metrics&quot;: {
+    &quot;durationMs&quot;: 12,
+    &quot;visitedStates&quot;: 26
+  },
+  &quot;assumptions&quot;: [
+    &quot;使用 AG-UI 1.0 事件语义&quot;,
+    &quot;事件到达顺序为权威顺序&quot;,
+    &quot;恢复游标为 RejoinLab 本地 sourceIndex；AG-UI 1.0 HTTP+SSE 本身不支持流恢复&quot;,
+    &quot;检查点状态来自断线前缀折叠或显式检查点 capturedState&quot;
+  ],
+  &quot;limitations&quot;: [
+    &quot;不证明真实 Agent 后端 exactly-once&quot;,
+    &quot;不执行真实网络重连&quot;,
+    &quot;不证明真实 Agent 后端业务逻辑正确&quot;,
+    &quot;不证明真实服务端支持断点恢复&quot;,
+    &quot;不覆盖超过 40 条事件的轨迹&quot;
+  ]
+}
+</pre></details>
+<footer><p>本文件完全自包含：样式内嵌，不引用任何远程资源，不依赖网络、开发服务器、CDN 或远程字体，断开网络也可独立打开。本报告不上传任何数据；输入文件只保留在浏览器内存中。</p></footer>
+</body>
+</html>

@@ -1,0 +1,93 @@
+
+> rejoinlab@1.0.0 verify:docs
+> esbuild scripts/verify-docs.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify-docs.mjs --log-level=error && node scripts/.verify-tmp/verify-docs.mjs
+
+verify:docs: 87 checks passed, 0 failed
+  PASS README title is the frozen title
+  PASS README.md contains "CONSISTENT"
+  PASS README.md contains "INCONSISTENT"
+  PASS README.md contains "INCONCLUSIVE_LIMIT"
+  PASS README.md contains "INVALID_INPUT"
+  PASS README.md contains "INCOMPLETE_TRACE"
+  PASS README.md contains "FULL_REPLAY_FROM_START"
+  PASS README.md contains "RESUME_FROM_CHECKPOINT"
+  PASS README.md contains "REPLAY_AFTER_SOURCE_CURSOR"
+  PASS README.md contains "40 条事件"
+  PASS README.md contains "1,000 ms"
+  PASS README.md contains "真人参与 0 人"
+  PASS README.md contains "exactly-once 不在保证范围内"
+  PASS README.md contains "Last-Event-ID"
+  PASS README.md contains "AG-UI 1.0"
+  PASS README.md contains "24/24"
+  PASS README.md contains "13/13"
+  PASS required doc exists: README.md
+  PASS required doc exists: LICENSE
+  PASS required doc exists: THIRD_PARTY_NOTICES.md
+  PASS required doc exists: SECURITY.md
+  PASS required doc exists: docs/USER_GUIDE.md
+  PASS required doc exists: docs/LIMITATIONS.md
+  PASS required doc exists: docs/ALGORITHM.md
+  PASS required doc exists: docs/MODEL_CONTRACT.md
+  PASS required doc exists: docs/AGUI_SCOPE.md
+  PASS required doc exists: docs/EVENT_SCHEMA.md
+  PASS S0_GATE.json verdict is PASS
+  PASS S0 slowest single trace matches current S0_GATE.json and README cites it
+  PASS S0 slowest Golden matches current S0_GATE.json and README cites it
+  PASS S0 matrix is 13/13 and README cites it
+  PASS T012_PERFORMANCE.log has a startedAt timestamp and README cites it
+  PASS T012 evaluate max ms: current log value 20.88 is cited in README.md
+  PASS T012 analyze max ms: current log value 76.86 is cited in README.md
+  PASS T012 worst Golden ms: current log value 12.77 is cited in README.md
+  PASS T012 Worker max ms: current log value 42.00 is cited in README.md
+  PASS T012 round-trip max ms: current log value 105.80 is cited in README.md
+  PASS T012 worst Golden id is cited in README.md
+  PASS T012 BFS max is 8 and README cites BFS 最多 8
+  PASS T012 41-event over-limit is 10/10 and README cites it
+  PASS README.md does not contain "29.94"
+  PASS docs/ALGORITHM.md does not contain "29.94"
+  PASS README.md does not contain "76.17"
+  PASS docs/ALGORITHM.md does not contain "76.17"
+  PASS README.md does not contain "26.60"
+  PASS docs/ALGORITHM.md does not contain "26.60"
+  PASS README.md does not contain "49.00"
+  PASS docs/ALGORITHM.md does not contain "49.00"
+  PASS README.md does not contain "101.30"
+  PASS docs/ALGORITHM.md does not contain "101.30"
+  PASS README.md does not contain "20.38"
+  PASS docs/ALGORITHM.md does not contain "20.38"
+  PASS README.md does not contain "60.71"
+  PASS docs/ALGORITHM.md does not contain "60.71"
+  PASS README.md does not contain "71.00"
+  PASS docs/ALGORITHM.md does not contain "71.00"
+  PASS README.md does not contain "321.00"
+  PASS docs/ALGORITHM.md does not contain "321.00"
+  PASS README.md does not contain "12.91"
+  PASS docs/ALGORITHM.md does not contain "12.91"
+  PASS README.md does not contain "10.8"
+  PASS docs/ALGORITHM.md does not contain "10.8"
+  PASS README.md does not contain "10.0 ms"
+  PASS docs/ALGORITHM.md does not contain "10.0 ms"
+  PASS LIMITATIONS.md carries all 32 limitation ids
+  PASS README.md does not contain "上传到云"
+  PASS README.md does not contain "云端运行"
+  PASS README.md does not contain "联网运行"
+  PASS README.md does not contain "在线分析"
+  PASS README.md does not contain "会上传"
+  PASS README.md contains "不上传文件"
+  PASS README.md contains "离线运行"
+  PASS docs/USER_GUIDE.md contains "RUN_STARTED"
+  PASS docs/USER_GUIDE.md contains "TOOL_CALL_START"
+  PASS docs/USER_GUIDE.md contains "FULL_REPLAY_FROM_START"
+  PASS docs/USER_GUIDE.md contains "INCONCLUSIVE_LIMIT"
+  PASS docs/USER_GUIDE.md contains "清空"
+  PASS docs/ALGORITHM.md contains "canon"
+  PASS docs/ALGORITHM.md contains "BFS"
+  PASS docs/ALGORITHM.md contains "RFC 8785"
+  PASS docs/ALGORITHM.md contains "SHA-256"
+  PASS docs/ALGORITHM.md contains "双轨"
+  PASS docs/MODEL_CONTRACT.md contains "rejoinlab.report/v1"
+  PASS docs/MODEL_CONTRACT.md contains "AG-UI 1.0"
+  PASS docs/MODEL_CONTRACT.md contains "A-01"
+  PASS docs/MODEL_CONTRACT.md contains "A-08"
+  PASS docs/MODEL_CONTRACT.md contains "SUSPECTED_DUPLICATE"
+verify:docs: RESULT=PASS

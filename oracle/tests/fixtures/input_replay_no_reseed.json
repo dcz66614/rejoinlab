@@ -1,0 +1,86 @@
+{
+ "schema": "rejoinlab.input-fixture/v1",
+ "scenarioId": "input_replay_no_reseed",
+ "title": "replayed RUN_STARTED must not re-seed input.state",
+ "specRef": "PROJECT_BOOK §3.3",
+ "events": [
+  {
+   "sourceIndex": 0,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_STARTED",
+    "threadId": "thread-1",
+    "runId": "run-1",
+    "input": {
+     "threadId": "thread-1",
+     "runId": "run-1",
+     "messages": [],
+     "state": {
+      "count": 7
+     }
+    }
+   }
+  },
+  {
+   "sourceIndex": 1,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "STATE_DELTA",
+    "delta": [
+     {
+      "op": "replace",
+      "path": "/count",
+      "value": 8
+     }
+    ]
+   }
+  },
+  {
+   "sourceIndex": 2,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 3,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg-1",
+    "delta": "hi"
+   }
+  },
+  {
+   "sourceIndex": 4,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 5,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_FINISHED",
+    "threadId": "thread-1",
+    "runId": "run-1"
+   }
+  }
+ ],
+ "recovery": {
+  "strategy": "FULL_REPLAY_FROM_START",
+  "disconnectAfter": 1,
+  "resumeAfterSourceIndex": 0,
+  "checkpoint": null,
+  "injections": []
+ }
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "rejoinlab.golden/v1",
+  "scenarioId": "N12",
+  "title": "RUN_ERROR ends an unfinished stream",
+  "specRef": "PROJECT_BOOK §9.3 N12",
+  "events": [
+    {
+      "sourceIndex": 0,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "RUN_STARTED",
+        "threadId": "thread-1",
+        "runId": "run-1"
+      }
+    },
+    {
+      "sourceIndex": 1,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_START",
+        "messageId": "msg-1"
+      }
+    },
+    {
+      "sourceIndex": 2,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_CONTENT",
+        "messageId": "msg-1",
+        "delta": "Partial"
+      }
+    },
+    {
+      "sourceIndex": 3,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_START",
+        "toolCallId": "call-1",
+        "toolCallName": "search",
+        "parentMessageId": "msg-1"
+      }
+    },
+    {
+      "sourceIndex": 4,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_ARGS",
+        "toolCallId": "call-1",
+        "delta": "{\"q\":\"x\"}"
+      }
+    },
+    {
+      "sourceIndex": 5,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "RUN_ERROR",
+        "message": "upstream failed"
+      }
+    }
+  ],
+  "recovery": {
+    "strategy": "RESUME_FROM_CHECKPOINT",
+    "disconnectAfter": 2,
+    "resumeAfterSourceIndex": 2,
+    "checkpoint": null,
+    "injections": []
+  }
+}

@@ -1,0 +1,4343 @@
+{
+  "schema": "rejoinlab.s0-parity/v1",
+  "specVersion": "1.0.2",
+  "generatedAtUtc": "2026-11-24T01:47:24.903Z",
+  "definitions": {
+    "parityFields": [
+      "verdict",
+      "diagnostic code+severity+sourceIndex",
+      "shortestInjectionSequence",
+      "final-state fields (messageOrder, toolCallOrder, sharedState, pendingToolCallIds, runStatus) x full/resume",
+      "final-state hash (shared parity projection) x full/resume",
+      "report canonical hash (shared parity projection)",
+      "production report canonical hash (full, R-10)",
+      "diagnostics with message/evidence byte-for-byte (R-07)",
+      "firstDivergence object (R-06)",
+      "visitedStates (R-08)",
+      "bfsVisited (R-09)"
+    ],
+    "parityProjection": "FIX-R2 (§3.6-A, ADR-003): the parity projection is a differential projection of the production projectState — full runs (outcome/result/error/parentRunId/protocolVersion), verbatim message toolCalls, plus the derived timeline runId (run events take the event runId, other items take the current RUNNING run's runId, absent when no run is open); parity path = production path + runStatus",
+    "firstDivergenceDefinition": "T004 step comparison (PROJECT_BOOK §8.6): align by sourceIndex, step through canonical states from the checkpoint, first differing position — diagnostic sourceIndex (e.g. G01 DUPLICATE_TOOL_CALL at 2) is a different value and is NOT the first divergence (4)",
+    "reportHashDefinition": "JCS canonicalHash of the rejoinlab.report/v1 report with metrics.durationMs removed; metrics.visitedStates retained",
+    "parityReportHashDefinition": "FIX-R2: JCS canonicalHash of the FULL production report hash input (diagnostics with message/evidence, firstDivergence in full, input, recovery, assumptions, limitations, metrics.visitedStates) with both paths in parity projection (production path + runStatus)",
+    "productionReportHashDefinition": "FIX-R2 (R-10): JCS canonicalHash of the production report exactly as the product emits it (buildReportFromAnalysis + reportHash), minus metrics.durationMs — no field excluded",
+    "convergenceDefinition": "legalBaseline() (correct checkpoint, no injections): fullStateHash === resumeStateHash and no CRITICAL diagnostic"
+  },
+  "summary": {
+    "parityPass": 24,
+    "parityTotal": 24,
+    "parityFailures": [],
+    "firstDivergenceOracleMatches": 24,
+    "firstDivergenceOracleTotal": 24,
+    "firstDivergenceKnownDivergence": [],
+    "finalStateHashMatches": 24,
+    "finalStateHashTotal": 24,
+    "reportHashMatches": 24,
+    "reportHashTotal": 24,
+    "productionReportHashMatches": 24,
+    "productionReportHashTotal": 24,
+    "legalBaselineConverged": 24,
+    "legalBaselineTotal": 24,
+    "maxBfsVisited": 8,
+    "bfsNodeLimit": 5000
+  },
+  "traces": {
+    "G01": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "INCONSISTENT",
+      "oracleVerdict": "INCONSISTENT",
+      "expectedVerdict": "INCONSISTENT",
+      "tsDiagnostics": [
+        {
+          "code": "DUPLICATE_TOOL_CALL",
+          "severity": "CRITICAL",
+          "sourceIndex": 2
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "DUPLICATE_TOOL_CALL",
+          "severity": "CRITICAL",
+          "sourceIndex": 2
+        }
+      ],
+      "expectedDiagnostics": [
+        "DUPLICATE_TOOL_CALL"
+      ],
+      "tsFirstDivergence": 4,
+      "oracleFirstDivergence": 4,
+      "expectedFirstDivergence": 4,
+      "tsParityFullStateHash": "fae8d6100d4d8b92d1053c88ffd2dd7a87dad048e632cdb2a1eb91ebf19cfff3",
+      "oracleParityFullStateHash": "fae8d6100d4d8b92d1053c88ffd2dd7a87dad048e632cdb2a1eb91ebf19cfff3",
+      "tsParityResumeStateHash": "17b6820b172f04b9ec6b602e2d0f1ce933c5e55e5ed09373056b7b97c124bb88",
+      "oracleParityResumeStateHash": "17b6820b172f04b9ec6b602e2d0f1ce933c5e55e5ed09373056b7b97c124bb88",
+      "tsParityReportHash": "c1d755926158683137be96d9a9fe71f30b34b8a8002bef1be951c5ddba9ca393",
+      "oracleParityReportHash": "c1d755926158683137be96d9a9fe71f30b34b8a8002bef1be951c5ddba9ca393",
+      "tsProductionReportHash": "e59641cbc723db0276ac8f1852e79d10f2b07ee0a376109d5e5633e88293d64a",
+      "oracleProductionReportHash": "e59641cbc723db0276ac8f1852e79d10f2b07ee0a376109d5e5633e88293d64a",
+      "tsDiagnosticsFull": [
+        {
+          "code": "DUPLICATE_TOOL_CALL",
+          "severity": "CRITICAL",
+          "sourceIndex": 2,
+          "relatedSourceIndices": [
+            2
+          ],
+          "message": "Tool call \"call-1\" already present was started again (AG-UI #1524: a replayed TOOL_CALL_START over already-applied state).",
+          "evidence": {
+            "toolCallId": "call-1",
+            "parentMessageId": "msg-1"
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "DUPLICATE_TOOL_CALL",
+          "evidence": {
+            "parentMessageId": "msg-1",
+            "toolCallId": "call-1"
+          },
+          "message": "Tool call \"call-1\" already present was started again (AG-UI #1524: a replayed TOOL_CALL_START over already-applied state).",
+          "relatedSourceIndices": [
+            2
+          ],
+          "severity": "CRITICAL",
+          "sourceIndex": 2
+        }
+      ],
+      "tsFirstDivergenceObject": {
+        "sourceIndex": 4,
+        "fullStateHash": "dd246c59e58bab21309b80697498820112a82a1ee180d8494223908ca255c10f",
+        "resumeStateHash": "d473123f619c3c1defcb477a59fd0bde6418830148300fc4d17f6da77c0fe5d6",
+        "differences": [
+          {
+            "jsonPointer": "/orderedTimeline/5",
+            "expected": null,
+            "actual": {
+              "kind": "run",
+              "eventType": "RUN_STARTED",
+              "runId": "run-1"
+            }
+          },
+          {
+            "jsonPointer": "/orderedTimeline/6",
+            "expected": null,
+            "actual": {
+              "kind": "tool-call",
+              "eventType": "TOOL_CALL_START",
+              "toolCallId": "call-1",
+              "messageId": "msg-1"
+            }
+          },
+          {
+            "jsonPointer": "/orderedTimeline/7",
+            "expected": null,
+            "actual": {
+              "kind": "tool-call",
+              "eventType": "TOOL_CALL_ARGS",
+              "toolCallId": "call-1",
+              "text": "{\"q\":\"weather\"}"
+            }
+          },
+          {
+            "jsonPointer": "/orderedTimeline/8",
+            "expected": null,
+            "actual": {
+              "kind": "tool-call",
+              "eventType": "TOOL_CALL_END",
+              "toolCallId": "call-1"
+            }
+          },
+          {
+            "jsonPointer": "/toolCalls/1",
+            "expected": null,
+            "actual": {
+              "id": "call-1",
+              "name": "search",
+              "parentMessageId": "msg-1",
+              "arguments": "{\"q\":\"weather\"}",
+              "status": "closed",
+              "hasResult": false,
+              "runId": "run-1"
+            }
+          }
+        ]
+      },
+      "oracleFirstDivergenceObject": {
+        "differences": [
+          {
+            "actual": {
+              "eventType": "RUN_STARTED",
+              "kind": "run",
+              "runId": "run-1"
+            },
+            "expected": null,
+            "jsonPointer": "/orderedTimeline/5"
+          },
+          {
+            "actual": {
+              "eventType": "TOOL_CALL_START",
+              "kind": "tool-call",
+              "messageId": "msg-1",
+              "toolCallId": "call-1"
+            },
+            "expected": null,
+            "jsonPointer": "/orderedTimeline/6"
+          },
+          {
+            "actual": {
+              "eventType": "TOOL_CALL_ARGS",
+              "kind": "tool-call",
+              "text": "{\"q\":\"weather\"}",
+              "toolCallId": "call-1"
+            },
+            "expected": null,
+            "jsonPointer": "/orderedTimeline/7"
+          },
+          {
+            "actual": {
+              "eventType": "TOOL_CALL_END",
+              "kind": "tool-call",
+              "toolCallId": "call-1"
+            },
+            "expected": null,
+            "jsonPointer": "/orderedTimeline/8"
+          },
+          {
+            "actual": {
+              "arguments": "{\"q\":\"weather\"}",
+              "hasResult": false,
+              "id": "call-1",
+              "name": "search",
+              "parentMessageId": "msg-1",
+              "runId": "run-1",
+              "status": "closed"
+            },
+            "expected": null,
+            "jsonPointer": "/toolCalls/1"
+          }
+        ],
+        "fullStateHash": "dd246c59e58bab21309b80697498820112a82a1ee180d8494223908ca255c10f",
+        "resumeStateHash": "d473123f619c3c1defcb477a59fd0bde6418830148300fc4d17f6da77c0fe5d6",
+        "sourceIndex": 4
+      },
+      "tsVisitedStates": 18,
+      "oracleVisitedStates": 18,
+      "tsBfsVisited": 6,
+      "oracleBfsVisited": 6,
+      "tsShortest": [
+        "REPLAY_PREFIX"
+      ],
+      "oracleShortest": [
+        "REPLAY_PREFIX"
+      ],
+      "expectedShortest": [
+        "REPLAY_PREFIX"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "toolCallOrder": [
+          "call-1",
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-1"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-1"
+        ]
+      },
+      "bfsVisited": 6,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 8
+    },
+    "G02": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "INCONSISTENT",
+      "oracleVerdict": "INCONSISTENT",
+      "expectedVerdict": "INCONSISTENT",
+      "tsDiagnostics": [
+        {
+          "code": "MESSAGE_REORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 7
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "MESSAGE_REORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 7
+        }
+      ],
+      "expectedDiagnostics": [
+        "MESSAGE_REORDER"
+      ],
+      "tsFirstDivergence": 7,
+      "oracleFirstDivergence": 7,
+      "expectedFirstDivergence": 7,
+      "tsParityFullStateHash": "aed3de053d19c1fce9af2ae0216f89f0c12ddd6b48e038f302c745faca632d4c",
+      "oracleParityFullStateHash": "aed3de053d19c1fce9af2ae0216f89f0c12ddd6b48e038f302c745faca632d4c",
+      "tsParityResumeStateHash": "84d5231d1112ce2980a1a28b312977651441d8c2ea0fc6fff7cdf5c7e08f1b86",
+      "oracleParityResumeStateHash": "84d5231d1112ce2980a1a28b312977651441d8c2ea0fc6fff7cdf5c7e08f1b86",
+      "tsParityReportHash": "2d45d65e66ee97b1fc46934b55a4474d7af53ab56b02280d60bf0111ea5d589a",
+      "oracleParityReportHash": "2d45d65e66ee97b1fc46934b55a4474d7af53ab56b02280d60bf0111ea5d589a",
+      "tsProductionReportHash": "8ca46e3f8d7dd18b6b627d3adc1e15ee4b644268ac51027f3c12ded073b4c7bd",
+      "oracleProductionReportHash": "8ca46e3f8d7dd18b6b627d3adc1e15ee4b644268ac51027f3c12ded073b4c7bd",
+      "tsDiagnosticsFull": [
+        {
+          "code": "MESSAGE_REORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 7,
+          "message": "Final message order differs from the full path.",
+          "evidence": {
+            "expectedOrder": [
+              "msg-a",
+              "msg-r1"
+            ],
+            "actualOrder": [
+              "msg-r1",
+              "msg-a2"
+            ],
+            "expectedRoles": [
+              "assistant",
+              "tool"
+            ],
+            "actualRoles": [
+              "tool",
+              "assistant"
+            ]
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "MESSAGE_REORDER",
+          "evidence": {
+            "actualOrder": [
+              "msg-r1",
+              "msg-a2"
+            ],
+            "actualRoles": [
+              "tool",
+              "assistant"
+            ],
+            "expectedOrder": [
+              "msg-a",
+              "msg-r1"
+            ],
+            "expectedRoles": [
+              "assistant",
+              "tool"
+            ]
+          },
+          "message": "Final message order differs from the full path.",
+          "severity": "CRITICAL",
+          "sourceIndex": 7
+        }
+      ],
+      "tsFirstDivergenceObject": {
+        "sourceIndex": 7,
+        "fullStateHash": "52a26b7e6110777fe0acaea66e7efaf9d4a78f488126dc7c8ca5149f8684ba0e",
+        "resumeStateHash": "f5cb03f584335688c214b304a77a759bb8e6a7ee7793c4fd3a1ac330d141e034",
+        "differences": [
+          {
+            "jsonPointer": "/messages/0/content",
+            "expected": "It is sunny.",
+            "actual": "sunny"
+          },
+          {
+            "jsonPointer": "/messages/0/id",
+            "expected": "msg-a",
+            "actual": "msg-r1"
+          },
+          {
+            "jsonPointer": "/messages/0/role",
+            "expected": "assistant",
+            "actual": "tool"
+          },
+          {
+            "jsonPointer": "/messages/0/segments/0/text",
+            "expected": "It is sunny.",
+            "actual": "sunny"
+          },
+          {
+            "jsonPointer": "/messages/0/toolCallId",
+            "expected": null,
+            "actual": "call-1"
+          },
+          {
+            "jsonPointer": "/messages/1/content",
+            "expected": "sunny",
+            "actual": "It is sunny."
+          },
+          {
+            "jsonPointer": "/messages/1/id",
+            "expected": "msg-r1",
+            "actual": "msg-a2"
+          },
+          {
+            "jsonPointer": "/messages/1/role",
+            "expected": "tool",
+            "actual": "assistant"
+          },
+          {
+            "jsonPointer": "/messages/1/segments/0/text",
+            "expected": "sunny",
+            "actual": "It is sunny."
+          },
+          {
+            "jsonPointer": "/messages/1/toolCallId",
+            "expected": "call-1",
+            "actual": null
+          }
+        ]
+      },
+      "oracleFirstDivergenceObject": {
+        "differences": [
+          {
+            "actual": "sunny",
+            "expected": "It is sunny.",
+            "jsonPointer": "/messages/0/content"
+          },
+          {
+            "actual": "msg-r1",
+            "expected": "msg-a",
+            "jsonPointer": "/messages/0/id"
+          },
+          {
+            "actual": "tool",
+            "expected": "assistant",
+            "jsonPointer": "/messages/0/role"
+          },
+          {
+            "actual": "sunny",
+            "expected": "It is sunny.",
+            "jsonPointer": "/messages/0/segments/0/text"
+          },
+          {
+            "actual": "call-1",
+            "expected": null,
+            "jsonPointer": "/messages/0/toolCallId"
+          },
+          {
+            "actual": "It is sunny.",
+            "expected": "sunny",
+            "jsonPointer": "/messages/1/content"
+          },
+          {
+            "actual": "msg-a2",
+            "expected": "msg-r1",
+            "jsonPointer": "/messages/1/id"
+          },
+          {
+            "actual": "assistant",
+            "expected": "tool",
+            "jsonPointer": "/messages/1/role"
+          },
+          {
+            "actual": "It is sunny.",
+            "expected": "sunny",
+            "jsonPointer": "/messages/1/segments/0/text"
+          },
+          {
+            "actual": null,
+            "expected": "call-1",
+            "jsonPointer": "/messages/1/toolCallId"
+          }
+        ],
+        "fullStateHash": "52a26b7e6110777fe0acaea66e7efaf9d4a78f488126dc7c8ca5149f8684ba0e",
+        "resumeStateHash": "f5cb03f584335688c214b304a77a759bb8e6a7ee7793c4fd3a1ac330d141e034",
+        "sourceIndex": 7
+      },
+      "tsVisitedStates": 10,
+      "oracleVisitedStates": 10,
+      "tsBfsVisited": 5,
+      "oracleBfsVisited": 5,
+      "tsShortest": [
+        "MESSAGE_ID_REMAP"
+      ],
+      "oracleShortest": [
+        "MESSAGE_ID_REMAP"
+      ],
+      "expectedShortest": [
+        "MESSAGE_ID_REMAP"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-a",
+          "msg-r1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-a",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-a",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-r1",
+          "msg-a2"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-r1",
+          "msg-a2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-r1",
+          "msg-a2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "bfsVisited": 5,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 5
+    },
+    "G03": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "INCONSISTENT",
+      "oracleVerdict": "INCONSISTENT",
+      "expectedVerdict": "INCONSISTENT",
+      "tsDiagnostics": [
+        {
+          "code": "MESSAGE_REORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 10
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "MESSAGE_REORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 10
+        }
+      ],
+      "expectedDiagnostics": [
+        "MESSAGE_REORDER"
+      ],
+      "tsFirstDivergence": 10,
+      "oracleFirstDivergence": 10,
+      "expectedFirstDivergence": 10,
+      "tsParityFullStateHash": "f13b59a0bbd66566f66b721cd23f43f2698dd24a5866fd2f4c7d4b50b2a6bc6c",
+      "oracleParityFullStateHash": "f13b59a0bbd66566f66b721cd23f43f2698dd24a5866fd2f4c7d4b50b2a6bc6c",
+      "tsParityResumeStateHash": "600c5dabf799be6465131aa41efc64ae90c255f07e5dfaea960d33421b4f90c9",
+      "oracleParityResumeStateHash": "600c5dabf799be6465131aa41efc64ae90c255f07e5dfaea960d33421b4f90c9",
+      "tsParityReportHash": "e72dba7e9bf319200fd02fa31478f41f08cda29b88c97a750e6dfdd3d86faca8",
+      "oracleParityReportHash": "e72dba7e9bf319200fd02fa31478f41f08cda29b88c97a750e6dfdd3d86faca8",
+      "tsProductionReportHash": "2eb665612c845f37859650dcaddecbaa11aa2091fbde2b51b49d2ef015311ca9",
+      "oracleProductionReportHash": "2eb665612c845f37859650dcaddecbaa11aa2091fbde2b51b49d2ef015311ca9",
+      "tsDiagnosticsFull": [
+        {
+          "code": "MESSAGE_REORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 10,
+          "message": "A message reopened after a tool call lost its text/tool interleave in the resume path.",
+          "evidence": {
+            "messageId": "msg-1"
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "MESSAGE_REORDER",
+          "evidence": {
+            "messageId": "msg-1"
+          },
+          "message": "A message reopened after a tool call lost its text/tool interleave in the resume path.",
+          "severity": "CRITICAL",
+          "sourceIndex": 10
+        }
+      ],
+      "tsFirstDivergenceObject": {
+        "sourceIndex": 10,
+        "fullStateHash": "feb7c1367eb2a83561e44c4562944439c27203a5fec1d87dfe395d612912975f",
+        "resumeStateHash": "0bf8c710f05e015ad0e0339f3bdd434ae0864e44a73a58a5bf6492165dc593d7",
+        "differences": [
+          {
+            "jsonPointer": "/messages/0/segments/0/text",
+            "expected": "Hello, ",
+            "actual": "Hello, it is sunny."
+          },
+          {
+            "jsonPointer": "/messages/0/segments/1",
+            "expected": {
+              "text": "it is sunny."
+            },
+            "actual": null
+          }
+        ]
+      },
+      "oracleFirstDivergenceObject": {
+        "differences": [
+          {
+            "actual": "Hello, it is sunny.",
+            "expected": "Hello, ",
+            "jsonPointer": "/messages/0/segments/0/text"
+          },
+          {
+            "actual": null,
+            "expected": {
+              "text": "it is sunny."
+            },
+            "jsonPointer": "/messages/0/segments/1"
+          }
+        ],
+        "fullStateHash": "feb7c1367eb2a83561e44c4562944439c27203a5fec1d87dfe395d612912975f",
+        "resumeStateHash": "0bf8c710f05e015ad0e0339f3bdd434ae0864e44a73a58a5bf6492165dc593d7",
+        "sourceIndex": 10
+      },
+      "tsVisitedStates": 13,
+      "oracleVisitedStates": 13,
+      "tsBfsVisited": 5,
+      "oracleBfsVisited": 5,
+      "tsShortest": [
+        "MESSAGE_ID_REMAP"
+      ],
+      "oracleShortest": [
+        "MESSAGE_ID_REMAP"
+      ],
+      "expectedShortest": [
+        "MESSAGE_ID_REMAP"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "bfsVisited": 5,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 6
+    },
+    "G04": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "INCONSISTENT",
+      "oracleVerdict": "INCONSISTENT",
+      "expectedVerdict": "INCONSISTENT",
+      "tsDiagnostics": [
+        {
+          "code": "LOST_EVENT",
+          "severity": "CRITICAL",
+          "sourceIndex": 3
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "LOST_EVENT",
+          "severity": "CRITICAL",
+          "sourceIndex": 3
+        }
+      ],
+      "expectedDiagnostics": [
+        "LOST_EVENT"
+      ],
+      "tsFirstDivergence": 3,
+      "oracleFirstDivergence": 3,
+      "expectedFirstDivergence": 3,
+      "tsParityFullStateHash": "5c879046c2789fc203fcf421060e4f549128085ade494f03b6ced70e40bb0369",
+      "oracleParityFullStateHash": "5c879046c2789fc203fcf421060e4f549128085ade494f03b6ced70e40bb0369",
+      "tsParityResumeStateHash": "94303d8f56c63d899592d7f5e2aa9966c5a6d64552f005ed373cdc5b6cf12a53",
+      "oracleParityResumeStateHash": "94303d8f56c63d899592d7f5e2aa9966c5a6d64552f005ed373cdc5b6cf12a53",
+      "tsParityReportHash": "0aa1cb00d8b96b23cab7b22f31ca55a116cdb4fe44cd486b7357264467e0589a",
+      "oracleParityReportHash": "0aa1cb00d8b96b23cab7b22f31ca55a116cdb4fe44cd486b7357264467e0589a",
+      "tsProductionReportHash": "71c7e4eca08ebc33a4e5970d486cff78129e287c342532759bf1b9c107bedfcf",
+      "oracleProductionReportHash": "71c7e4eca08ebc33a4e5970d486cff78129e287c342532759bf1b9c107bedfcf",
+      "tsDiagnosticsFull": [
+        {
+          "code": "LOST_EVENT",
+          "severity": "CRITICAL",
+          "sourceIndex": 3,
+          "relatedSourceIndices": [
+            3
+          ],
+          "message": "An event from the full trace did not reach the resume path and its effect is missing.",
+          "evidence": {
+            "sourceIndex": 3
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "LOST_EVENT",
+          "evidence": {
+            "sourceIndex": 3
+          },
+          "message": "An event from the full trace did not reach the resume path and its effect is missing.",
+          "relatedSourceIndices": [
+            3
+          ],
+          "severity": "CRITICAL",
+          "sourceIndex": 3
+        }
+      ],
+      "tsFirstDivergenceObject": {
+        "sourceIndex": 3,
+        "fullStateHash": "59079055dde756524dbd1c5939b9476d01bdc6ee3922cf103a2ccfc72a65a713",
+        "resumeStateHash": "0d88edb9c7c28e32db9f122dc1b2dbde3f420f4da44b21820c29f2bd0fb083b3",
+        "differences": [
+          {
+            "jsonPointer": "/messages/0/content",
+            "expected": "Hello world",
+            "actual": "Hello "
+          },
+          {
+            "jsonPointer": "/messages/0/segments/0/text",
+            "expected": "Hello world",
+            "actual": "Hello "
+          },
+          {
+            "jsonPointer": "/orderedTimeline/3",
+            "expected": {
+              "kind": "message",
+              "eventType": "TEXT_MESSAGE_CONTENT",
+              "messageId": "msg-1",
+              "text": "world"
+            },
+            "actual": null
+          }
+        ]
+      },
+      "oracleFirstDivergenceObject": {
+        "differences": [
+          {
+            "actual": "Hello ",
+            "expected": "Hello world",
+            "jsonPointer": "/messages/0/content"
+          },
+          {
+            "actual": "Hello ",
+            "expected": "Hello world",
+            "jsonPointer": "/messages/0/segments/0/text"
+          },
+          {
+            "actual": null,
+            "expected": {
+              "eventType": "TEXT_MESSAGE_CONTENT",
+              "kind": "message",
+              "messageId": "msg-1",
+              "text": "world"
+            },
+            "jsonPointer": "/orderedTimeline/3"
+          }
+        ],
+        "fullStateHash": "59079055dde756524dbd1c5939b9476d01bdc6ee3922cf103a2ccfc72a65a713",
+        "resumeStateHash": "0d88edb9c7c28e32db9f122dc1b2dbde3f420f4da44b21820c29f2bd0fb083b3",
+        "sourceIndex": 3
+      },
+      "tsVisitedStates": 8,
+      "oracleVisitedStates": 8,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 2
+    },
+    "G05": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "INCONSISTENT",
+      "oracleVerdict": "INCONSISTENT",
+      "expectedVerdict": "INCONSISTENT",
+      "tsDiagnostics": [
+        {
+          "code": "OUT_OF_ORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 4
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "OUT_OF_ORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 4
+        }
+      ],
+      "expectedDiagnostics": [
+        "OUT_OF_ORDER"
+      ],
+      "tsFirstDivergence": 4,
+      "oracleFirstDivergence": 4,
+      "expectedFirstDivergence": 4,
+      "tsParityFullStateHash": "6a904c11a1850dcfa401bcb76a11a3660ebc31a9a936df09f508d180c163b6ec",
+      "oracleParityFullStateHash": "6a904c11a1850dcfa401bcb76a11a3660ebc31a9a936df09f508d180c163b6ec",
+      "tsParityResumeStateHash": "fab64f28bd7f0183ae136ec425b6c06137e97a99a57233044fff1b0a71a4c22a",
+      "oracleParityResumeStateHash": "fab64f28bd7f0183ae136ec425b6c06137e97a99a57233044fff1b0a71a4c22a",
+      "tsParityReportHash": "a331fcb50678a2fe764ef4ff2b76d7ff7246fd2cec2291af0e82dc47b315a51d",
+      "oracleParityReportHash": "a331fcb50678a2fe764ef4ff2b76d7ff7246fd2cec2291af0e82dc47b315a51d",
+      "tsProductionReportHash": "102979d4932671dd8a40a960fa1cd2ae1ca88a78ee1e15b573ff96ed145e162b",
+      "oracleProductionReportHash": "102979d4932671dd8a40a960fa1cd2ae1ca88a78ee1e15b573ff96ed145e162b",
+      "tsDiagnosticsFull": [
+        {
+          "code": "OUT_OF_ORDER",
+          "severity": "CRITICAL",
+          "sourceIndex": 4,
+          "message": "The resume path applied events in a different order than the full path.",
+          "evidence": {
+            "expectedOrder": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "actualOrder": [
+              5,
+              4,
+              6,
+              7,
+              8,
+              9
+            ]
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "OUT_OF_ORDER",
+          "evidence": {
+            "actualOrder": [
+              5,
+              4,
+              6,
+              7,
+              8,
+              9
+            ],
+            "expectedOrder": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          "message": "The resume path applied events in a different order than the full path.",
+          "severity": "CRITICAL",
+          "sourceIndex": 4
+        }
+      ],
+      "tsFirstDivergenceObject": {
+        "sourceIndex": 4,
+        "fullStateHash": "dcd3375c9540b06470ef5b82943e442561156e6fa74c8a09713d2e31e55fbb8a",
+        "resumeStateHash": "73272239009fa21a13c4159b531c69af88ba5aa9f0992e4fd247b3ccf5605348",
+        "differences": [
+          {
+            "jsonPointer": "/orderedTimeline/4/text",
+            "expected": "{\"q\":",
+            "actual": "\"x\"}"
+          },
+          {
+            "jsonPointer": "/orderedTimeline/5",
+            "expected": null,
+            "actual": {
+              "kind": "tool-call",
+              "eventType": "TOOL_CALL_ARGS",
+              "toolCallId": "call-1",
+              "text": "{\"q\":"
+            }
+          },
+          {
+            "jsonPointer": "/toolCalls/0/arguments",
+            "expected": "{\"q\":",
+            "actual": "\"x\"}{\"q\":"
+          }
+        ]
+      },
+      "oracleFirstDivergenceObject": {
+        "differences": [
+          {
+            "actual": "\"x\"}",
+            "expected": "{\"q\":",
+            "jsonPointer": "/orderedTimeline/4/text"
+          },
+          {
+            "actual": {
+              "eventType": "TOOL_CALL_ARGS",
+              "kind": "tool-call",
+              "text": "{\"q\":",
+              "toolCallId": "call-1"
+            },
+            "expected": null,
+            "jsonPointer": "/orderedTimeline/5"
+          },
+          {
+            "actual": "\"x\"}{\"q\":",
+            "expected": "{\"q\":",
+            "jsonPointer": "/toolCalls/0/arguments"
+          }
+        ],
+        "fullStateHash": "dcd3375c9540b06470ef5b82943e442561156e6fa74c8a09713d2e31e55fbb8a",
+        "resumeStateHash": "73272239009fa21a13c4159b531c69af88ba5aa9f0992e4fd247b3ccf5605348",
+        "sourceIndex": 4
+      },
+      "tsVisitedStates": 16,
+      "oracleVisitedStates": 16,
+      "tsBfsVisited": 8,
+      "oracleBfsVisited": 8,
+      "tsShortest": [
+        "SWAP_ADJACENT"
+      ],
+      "oracleShortest": [
+        "SWAP_ADJACENT"
+      ],
+      "expectedShortest": [
+        "SWAP_ADJACENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [
+          "call-1"
+        ],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [
+          "call-1"
+        ],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [
+          "call-1"
+        ],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [
+          "call-1"
+        ],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [
+          "call-1"
+        ],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [
+          "call-1"
+        ],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "bfsVisited": 8,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 6
+    },
+    "G06": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "INCONSISTENT",
+      "oracleVerdict": "INCONSISTENT",
+      "expectedVerdict": "INCONSISTENT",
+      "tsDiagnostics": [
+        {
+          "code": "SNAPSHOT_MISMATCH",
+          "severity": "CRITICAL",
+          "sourceIndex": 1
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "SNAPSHOT_MISMATCH",
+          "severity": "CRITICAL",
+          "sourceIndex": 1
+        }
+      ],
+      "expectedDiagnostics": [
+        "SNAPSHOT_MISMATCH"
+      ],
+      "tsFirstDivergence": 2,
+      "oracleFirstDivergence": 2,
+      "expectedFirstDivergence": 2,
+      "tsParityFullStateHash": "f74114278962a48e40f826d1dad79ec3ace9181f6f25a52a290a18c591bbb20d",
+      "oracleParityFullStateHash": "f74114278962a48e40f826d1dad79ec3ace9181f6f25a52a290a18c591bbb20d",
+      "tsParityResumeStateHash": "6b9f2ccea120d78c06444075eba15866e90fa522b69652d8eae4f5b525bc9f3c",
+      "oracleParityResumeStateHash": "6b9f2ccea120d78c06444075eba15866e90fa522b69652d8eae4f5b525bc9f3c",
+      "tsParityReportHash": "45f85a43a1a2c9b02a8f6262fcf115d1b012d27fdf2e1968397edeb71918c87c",
+      "oracleParityReportHash": "45f85a43a1a2c9b02a8f6262fcf115d1b012d27fdf2e1968397edeb71918c87c",
+      "tsProductionReportHash": "5c9e4d1e9aa2265cfc2790845e9144387cc3946d3c33c4aa86083d0f048e2ddf",
+      "oracleProductionReportHash": "5c9e4d1e9aa2265cfc2790845e9144387cc3946d3c33c4aa86083d0f048e2ddf",
+      "tsDiagnosticsFull": [
+        {
+          "code": "SNAPSHOT_MISMATCH",
+          "severity": "CRITICAL",
+          "sourceIndex": 1,
+          "relatedSourceIndices": [
+            3
+          ],
+          "message": "Recovery checkpoint is older than the disconnect point and its shared state disagrees with the full prefix.",
+          "evidence": {
+            "checkpointIndex": 1,
+            "disconnectAfter": 3,
+            "expectedSharedState": {
+              "items": [
+                "a",
+                "b"
+              ],
+              "counter": 2
+            },
+            "actualSharedState": {
+              "counter": 1,
+              "items": [
+                "a"
+              ]
+            }
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "SNAPSHOT_MISMATCH",
+          "evidence": {
+            "actualSharedState": {
+              "counter": 1,
+              "items": [
+                "a"
+              ]
+            },
+            "checkpointIndex": 1,
+            "disconnectAfter": 3,
+            "expectedSharedState": {
+              "counter": 2,
+              "items": [
+                "a",
+                "b"
+              ]
+            }
+          },
+          "message": "Recovery checkpoint is older than the disconnect point and its shared state disagrees with the full prefix.",
+          "relatedSourceIndices": [
+            3
+          ],
+          "severity": "CRITICAL",
+          "sourceIndex": 1
+        }
+      ],
+      "tsFirstDivergenceObject": {
+        "sourceIndex": 2,
+        "fullStateHash": "951e0b38084b89365d0a3b08d7992a9a173bb00e3850da60c546cdb1a3383d38",
+        "resumeStateHash": "d0c9249173e76efba17e6435a2a5d2cc548419469431989fc60a6560d6fb1619",
+        "differences": [
+          {
+            "jsonPointer": "/orderedTimeline/2",
+            "expected": {
+              "kind": "state",
+              "eventType": "STATE_DELTA"
+            },
+            "actual": null
+          },
+          {
+            "jsonPointer": "/sharedState/counter",
+            "expected": 2,
+            "actual": 1
+          }
+        ]
+      },
+      "oracleFirstDivergenceObject": {
+        "differences": [
+          {
+            "actual": null,
+            "expected": {
+              "eventType": "STATE_DELTA",
+              "kind": "state"
+            },
+            "jsonPointer": "/orderedTimeline/2"
+          },
+          {
+            "actual": 1,
+            "expected": 2,
+            "jsonPointer": "/sharedState/counter"
+          }
+        ],
+        "fullStateHash": "951e0b38084b89365d0a3b08d7992a9a173bb00e3850da60c546cdb1a3383d38",
+        "resumeStateHash": "d0c9249173e76efba17e6435a2a5d2cc548419469431989fc60a6560d6fb1619",
+        "sourceIndex": 2
+      },
+      "tsVisitedStates": 12,
+      "oracleVisitedStates": 12,
+      "tsBfsVisited": 7,
+      "oracleBfsVisited": 7,
+      "tsShortest": [
+        "STALE_SNAPSHOT"
+      ],
+      "oracleShortest": [
+        "STALE_SNAPSHOT"
+      ],
+      "expectedShortest": [
+        "STALE_SNAPSHOT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {
+          "items": [
+            "a",
+            "b"
+          ],
+          "counter": 2
+        },
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "counter": 2,
+          "items": [
+            "a",
+            "b"
+          ]
+        },
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "counter": 2,
+          "items": [
+            "a",
+            "b"
+          ]
+        },
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {
+          "counter": 1,
+          "items": [
+            "a"
+          ]
+        },
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "counter": 1,
+          "items": [
+            "a"
+          ]
+        },
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "counter": 1,
+          "items": [
+            "a"
+          ]
+        },
+        "toolCallOrder": []
+      },
+      "bfsVisited": 7,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 3
+    },
+    "G07": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "INCONSISTENT",
+      "oracleVerdict": "INCONSISTENT",
+      "expectedVerdict": "INCONSISTENT",
+      "tsDiagnostics": [
+        {
+          "code": "SUSPECTED_DUPLICATE",
+          "severity": "WARNING",
+          "sourceIndex": 2
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "SUSPECTED_DUPLICATE",
+          "severity": "WARNING",
+          "sourceIndex": 2
+        }
+      ],
+      "expectedDiagnostics": [
+        "SUSPECTED_DUPLICATE"
+      ],
+      "tsFirstDivergence": 2,
+      "oracleFirstDivergence": 2,
+      "expectedFirstDivergence": 2,
+      "tsParityFullStateHash": "7baea9018342768c2272d0a3bc8a21904556512db5cb7c637f103077d1834353",
+      "oracleParityFullStateHash": "7baea9018342768c2272d0a3bc8a21904556512db5cb7c637f103077d1834353",
+      "tsParityResumeStateHash": "6b71eb2eea9f083693c1a6c1816390538b76c00c67792902b151c7d37f9b1a40",
+      "oracleParityResumeStateHash": "6b71eb2eea9f083693c1a6c1816390538b76c00c67792902b151c7d37f9b1a40",
+      "tsParityReportHash": "2fec3fee7cbedf1c16e0067ca398a535449019f0f05f522eacfd183306d4e876",
+      "oracleParityReportHash": "2fec3fee7cbedf1c16e0067ca398a535449019f0f05f522eacfd183306d4e876",
+      "tsProductionReportHash": "127b944d98006239c1db1a6c8f5b65154f35dce5c4523b6a8d127c6dd578e129",
+      "oracleProductionReportHash": "127b944d98006239c1db1a6c8f5b65154f35dce5c4523b6a8d127c6dd578e129",
+      "tsDiagnosticsFull": [
+        {
+          "code": "SUSPECTED_DUPLICATE",
+          "severity": "WARNING",
+          "sourceIndex": 2,
+          "message": "Identical text content applied again with no stable event id (PROJECT_BOOK §4.3: suspected duplicate, never auto-deduplicated).",
+          "evidence": {
+            "messageId": "msg-1",
+            "delta": "Hello"
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "SUSPECTED_DUPLICATE",
+          "evidence": {
+            "delta": "Hello",
+            "messageId": "msg-1"
+          },
+          "message": "Identical text content applied again with no stable event id (PROJECT_BOOK §4.3: suspected duplicate, never auto-deduplicated).",
+          "severity": "WARNING",
+          "sourceIndex": 2
+        }
+      ],
+      "tsFirstDivergenceObject": {
+        "sourceIndex": 2,
+        "fullStateHash": "d6a37e85a85eb1f985d588088722bd035e7f1f1cc4b685bd1dc9c85d6bbbc21a",
+        "resumeStateHash": "2681efdd8ed93031fdd2ad3063a208de514468d0d0a1a6d5ee7aa509b16de8c7",
+        "differences": [
+          {
+            "jsonPointer": "/messages/0/content",
+            "expected": "Hello",
+            "actual": "HelloHello"
+          },
+          {
+            "jsonPointer": "/messages/0/segments/0/text",
+            "expected": "Hello",
+            "actual": "HelloHello"
+          },
+          {
+            "jsonPointer": "/orderedTimeline/3",
+            "expected": null,
+            "actual": {
+              "kind": "message",
+              "eventType": "TEXT_MESSAGE_CONTENT",
+              "messageId": "msg-1",
+              "text": "Hello"
+            }
+          }
+        ]
+      },
+      "oracleFirstDivergenceObject": {
+        "differences": [
+          {
+            "actual": "HelloHello",
+            "expected": "Hello",
+            "jsonPointer": "/messages/0/content"
+          },
+          {
+            "actual": "HelloHello",
+            "expected": "Hello",
+            "jsonPointer": "/messages/0/segments/0/text"
+          },
+          {
+            "actual": {
+              "eventType": "TEXT_MESSAGE_CONTENT",
+              "kind": "message",
+              "messageId": "msg-1",
+              "text": "Hello"
+            },
+            "expected": null,
+            "jsonPointer": "/orderedTimeline/3"
+          }
+        ],
+        "fullStateHash": "d6a37e85a85eb1f985d588088722bd035e7f1f1cc4b685bd1dc9c85d6bbbc21a",
+        "resumeStateHash": "2681efdd8ed93031fdd2ad3063a208de514468d0d0a1a6d5ee7aa509b16de8c7",
+        "sourceIndex": 2
+      },
+      "tsVisitedStates": 9,
+      "oracleVisitedStates": 9,
+      "tsBfsVisited": 4,
+      "oracleBfsVisited": 4,
+      "tsShortest": [
+        "DUPLICATE_EVENT"
+      ],
+      "oracleShortest": [
+        "DUPLICATE_EVENT"
+      ],
+      "expectedShortest": [
+        "DUPLICATE_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 4,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 3
+    },
+    "G08": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "INCOMPLETE_TRACE",
+      "oracleVerdict": "INCOMPLETE_TRACE",
+      "expectedVerdict": "INCOMPLETE_TRACE",
+      "tsDiagnostics": [
+        {
+          "code": "TRUNCATED_RUN",
+          "severity": "WARNING",
+          "sourceIndex": 4
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "TRUNCATED_RUN",
+          "severity": "WARNING",
+          "sourceIndex": 4
+        }
+      ],
+      "expectedDiagnostics": [
+        "TRUNCATED_RUN"
+      ],
+      "tsFirstDivergence": 4,
+      "oracleFirstDivergence": 4,
+      "expectedFirstDivergence": 4,
+      "tsParityFullStateHash": "6d9386f81073c1c42bde00a1581d9b831f1fcc97118eb14511900d0ae86180c9",
+      "oracleParityFullStateHash": "6d9386f81073c1c42bde00a1581d9b831f1fcc97118eb14511900d0ae86180c9",
+      "tsParityResumeStateHash": "81cdd63cce4adc0e6809e0a7892319a72dd9ff4a1c7deecef7246ff0a9d3d636",
+      "oracleParityResumeStateHash": "81cdd63cce4adc0e6809e0a7892319a72dd9ff4a1c7deecef7246ff0a9d3d636",
+      "tsParityReportHash": "385e6dea5eb014496d2a26a674a8e90c5f3307aa4af9bcc92d939e2f5661a3b5",
+      "oracleParityReportHash": "385e6dea5eb014496d2a26a674a8e90c5f3307aa4af9bcc92d939e2f5661a3b5",
+      "tsProductionReportHash": "7f90a57e61119534b0698812193357f7897453740a593a0b6d9fffd3c9abf01b",
+      "oracleProductionReportHash": "7f90a57e61119534b0698812193357f7897453740a593a0b6d9fffd3c9abf01b",
+      "tsDiagnosticsFull": [
+        {
+          "code": "TRUNCATED_RUN",
+          "severity": "WARNING",
+          "sourceIndex": 4,
+          "message": "The stream ended before a terminal event (RUN_FINISHED / RUN_ERROR).",
+          "evidence": {
+            "lastSourceIndex": 4,
+            "runStatus": "RUNNING"
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "TRUNCATED_RUN",
+          "evidence": {
+            "lastSourceIndex": 4,
+            "runStatus": "RUNNING"
+          },
+          "message": "The stream ended before a terminal event (RUN_FINISHED / RUN_ERROR).",
+          "severity": "WARNING",
+          "sourceIndex": 4
+        }
+      ],
+      "tsFirstDivergenceObject": {
+        "sourceIndex": 4,
+        "fullStateHash": "0e85448bd75102c553f1baa2ec33d769384f641436961b650aa001e7f68b8b76",
+        "resumeStateHash": "80bbc15600f36e95581175f28211fef9df8bb67740c5e41d2c69b8f165669dbf",
+        "differences": [
+          {
+            "jsonPointer": "/orderedTimeline/4",
+            "expected": {
+              "kind": "tool-call",
+              "eventType": "TOOL_CALL_ARGS",
+              "toolCallId": "call-1",
+              "text": "{\"q\":\"x\"}"
+            },
+            "actual": null
+          },
+          {
+            "jsonPointer": "/toolCalls/0/arguments",
+            "expected": "{\"q\":\"x\"}",
+            "actual": ""
+          }
+        ]
+      },
+      "oracleFirstDivergenceObject": {
+        "differences": [
+          {
+            "actual": null,
+            "expected": {
+              "eventType": "TOOL_CALL_ARGS",
+              "kind": "tool-call",
+              "text": "{\"q\":\"x\"}",
+              "toolCallId": "call-1"
+            },
+            "jsonPointer": "/orderedTimeline/4"
+          },
+          {
+            "actual": "",
+            "expected": "{\"q\":\"x\"}",
+            "jsonPointer": "/toolCalls/0/arguments"
+          }
+        ],
+        "fullStateHash": "0e85448bd75102c553f1baa2ec33d769384f641436961b650aa001e7f68b8b76",
+        "resumeStateHash": "80bbc15600f36e95581175f28211fef9df8bb67740c5e41d2c69b8f165669dbf",
+        "sourceIndex": 4
+      },
+      "tsVisitedStates": 6,
+      "oracleVisitedStates": 6,
+      "tsBfsVisited": 1,
+      "oracleBfsVisited": 1,
+      "tsShortest": [],
+      "oracleShortest": [],
+      "expectedShortest": [],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "RUNNING"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "RUNNING",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "RUNNING",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "RUNNING"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "RUNNING",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "RUNNING",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "bfsVisited": 1,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 2
+    },
+    "N01": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "0dc22addc0c5e181a9d9daec7d991146df7f3faf5838541d02c1c8322d435f5a",
+      "oracleParityFullStateHash": "0dc22addc0c5e181a9d9daec7d991146df7f3faf5838541d02c1c8322d435f5a",
+      "tsParityResumeStateHash": "0dc22addc0c5e181a9d9daec7d991146df7f3faf5838541d02c1c8322d435f5a",
+      "oracleParityResumeStateHash": "0dc22addc0c5e181a9d9daec7d991146df7f3faf5838541d02c1c8322d435f5a",
+      "tsParityReportHash": "6bd0ef812a7e7e5757d88ebaed52272a56d3a2b4fd6b9061d1c356279205ca6b",
+      "oracleParityReportHash": "6bd0ef812a7e7e5757d88ebaed52272a56d3a2b4fd6b9061d1c356279205ca6b",
+      "tsProductionReportHash": "5185c31a6049aa7397fe66ab44933f4e64e0144493aa045c5f1604c52ae9ed97",
+      "oracleProductionReportHash": "5185c31a6049aa7397fe66ab44933f4e64e0144493aa045c5f1604c52ae9ed97",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 7,
+      "oracleVisitedStates": 7,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 1
+    },
+    "N02": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "c3ae5d2d7e4a0c54482d69cb52ce5d59bd0456919082e0c23ab23e65f57191c4",
+      "oracleParityFullStateHash": "c3ae5d2d7e4a0c54482d69cb52ce5d59bd0456919082e0c23ab23e65f57191c4",
+      "tsParityResumeStateHash": "c3ae5d2d7e4a0c54482d69cb52ce5d59bd0456919082e0c23ab23e65f57191c4",
+      "oracleParityResumeStateHash": "c3ae5d2d7e4a0c54482d69cb52ce5d59bd0456919082e0c23ab23e65f57191c4",
+      "tsParityReportHash": "46dc775ebcb6927619feba9480dc489a6d621e3e3d13e3147b442ff3df4d8b57",
+      "oracleParityReportHash": "46dc775ebcb6927619feba9480dc489a6d621e3e3d13e3147b442ff3df4d8b57",
+      "tsProductionReportHash": "fea4b3d70e3fe5175197c28c1759319425a17810014a700f644ae57b3b3664f3",
+      "oracleProductionReportHash": "fea4b3d70e3fe5175197c28c1759319425a17810014a700f644ae57b3b3664f3",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 10,
+      "oracleVisitedStates": 10,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 2
+    },
+    "N03": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "ffbc082300387d47d350fca37e5393137f8e0069b5ea675914d2a91f7cb7ba5d",
+      "oracleParityFullStateHash": "ffbc082300387d47d350fca37e5393137f8e0069b5ea675914d2a91f7cb7ba5d",
+      "tsParityResumeStateHash": "ffbc082300387d47d350fca37e5393137f8e0069b5ea675914d2a91f7cb7ba5d",
+      "oracleParityResumeStateHash": "ffbc082300387d47d350fca37e5393137f8e0069b5ea675914d2a91f7cb7ba5d",
+      "tsParityReportHash": "855e2367c8c97b8c2bbea924562fd63101a412771e611649710b539cd4ec25df",
+      "oracleParityReportHash": "855e2367c8c97b8c2bbea924562fd63101a412771e611649710b539cd4ec25df",
+      "tsProductionReportHash": "a36b5653857aca069f1ec80873c95e9a0a59658492b855713a933d57fa46a9e6",
+      "oracleProductionReportHash": "a36b5653857aca069f1ec80873c95e9a0a59658492b855713a933d57fa46a9e6",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 13,
+      "oracleVisitedStates": 13,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 4
+    },
+    "N04": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "231c6be4e2fd602b40d29eb224a8682170fae32aa3a8263cc03e533f881c1a6a",
+      "oracleParityFullStateHash": "231c6be4e2fd602b40d29eb224a8682170fae32aa3a8263cc03e533f881c1a6a",
+      "tsParityResumeStateHash": "231c6be4e2fd602b40d29eb224a8682170fae32aa3a8263cc03e533f881c1a6a",
+      "oracleParityResumeStateHash": "231c6be4e2fd602b40d29eb224a8682170fae32aa3a8263cc03e533f881c1a6a",
+      "tsParityReportHash": "7f33578dea9b3da8018a4f70032e6bf0852e7d3c17e4f87aeb8b98e6168e210f",
+      "oracleParityReportHash": "7f33578dea9b3da8018a4f70032e6bf0852e7d3c17e4f87aeb8b98e6168e210f",
+      "tsProductionReportHash": "f152bd22b812cc7999400e86a0f2150e3d36de81a6b6f17e3dea39ff1a8d569c",
+      "oracleProductionReportHash": "f152bd22b812cc7999400e86a0f2150e3d36de81a6b6f17e3dea39ff1a8d569c",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 18,
+      "oracleVisitedStates": 18,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r2",
+          "msg-2"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r2",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r2",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r2",
+          "msg-2"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r2",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r2",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 11
+    },
+    "N05": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "b9d6b27ed267ca8e80ca48d84d39269f10b1b1b5afe655b6f7a1f9507f1b2eac",
+      "oracleParityFullStateHash": "b9d6b27ed267ca8e80ca48d84d39269f10b1b1b5afe655b6f7a1f9507f1b2eac",
+      "tsParityResumeStateHash": "b9d6b27ed267ca8e80ca48d84d39269f10b1b1b5afe655b6f7a1f9507f1b2eac",
+      "oracleParityResumeStateHash": "b9d6b27ed267ca8e80ca48d84d39269f10b1b1b5afe655b6f7a1f9507f1b2eac",
+      "tsParityReportHash": "732c61c4111fa8f0ac0c9a12ac16616bc817a6dddc36298ebdc69b6c73d56d63",
+      "oracleParityReportHash": "732c61c4111fa8f0ac0c9a12ac16616bc817a6dddc36298ebdc69b6c73d56d63",
+      "tsProductionReportHash": "3937d3d2a1e7afb857c1ae66b06c9d369df7e8315848ea500506db3e8c1d6a5b",
+      "oracleProductionReportHash": "3937d3d2a1e7afb857c1ae66b06c9d369df7e8315848ea500506db3e8c1d6a5b",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 8,
+      "oracleVisitedStates": 8,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [],
+        "toolCallOrder": [],
+        "sharedState": {
+          "theme": "dark",
+          "count": 3,
+          "items": [
+            "a"
+          ]
+        },
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 3,
+          "items": [
+            "a"
+          ],
+          "theme": "dark"
+        },
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 3,
+          "items": [
+            "a"
+          ],
+          "theme": "dark"
+        },
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [],
+        "toolCallOrder": [],
+        "sharedState": {
+          "theme": "dark",
+          "count": 3,
+          "items": [
+            "a"
+          ]
+        },
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 3,
+          "items": [
+            "a"
+          ],
+          "theme": "dark"
+        },
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 3,
+          "items": [
+            "a"
+          ],
+          "theme": "dark"
+        },
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 1
+    },
+    "N06": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "a424ab992f17ef11cbcc50f7a419252dcec47bfa6a0bbeb262eac0a293afbb4a",
+      "oracleParityFullStateHash": "a424ab992f17ef11cbcc50f7a419252dcec47bfa6a0bbeb262eac0a293afbb4a",
+      "tsParityResumeStateHash": "a424ab992f17ef11cbcc50f7a419252dcec47bfa6a0bbeb262eac0a293afbb4a",
+      "oracleParityResumeStateHash": "a424ab992f17ef11cbcc50f7a419252dcec47bfa6a0bbeb262eac0a293afbb4a",
+      "tsParityReportHash": "a812c66ed10dc1688892c0adef306a80c17671f1f21db791cbbe10a7fe43365f",
+      "oracleParityReportHash": "a812c66ed10dc1688892c0adef306a80c17671f1f21db791cbbe10a7fe43365f",
+      "tsProductionReportHash": "3fab1ed8d85948ef2ef26177e08b439f0ed07640822a48589c7819cfb649eaa4",
+      "oracleProductionReportHash": "3fab1ed8d85948ef2ef26177e08b439f0ed07640822a48589c7819cfb649eaa4",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 12,
+      "oracleVisitedStates": 12,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 4
+    },
+    "N07": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "f54cdd9c9c90edcc37784451d561f35e780b3f9b154c2c024b019715299dcf40",
+      "oracleParityFullStateHash": "f54cdd9c9c90edcc37784451d561f35e780b3f9b154c2c024b019715299dcf40",
+      "tsParityResumeStateHash": "f54cdd9c9c90edcc37784451d561f35e780b3f9b154c2c024b019715299dcf40",
+      "oracleParityResumeStateHash": "f54cdd9c9c90edcc37784451d561f35e780b3f9b154c2c024b019715299dcf40",
+      "tsParityReportHash": "cd2f77109c8470fe3890dd9bd9e213465dcae3bdd98166d759299f465314230a",
+      "oracleParityReportHash": "cd2f77109c8470fe3890dd9bd9e213465dcae3bdd98166d759299f465314230a",
+      "tsProductionReportHash": "ae1e7e36c4871b4a819cea0fefaf9a0ee629f534a3d607aeda3ece3be7628529",
+      "oracleProductionReportHash": "ae1e7e36c4871b4a819cea0fefaf9a0ee629f534a3d607aeda3ece3be7628529",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 9,
+      "oracleVisitedStates": 9,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {
+          "count": 1
+        },
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 1
+        },
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 1
+        },
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {
+          "count": 1
+        },
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 1
+        },
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 1
+        },
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 2
+    },
+    "N08": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "c436653f3240c7a50edfffd506138275b07736ebadd24e724973b0bcb2fb2ea4",
+      "oracleParityFullStateHash": "c436653f3240c7a50edfffd506138275b07736ebadd24e724973b0bcb2fb2ea4",
+      "tsParityResumeStateHash": "c436653f3240c7a50edfffd506138275b07736ebadd24e724973b0bcb2fb2ea4",
+      "oracleParityResumeStateHash": "c436653f3240c7a50edfffd506138275b07736ebadd24e724973b0bcb2fb2ea4",
+      "tsParityReportHash": "ee9e030daa809d6ac1029240d4e67bae09f30eddd55638a0cf88e9e359c10e8a",
+      "oracleParityReportHash": "ee9e030daa809d6ac1029240d4e67bae09f30eddd55638a0cf88e9e359c10e8a",
+      "tsProductionReportHash": "446b321369bc4fbe04eca0ebac9b1427657d27dcb8637a97ae4f6bdb5f377187",
+      "oracleProductionReportHash": "446b321369bc4fbe04eca0ebac9b1427657d27dcb8637a97ae4f6bdb5f377187",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 12,
+      "oracleVisitedStates": 12,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 3
+    },
+    "N09": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "504808bad1f2c14a006f1826b500b58eda80f1cd249845fe02322fd47f569eca",
+      "oracleParityFullStateHash": "504808bad1f2c14a006f1826b500b58eda80f1cd249845fe02322fd47f569eca",
+      "tsParityResumeStateHash": "504808bad1f2c14a006f1826b500b58eda80f1cd249845fe02322fd47f569eca",
+      "oracleParityResumeStateHash": "504808bad1f2c14a006f1826b500b58eda80f1cd249845fe02322fd47f569eca",
+      "tsParityReportHash": "333fbbcebfb4c13fc8f0ced1a2946274aa136d54b3dd45948afd3d1b1c9ec6e5",
+      "oracleParityReportHash": "333fbbcebfb4c13fc8f0ced1a2946274aa136d54b3dd45948afd3d1b1c9ec6e5",
+      "tsProductionReportHash": "b2a4f7b985899f8974f2d61a577552c9c7914996dfc9a044e97b403d33b8a3b5",
+      "oracleProductionReportHash": "b2a4f7b985899f8974f2d61a577552c9c7914996dfc9a044e97b403d33b8a3b5",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 18,
+      "oracleVisitedStates": 18,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ]
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 9
+    },
+    "N10": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "ca58fd60c552924d8d7b11f81ed794a3869cd769d5f1d85c9145442020eae7cc",
+      "oracleParityFullStateHash": "ca58fd60c552924d8d7b11f81ed794a3869cd769d5f1d85c9145442020eae7cc",
+      "tsParityResumeStateHash": "ca58fd60c552924d8d7b11f81ed794a3869cd769d5f1d85c9145442020eae7cc",
+      "oracleParityResumeStateHash": "ca58fd60c552924d8d7b11f81ed794a3869cd769d5f1d85c9145442020eae7cc",
+      "tsParityReportHash": "37f7338ad908df25af706f16641cd11e4c7e56a853a8cc3eb77c3f165fac1ddb",
+      "oracleParityReportHash": "37f7338ad908df25af706f16641cd11e4c7e56a853a8cc3eb77c3f165fac1ddb",
+      "tsProductionReportHash": "c13e1c15160fa1ed9d8a445a6a568501d80f59953441f2eef382204028df05e6",
+      "oracleProductionReportHash": "c13e1c15160fa1ed9d8a445a6a568501d80f59953441f2eef382204028df05e6",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 15,
+      "oracleVisitedStates": 15,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 4
+    },
+    "N11": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "5a535e17fad90e2694082287b3cb40af9dcb43beea228f6ac61c8339cb255306",
+      "oracleParityFullStateHash": "5a535e17fad90e2694082287b3cb40af9dcb43beea228f6ac61c8339cb255306",
+      "tsParityResumeStateHash": "5a535e17fad90e2694082287b3cb40af9dcb43beea228f6ac61c8339cb255306",
+      "oracleParityResumeStateHash": "5a535e17fad90e2694082287b3cb40af9dcb43beea228f6ac61c8339cb255306",
+      "tsParityReportHash": "0af6992a0f209ec4a05a68c6724ba89afb4a73618e0430fc88bef61045ada6af",
+      "oracleParityReportHash": "0af6992a0f209ec4a05a68c6724ba89afb4a73618e0430fc88bef61045ada6af",
+      "tsProductionReportHash": "290ccca0c64fa75b0762e8e811849fe59ec9bf3538923725df569130bac06820",
+      "oracleProductionReportHash": "290ccca0c64fa75b0762e8e811849fe59ec9bf3538923725df569130bac06820",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 11,
+      "oracleVisitedStates": 11,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 2
+    },
+    "N12": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "f44ee9fdc35298a18c3c5ecb00ae9c53acfe6b75804c238034ed490c20122f32",
+      "oracleParityFullStateHash": "f44ee9fdc35298a18c3c5ecb00ae9c53acfe6b75804c238034ed490c20122f32",
+      "tsParityResumeStateHash": "f44ee9fdc35298a18c3c5ecb00ae9c53acfe6b75804c238034ed490c20122f32",
+      "oracleParityResumeStateHash": "f44ee9fdc35298a18c3c5ecb00ae9c53acfe6b75804c238034ed490c20122f32",
+      "tsParityReportHash": "c9b03d38aa9436fc255035bc2d94fa34c9adfe9c83d53c969c71aa2c0d5a0ccd",
+      "oracleParityReportHash": "c9b03d38aa9436fc255035bc2d94fa34c9adfe9c83d53c969c71aa2c0d5a0ccd",
+      "tsProductionReportHash": "6cae861ad1c4995f7cda4474e3eedca8785ea73904d3ee61d704f9833ff9bf0f",
+      "oracleProductionReportHash": "6cae861ad1c4995f7cda4474e3eedca8785ea73904d3ee61d704f9833ff9bf0f",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 9,
+      "oracleVisitedStates": 9,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "ERROR"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "ERROR",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "ERROR",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [
+          "call-1"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "ERROR"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "ERROR",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "ERROR",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1"
+        ]
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 2
+    },
+    "N13": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "7baea9018342768c2272d0a3bc8a21904556512db5cb7c637f103077d1834353",
+      "oracleParityFullStateHash": "7baea9018342768c2272d0a3bc8a21904556512db5cb7c637f103077d1834353",
+      "tsParityResumeStateHash": "7baea9018342768c2272d0a3bc8a21904556512db5cb7c637f103077d1834353",
+      "oracleParityResumeStateHash": "7baea9018342768c2272d0a3bc8a21904556512db5cb7c637f103077d1834353",
+      "tsParityReportHash": "8aa1814975b8c77adfa9e64b586264cb6e6c8d568f96c689b631153f092b13b3",
+      "oracleParityReportHash": "8aa1814975b8c77adfa9e64b586264cb6e6c8d568f96c689b631153f092b13b3",
+      "tsProductionReportHash": "714d5e3f9ce5fbf6ae85c915062ce5d4787708ea34f4029a6cadf426f96479e1",
+      "oracleProductionReportHash": "714d5e3f9ce5fbf6ae85c915062ce5d4787708ea34f4029a6cadf426f96479e1",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 7,
+      "oracleVisitedStates": 7,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 1
+    },
+    "N14": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "f4cb80aa8be528600f4f708b9b860d6bf0239ad68a9d4eb97e4442284149f08b",
+      "oracleParityFullStateHash": "f4cb80aa8be528600f4f708b9b860d6bf0239ad68a9d4eb97e4442284149f08b",
+      "tsParityResumeStateHash": "f4cb80aa8be528600f4f708b9b860d6bf0239ad68a9d4eb97e4442284149f08b",
+      "oracleParityResumeStateHash": "f4cb80aa8be528600f4f708b9b860d6bf0239ad68a9d4eb97e4442284149f08b",
+      "tsParityReportHash": "621d8b9c176862396a748e44e06ef1e45967ce822d6411674bf473e384954c3c",
+      "oracleParityReportHash": "621d8b9c176862396a748e44e06ef1e45967ce822d6411674bf473e384954c3c",
+      "tsProductionReportHash": "2e0b8c3caa16248dc35f574c06fdd22c214629cb4bd133f963ffca022284f512",
+      "oracleProductionReportHash": "2e0b8c3caa16248dc35f574c06fdd22c214629cb4bd133f963ffca022284f512",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 12,
+      "oracleVisitedStates": 12,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 3
+    },
+    "N15": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "2144e7ae9699f50c29a54e41a949bfb6d574e3295c134118b56a4956d3ba6d66",
+      "oracleParityFullStateHash": "2144e7ae9699f50c29a54e41a949bfb6d574e3295c134118b56a4956d3ba6d66",
+      "tsParityResumeStateHash": "2144e7ae9699f50c29a54e41a949bfb6d574e3295c134118b56a4956d3ba6d66",
+      "oracleParityResumeStateHash": "2144e7ae9699f50c29a54e41a949bfb6d574e3295c134118b56a4956d3ba6d66",
+      "tsParityReportHash": "0eae6a9d49e7c7bb6cbbdc03fba00b5090f7705287f3bad027ef79134fee8d44",
+      "oracleParityReportHash": "0eae6a9d49e7c7bb6cbbdc03fba00b5090f7705287f3bad027ef79134fee8d44",
+      "tsProductionReportHash": "fcb2139b754e3938d8d505da5fedaca8032b07aadc52b1d0eeb1b793508740a0",
+      "oracleProductionReportHash": "fcb2139b754e3938d8d505da5fedaca8032b07aadc52b1d0eeb1b793508740a0",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 19,
+      "oracleVisitedStates": 19,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ]
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ]
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ],
+        "sharedState": {},
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ]
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1",
+          "msg-r1",
+          "msg-r2"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {},
+        "toolCallOrder": [
+          "call-1",
+          "call-2"
+        ]
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 8
+    },
+    "N16": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "shortest": true,
+        "fullState": true,
+        "resumeState": true,
+        "firstDivergenceTsDefinition": true,
+        "firstDivergenceMatchesOracle": true,
+        "finalStateHashParity": true,
+        "parityPathsEqual": true,
+        "reportHashParity": true,
+        "productionReportHashParity": true,
+        "diagnosticsFullParity": true,
+        "firstDivergenceObjectParity": true,
+        "visitedStatesParity": true,
+        "bfsVisitedParity": true,
+        "bfsWithinBudget": true,
+        "legalBaselineConverged": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "expectedVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "expectedDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "expectedFirstDivergence": null,
+      "tsParityFullStateHash": "8d9248c3183312e95aa93130c500a3ab1e53b77a4035bb78a0f7cde66d065ea0",
+      "oracleParityFullStateHash": "8d9248c3183312e95aa93130c500a3ab1e53b77a4035bb78a0f7cde66d065ea0",
+      "tsParityResumeStateHash": "8d9248c3183312e95aa93130c500a3ab1e53b77a4035bb78a0f7cde66d065ea0",
+      "oracleParityResumeStateHash": "8d9248c3183312e95aa93130c500a3ab1e53b77a4035bb78a0f7cde66d065ea0",
+      "tsParityReportHash": "f19661ecb47740d5b5a33d0a601a517bc3ec0ee5ddf2fd7fd682c586c148bec6",
+      "oracleParityReportHash": "f19661ecb47740d5b5a33d0a601a517bc3ec0ee5ddf2fd7fd682c586c148bec6",
+      "tsProductionReportHash": "6c8c7247316fca3a8c9ea6ec202d94cc030722f8040625430c6a119db653f1be",
+      "oracleProductionReportHash": "6c8c7247316fca3a8c9ea6ec202d94cc030722f8040625430c6a119db653f1be",
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergenceObject": null,
+      "oracleFirstDivergenceObject": null,
+      "tsVisitedStates": 8,
+      "oracleVisitedStates": 8,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "expectedShortest": [
+        "DROP_EVENT"
+      ],
+      "tsFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {
+          "count": 5
+        },
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 5
+        },
+        "toolCallOrder": []
+      },
+      "expectedFullState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 5
+        },
+        "toolCallOrder": []
+      },
+      "tsResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "toolCallOrder": [],
+        "sharedState": {
+          "count": 5
+        },
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED"
+      },
+      "oracleResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 5
+        },
+        "toolCallOrder": []
+      },
+      "expectedResumeState": {
+        "messageOrder": [
+          "msg-1"
+        ],
+        "pendingToolCallIds": [],
+        "runStatus": "FINISHED",
+        "sharedState": {
+          "count": 5
+        },
+        "toolCallOrder": []
+      },
+      "bfsVisited": 3,
+      "legalBaselineConverged": true,
+      "oracleLegalBaselineConverged": true,
+      "oracleDurationMs": 2
+    }
+  },
+  "fixR3Parity": {
+    "pass": 8,
+    "total": 8,
+    "failures": []
+  },
+  "fixR3Traces": {
+    "fixr3_pending_mismatch": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "firstDivergenceNull": true,
+        "shortestNull": true,
+        "parityNull": true
+      },
+      "tsVerdict": "INVALID_INPUT",
+      "oracleVerdict": "INVALID_INPUT",
+      "tsDiagnostics": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "sourceIndex": null
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "sourceIndex": null
+        }
+      ],
+      "tsDiagnosticsFull": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "message": "[INVALID_INPUT] [PENDING_TOOL_CALL_MISMATCH] RUN_FINISHED outcome.pendingToolCallIds [] does not match this run's calls still without a result [\"call-1\"] (PROJECT_BOOK §3.14: the list must be consistent with the run's unresulted calls).",
+          "evidence": {}
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "INVALID_INPUT",
+          "evidence": {},
+          "message": "Input is invalid: INVALID_INPUT at sourceIndex 6.",
+          "severity": "CRITICAL"
+        }
+      ],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "tsShortest": null,
+      "oracleShortest": null
+    },
+    "fixr3_finish_wrong_run": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "firstDivergenceNull": true,
+        "shortestNull": true,
+        "parityNull": true
+      },
+      "tsVerdict": "INVALID_INPUT",
+      "oracleVerdict": "INVALID_INPUT",
+      "tsDiagnostics": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "sourceIndex": null
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "sourceIndex": null
+        }
+      ],
+      "tsDiagnosticsFull": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "message": "[INVALID_INPUT] [FINISH_WRONG_RUN] RUN_FINISHED for run \"run-2\" but the open run is \"run-1\": a run can only be finished by its own RUN_FINISHED.",
+          "evidence": {}
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "INVALID_INPUT",
+          "evidence": {},
+          "message": "Input is invalid: INVALID_INPUT at sourceIndex 1.",
+          "severity": "CRITICAL"
+        }
+      ],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "tsShortest": null,
+      "oracleShortest": null
+    },
+    "fixr3_finish_without_start": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "firstDivergenceNull": true,
+        "shortestNull": true,
+        "parityNull": true
+      },
+      "tsVerdict": "INVALID_INPUT",
+      "oracleVerdict": "INVALID_INPUT",
+      "tsDiagnostics": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "sourceIndex": null
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "sourceIndex": null
+        }
+      ],
+      "tsDiagnosticsFull": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "message": "[INVALID_INPUT] [FINISH_WITHOUT_START] RUN_FINISHED for run \"run-1\" arrived with no run open.",
+          "evidence": {}
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "INVALID_INPUT",
+          "evidence": {},
+          "message": "Input is invalid: INVALID_INPUT at sourceIndex 0.",
+          "severity": "CRITICAL"
+        }
+      ],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "tsShortest": null,
+      "oracleShortest": null
+    },
+    "fixr3_pending_grouped_declared": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "firstDivergenceNull": true,
+        "shortestNull": true,
+        "parityNull": true
+      },
+      "tsVerdict": "INVALID_INPUT",
+      "oracleVerdict": "INVALID_INPUT",
+      "tsDiagnostics": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "sourceIndex": null
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "sourceIndex": null
+        }
+      ],
+      "tsDiagnosticsFull": [
+        {
+          "code": "INVALID_INPUT",
+          "severity": "CRITICAL",
+          "message": "[INVALID_INPUT] [PENDING_TOOL_CALL_MISMATCH] RUN_FINISHED outcome.pendingToolCallIds [\"call-1\"] does not match this run's calls still without a result [] (PROJECT_BOOK §3.14: the list must be consistent with the run's unresulted calls).",
+          "evidence": {}
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "INVALID_INPUT",
+          "evidence": {},
+          "message": "Input is invalid: INVALID_INPUT at sourceIndex 8.",
+          "severity": "CRITICAL"
+        }
+      ],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "tsShortest": null,
+      "oracleShortest": null
+    },
+    "fixr3_pending_grouped": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "diagnosticsFull": true,
+        "firstDivergence": true,
+        "shortest": true,
+        "parityHashes": true,
+        "parityPaths": true,
+        "parityReportHash": true,
+        "productionReportHash": true,
+        "visitedStates": true,
+        "bfsVisited": true
+      },
+      "tsVerdict": "INCONSISTENT",
+      "oracleVerdict": "INCONSISTENT",
+      "tsDiagnostics": [
+        {
+          "code": "DUPLICATE_TOOL_CALL",
+          "severity": "CRITICAL",
+          "sourceIndex": 2
+        }
+      ],
+      "oracleDiagnostics": [
+        {
+          "code": "DUPLICATE_TOOL_CALL",
+          "severity": "CRITICAL",
+          "sourceIndex": 2
+        }
+      ],
+      "tsDiagnosticsFull": [
+        {
+          "code": "DUPLICATE_TOOL_CALL",
+          "severity": "CRITICAL",
+          "sourceIndex": 2,
+          "relatedSourceIndices": [
+            2
+          ],
+          "message": "Tool call \"call-1\" already present was started again (AG-UI #1524: a replayed TOOL_CALL_START over already-applied state).",
+          "evidence": {
+            "toolCallId": "call-1",
+            "parentMessageId": "msg-1"
+          }
+        }
+      ],
+      "oracleDiagnosticsFull": [
+        {
+          "code": "DUPLICATE_TOOL_CALL",
+          "evidence": {
+            "parentMessageId": "msg-1",
+            "toolCallId": "call-1"
+          },
+          "message": "Tool call \"call-1\" already present was started again (AG-UI #1524: a replayed TOOL_CALL_START over already-applied state).",
+          "relatedSourceIndices": [
+            2
+          ],
+          "severity": "CRITICAL",
+          "sourceIndex": 2
+        }
+      ],
+      "tsFirstDivergence": 4,
+      "oracleFirstDivergence": 4,
+      "tsParityFullStateHash": "4edb1b6d3a31aa5fbcf40f1006132dc55ce84bc8a0301c576cdcaee2be653383",
+      "oracleParityFullStateHash": "4edb1b6d3a31aa5fbcf40f1006132dc55ce84bc8a0301c576cdcaee2be653383",
+      "tsParityResumeStateHash": "f4450a93974a33ca494b837e5fcac29f49f08ff4768fd10a49b085148bf2fd29",
+      "oracleParityResumeStateHash": "f4450a93974a33ca494b837e5fcac29f49f08ff4768fd10a49b085148bf2fd29",
+      "tsParityReportHash": "7b5f279ed1f510b8fe5ca074e0abc652944c15b0a6d95183620712f3c3517dc6",
+      "oracleParityReportHash": "7b5f279ed1f510b8fe5ca074e0abc652944c15b0a6d95183620712f3c3517dc6",
+      "tsProductionReportHash": "403f292e2bee210d83672b4007f2e3642fe447f2a9aeab9b7b46f992020c43b3",
+      "oracleProductionReportHash": "403f292e2bee210d83672b4007f2e3642fe447f2a9aeab9b7b46f992020c43b3",
+      "tsVisitedStates": 18,
+      "oracleVisitedStates": 18,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ]
+    },
+    "fixr3_pending_cross_run": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "diagnosticsFull": true,
+        "firstDivergence": true,
+        "shortest": true,
+        "parityHashes": true,
+        "parityPaths": true,
+        "parityReportHash": true,
+        "productionReportHash": true,
+        "visitedStates": true,
+        "bfsVisited": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "tsDiagnosticsFull": [],
+      "oracleDiagnosticsFull": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "tsParityFullStateHash": "cc05a459e0b419cd067203d05d44050d9f680a8a1fb986aaca0694e2356fc306",
+      "oracleParityFullStateHash": "cc05a459e0b419cd067203d05d44050d9f680a8a1fb986aaca0694e2356fc306",
+      "tsParityResumeStateHash": "cc05a459e0b419cd067203d05d44050d9f680a8a1fb986aaca0694e2356fc306",
+      "oracleParityResumeStateHash": "cc05a459e0b419cd067203d05d44050d9f680a8a1fb986aaca0694e2356fc306",
+      "tsParityReportHash": "8bcc4f3e93c5a1847e9187132b2fad65c1ec79d0e0bfbb4f7aef072f5422d258",
+      "oracleParityReportHash": "8bcc4f3e93c5a1847e9187132b2fad65c1ec79d0e0bfbb4f7aef072f5422d258",
+      "tsProductionReportHash": "57852bb84aa03da774da9ebc44ce84ba0ef18841c8503f846f4084208081aa4e",
+      "oracleProductionReportHash": "57852bb84aa03da774da9ebc44ce84ba0ef18841c8503f846f4084208081aa4e",
+      "tsVisitedStates": 21,
+      "oracleVisitedStates": 21,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ]
+    },
+    "fixr3_empty_toolcalls": {
+      "parityOk": true,
+      "checks": {
+        "verdict": true,
+        "diagnostics": true,
+        "diagnosticsFull": true,
+        "firstDivergence": true,
+        "shortest": true,
+        "visitedStates": true,
+        "bfsVisited": true,
+        "strippedStateHash": true,
+        "cornerPinned": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "tsVisitedStates": 7,
+      "oracleVisitedStates": 7,
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsStrippedFullPathHash": "228936fb2c495c7e7543a15eb42471e600b11e2f3770c4a0f20ef44d45222cc3",
+      "oracleStrippedFullPathHash": "228936fb2c495c7e7543a15eb42471e600b11e2f3770c4a0f20ef44d45222cc3",
+      "tsStrippedResumePathHash": "228936fb2c495c7e7543a15eb42471e600b11e2f3770c4a0f20ef44d45222cc3",
+      "oracleStrippedResumePathHash": "228936fb2c495c7e7543a15eb42471e600b11e2f3770c4a0f20ef44d45222cc3",
+      "tsParityFullStateHash": "584836ed92bdce91ecb79f0082bb6d547a3d9f644f92687242eb6bce07c7b226",
+      "oracleParityFullStateHash": "1479bf660b2405e514415048970e6a7a40a120198ad04059decf09f1f02abd2c"
+    },
+    "fixr3_chunk_index": {
+      "parityOk": true,
+      "checks": {
+        "expansionTs": true,
+        "expansionOracle": true,
+        "verdict": true,
+        "diagnostics": true,
+        "parityHashes": true,
+        "parityPaths": true,
+        "firstDivergence": true,
+        "shortest": true,
+        "bfsVisited": true
+      },
+      "tsVerdict": "CONSISTENT",
+      "oracleVerdict": "CONSISTENT",
+      "tsDiagnostics": [],
+      "oracleDiagnostics": [],
+      "tsFirstDivergence": null,
+      "oracleFirstDivergence": null,
+      "tsParityFullStateHash": "1c87fae21e26e74049d796514e08390288a49e4d0271568b4efe4e74d3759386",
+      "oracleParityFullStateHash": "1c87fae21e26e74049d796514e08390288a49e4d0271568b4efe4e74d3759386",
+      "tsParityResumeStateHash": "1c87fae21e26e74049d796514e08390288a49e4d0271568b4efe4e74d3759386",
+      "oracleParityResumeStateHash": "1c87fae21e26e74049d796514e08390288a49e4d0271568b4efe4e74d3759386",
+      "tsShortest": [
+        "DROP_EVENT"
+      ],
+      "oracleShortest": [
+        "DROP_EVENT"
+      ],
+      "tsBfsVisited": 3,
+      "oracleBfsVisited": 3,
+      "tsVisitedStates": 16,
+      "oracleVisitedStates": 12
+    }
+  }
+}

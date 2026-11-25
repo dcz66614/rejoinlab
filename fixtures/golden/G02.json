@@ -1,0 +1,167 @@
+{
+  "schema": "rejoinlab.golden/v1",
+  "scenarioId": "G02",
+  "title": "messages snapshot re-IDs assistant message (AG-UI #3119)",
+  "specRef": "PROJECT_BOOK §9.2 G02; AG-UI #3119",
+  "events": [
+    {
+      "sourceIndex": 0,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "RUN_STARTED",
+        "threadId": "thread-1",
+        "runId": "run-1"
+      }
+    },
+    {
+      "sourceIndex": 1,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_START",
+        "messageId": "msg-a"
+      }
+    },
+    {
+      "sourceIndex": 2,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_START",
+        "toolCallId": "call-1",
+        "toolCallName": "search",
+        "parentMessageId": "msg-a"
+      }
+    },
+    {
+      "sourceIndex": 3,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_ARGS",
+        "toolCallId": "call-1",
+        "delta": "{\"q\":\"x\"}"
+      }
+    },
+    {
+      "sourceIndex": 4,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_END",
+        "toolCallId": "call-1"
+      }
+    },
+    {
+      "sourceIndex": 5,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TOOL_CALL_RESULT",
+        "messageId": "msg-r1",
+        "toolCallId": "call-1",
+        "content": "sunny"
+      }
+    },
+    {
+      "sourceIndex": 6,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_CONTENT",
+        "messageId": "msg-a",
+        "delta": "It is sunny."
+      }
+    },
+    {
+      "sourceIndex": 7,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "TEXT_MESSAGE_END",
+        "messageId": "msg-a"
+      }
+    },
+    {
+      "sourceIndex": 8,
+      "sourceEventKey": null,
+      "transportEventId": null,
+      "event": {
+        "type": "RUN_FINISHED",
+        "threadId": "thread-1",
+        "runId": "run-1"
+      }
+    }
+  ],
+  "recovery": {
+    "strategy": "RESUME_FROM_CHECKPOINT",
+    "disconnectAfter": 7,
+    "resumeAfterSourceIndex": 7,
+    "checkpoint": {
+      "sourceIndex": 7,
+      "threadId": "thread-1",
+      "runs": [
+        {
+          "runId": "run-1",
+          "threadId": "thread-1",
+          "status": "RUNNING"
+        }
+      ],
+      "messages": [
+        {
+          "id": "msg-r1",
+          "role": "tool",
+          "name": null,
+          "content": "sunny",
+          "segments": [
+            {
+              "text": "sunny"
+            }
+          ],
+          "toolCalls": [],
+          "open": false,
+          "incomplete": false,
+          "toolCallId": "call-1"
+        },
+        {
+          "id": "msg-a2",
+          "role": "assistant",
+          "name": null,
+          "content": "It is sunny.",
+          "segments": [
+            {
+              "text": "It is sunny."
+            }
+          ],
+          "toolCalls": [
+            "call-1"
+          ],
+          "open": false,
+          "incomplete": false
+        }
+      ],
+      "toolCalls": [
+        {
+          "toolCallId": "call-1",
+          "toolCallName": "search",
+          "parentMessageId": "msg-a",
+          "args": "{\"q\":\"x\"}",
+          "result": "sunny",
+          "resultMessageId": "msg-r1",
+          "open": false,
+          "incomplete": false,
+          "duplicate": false
+        }
+      ],
+      "sharedState": {},
+      "pendingToolCallIds": [],
+      "runStatus": "RUNNING",
+      "coverage": {
+        "sharedState": true,
+        "messages": true
+      }
+    },
+    "injections": []
+  }
+}

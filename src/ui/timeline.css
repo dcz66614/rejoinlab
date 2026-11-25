@@ -1,0 +1,198 @@
+/* P031 RejoinLab — T009: 双轨时间线样式（新增文件，不改 T008 的 styles.css）。
+   桌面优先；390px 窄屏下双轨改为纵向单列。标记同时用文字与颜色表示，不只依赖颜色。 */
+
+.timeline-tracks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.timeline-track h3 {
+  margin-top: 0;
+}
+
+.timeline-events {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeline-event {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.timeline-event:hover {
+  border-color: #7a9bd6;
+}
+
+.timeline-event-selected {
+  outline: 2px solid #1a5fb4;
+  outline-offset: 1px;
+}
+
+.timeline-event-current {
+  border-color: #1a5fb4;
+  border-width: 2px;
+}
+
+.timeline-event-dropped {
+  opacity: 0.75;
+  border-style: dashed;
+}
+
+.timeline-event-divergence {
+  border-left: 4px solid #c0392b;
+}
+
+.timeline-event-index {
+  font-weight: 700;
+  min-width: 2.5em;
+}
+
+.timeline-event-type {
+  font-weight: 600;
+}
+
+.timeline-event-id {
+  color: #444;
+  overflow-wrap: anywhere;
+}
+
+.timeline-event-snippet {
+  color: #555;
+  overflow-wrap: anywhere;
+}
+
+.timeline-badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.badge-snapshot {
+  background: #eef3ff;
+  border-color: #7a9bd6;
+  color: #1a3a6e;
+}
+
+.badge-disconnect {
+  background: #fdecea;
+  border-color: #c0392b;
+  color: #7b1f16;
+  font-weight: 700;
+}
+
+.badge-resume {
+  background: #e6f4ea;
+  border-color: #2e7d32;
+  color: #1b5e20;
+  font-weight: 700;
+}
+
+.badge-replayed {
+  background: #f0f0ee;
+  border-color: #888;
+  color: #333;
+}
+
+.badge-duplicate {
+  background: #fdecea;
+  border-color: #c0392b;
+  color: #7b1f16;
+}
+
+.badge-dropped {
+  background: #fdecea;
+  border-color: #c0392b;
+  color: #7b1f16;
+}
+
+.badge-outoforder {
+  background: #fff4e0;
+  border-color: #b26a00;
+  color: #6d4300;
+}
+
+.badge-divergence {
+  background: #fdecea;
+  border-color: #c0392b;
+  color: #7b1f16;
+  font-weight: 700;
+}
+
+.badge-diagnostic.severity-critical {
+  background: #fdecea;
+  border-color: #c0392b;
+  color: #7b1f16;
+}
+
+.badge-diagnostic.severity-warning {
+  background: #fff4e0;
+  border-color: #b26a00;
+  color: #6d4300;
+}
+
+.timeline-replay {
+  margin-top: 16px;
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+}
+
+.timeline-replay-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.timeline-step-states {
+  background: #f6f6f4;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.timeline-step-states p {
+  margin: 4px 0;
+}
+
+.timeline-json {
+  margin-top: 16px;
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+}
+
+.timeline-json pre {
+  background: #f6f6f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .timeline-tracks {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,19 @@
+P031 RejoinLab — T007 S0 gate, parity (TS vs Oracle vs hand-derived expected)
+generated: 2026-11-24T01:47:42.241Z (UTC)
+git HEAD: 44d59df757e92025908d1fe6d637fa175c659a15
+
+===== S0 gate test (tests/s0/gate.test.ts) =====
+$ npx vitest run tests/s0/gate.test.ts
+exit: 0
+
+ RUN  v4.1.12 /home/hatch/workspace/p031-rejoinlab-wt-f3
+
+ ✓ tests/s0/gate.test.ts (66 tests) 10518ms
+     ✓ 100 repeats per Golden, report hash (durationMs excluded) unique  9417ms
+
+ Test Files  1 passed (1)
+      Tests  66 passed (66)
+   Start at  01:47:19
+   Duration  15.91s (transform 457ms, setup 0ms, import 5.16s, tests 10.52s, environment 0ms)
+
+

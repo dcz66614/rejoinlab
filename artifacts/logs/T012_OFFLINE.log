@@ -1,0 +1,45 @@
+T012 OFFLINE — RejoinLab 离线验证
+startedAt(UTC): 2026-11-24T01:46:33.793Z
+HEAD: 44d59df757e92025908d1fe6d637fa175c659a15
+node: v24.22.1 (linux/x64)
+
+chromium: 159.0.8154.6
+1. Load app with external network blocked:
+  h1: RejoinLab — 续流证
+  requests so far: 3 (all local: true)
+  [PASS] 阻断外部网络后本地应用可加载 — h1="RejoinLab — 续流证"
+  [PASS] 加载阶段外部请求 0（阻断计数） — blocked=0
+2. Import sample (normal.jsonl, 13 events):
+  event-count: 13 条
+  [PASS] 导入 13 条事件 — 13 条
+3. Run analysis (real Worker thread):
+  run-status 已完成: true; workers: 1 (rejoin.worker: true)
+  [PASS] 分析运行完成 — run-status reached 已完成
+  [PASS] 真实 Worker 线程已创建 — 1 worker(s)
+4. Export JSON + HTML reports:
+  JSON: 3249 bytes, sha256=986a509133e87da6987efb5fce2a56a9e3c47cbf3b47c262cad95234045a935e, schema=rejoinlab.report/v1, verdict=CONSISTENT
+  [PASS] JSON 导出为 rejoinlab.report/v1 且裁决 CONSISTENT — verdict=CONSISTENT
+  HTML: 10653 bytes, saved to artifacts/logs/T012_OFFLINE_EXPORT.html
+  [PASS] HTML 导出无 http(s):// 远程引用 — no remote URL substring
+  [PASS] HTML 导出无 <script>/<link>/<img> — no remote-resource tags
+5. Offline counters for the main flow:
+  total requests=4; blocked external attempts=0 (none)
+  page errors=0 (none)
+  [PASS] 主流程外部网络请求 0 — requests=4, blocked=0
+  [PASS] 主流程浏览器未处理异常 0 — none
+6. Open exported HTML standalone (file://, all sub-resources blocked):
+  h1: RejoinLab 报告 — normal
+  body contains verdict CONSISTENT: true
+  requests: 1 (file:///home/hatch/workspace/p031-rejoinlab-wt-f3/artifacts/logs/T012_OFFLINE_EXPORT.html); blocked: 0
+  page errors: 0
+  [PASS] 独立打开 HTML 渲染出报告标题 — h1="RejoinLab 报告 — normal"
+  [PASS] 独立打开 HTML 显示裁决 — verdict visible
+  [PASS] 独立打开 HTML 子资源请求 0 — 1 request(s)
+  [PASS] 独立打开 HTML 被阻断请求 0 — 0
+  [PASS] 独立打开 HTML 无页面异常 — none
+7. Static check (dist/index.html):
+  remote src/href in dist/index.html: 0 (none)
+  [PASS] dist/index.html 无远程 src/href — none
+
+RESULT: PASS (0 failure(s))
+finishedAt(UTC): 2026-11-24T01:46:35.324Z

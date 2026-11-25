@@ -1,0 +1,54 @@
+{
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "description": "RejoinLab (P031) — AG-UI event-stream rejoin and conversation-state consistency lab. Local-first, offline, CPU-only.",
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/react": "16.3.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "jsdom": "31.0.1",
+    "typescript": "5.9.3",
+    "vite": "7.3.8",
+    "vitest": "4.1.12"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "license": "MIT",
+  "name": "rejoinlab",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "test": "npx vitest run && python3 -m pytest -q oracle/tests && python3 -m oracle.run_goldens && npm run test:e2e",
+    "test:canonical": "vitest run tests/core/canonical",
+    "test:core": "vitest run tests/core",
+    "test:determinism": "vitest run tests/core/determinism && esbuild scripts/verify_determinism.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify_determinism.mjs --log-level=error && node scripts/.verify-tmp/verify_determinism.mjs",
+    "test:diff": "vitest run tests/core/diff",
+    "test:e2e": "playwright test",
+    "test:export": "vitest run tests/report/export.test.tsx",
+    "test:offline": "npm run build && esbuild scripts/verify_offline.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify_offline.mjs --external:playwright --log-level=error && node scripts/.verify-tmp/verify_offline.mjs",
+    "test:oracle": "python3 -m oracle.run_goldens && npx vitest run tests/replay/golden.test.ts",
+    "test:parser": "vitest run tests/parser",
+    "test:performance": "vitest run tests/s0/performance.test.ts && npm run build && esbuild scripts/verify_performance.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify_performance.mjs --external:playwright --log-level=error && node scripts/.verify-tmp/verify_performance.mjs",
+    "test:privacy": "npm run build && esbuild scripts/verify_privacy.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify_privacy.mjs --external:playwright --log-level=error && node scripts/.verify-tmp/verify_privacy.mjs",
+    "test:replay": "vitest run tests/replay",
+    "test:report": "vitest run tests/report",
+    "test:security": "esbuild scripts/verify_security.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify_security.mjs --log-level=error && node scripts/.verify-tmp/verify_security.mjs",
+    "test:timeline": "vitest run tests/timeline",
+    "test:ui": "vitest run tests/ui",
+    "test:worker": "vitest run tests/worker",
+    "typecheck": "tsc --noEmit",
+    "verify:docs": "esbuild scripts/verify-docs.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify-docs.mjs --log-level=error && node scripts/.verify-tmp/verify-docs.mjs",
+    "verify:licenses": "esbuild scripts/verify-licenses.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify-licenses.mjs --log-level=error && node scripts/.verify-tmp/verify-licenses.mjs",
+    "verify:release": "esbuild scripts/verify-release.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify-release.mjs --log-level=error && node scripts/.verify-tmp/verify-release.mjs",
+    "verify:s0": "node scripts/verify-s0.mjs"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}

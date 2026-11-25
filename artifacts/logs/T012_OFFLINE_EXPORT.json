@@ -1,0 +1,132 @@
+{
+  "schema": "rejoinlab.report/v1",
+  "specVersion": "1.0.2",
+  "protocolVersion": "1.0",
+  "scenarioId": "normal",
+  "verdict": "CONSISTENT",
+  "input": {
+    "sourceFormat": "JSONL",
+    "eventCount": 13,
+    "sourceSha256": "2c0c64739b43982fe9b5693b2c987e9e15ddabbfdb7a9e0db7bc8eee3e99b3a2"
+  },
+  "recovery": {
+    "strategy": "RESUME_FROM_CHECKPOINT"
+  },
+  "fullPath": {
+    "finalStateHash": "4b85e926c654b855dce764409e14c637d0d19ba0006bfea3e2afcd3ca0b9e17b",
+    "messages": [
+      {
+        "id": "msg-1",
+        "role": "assistant",
+        "content": "Hello, world.",
+        "segments": [
+          {
+            "text": "Hello, world."
+          }
+        ],
+        "status": "closed",
+        "owner": "producer"
+      },
+      {
+        "id": "msg-2",
+        "role": "tool",
+        "content": "sunny, 21C",
+        "segments": [
+          {
+            "text": "sunny, 21C"
+          }
+        ],
+        "toolCallId": "call-1",
+        "status": "closed",
+        "owner": "producer"
+      }
+    ],
+    "toolCalls": [
+      {
+        "id": "call-1",
+        "name": "get_weather",
+        "parentMessageId": "msg-1",
+        "arguments": "{\"city\": \"Paris\"}",
+        "status": "resulted",
+        "hasResult": true,
+        "runId": "run-1",
+        "resultMessageId": "msg-2",
+        "resultContent": "sunny, 21C"
+      }
+    ],
+    "sharedState": {
+      "city": "Paris",
+      "units": "metric"
+    },
+    "pendingToolCallIds": []
+  },
+  "resumePath": {
+    "finalStateHash": "4b85e926c654b855dce764409e14c637d0d19ba0006bfea3e2afcd3ca0b9e17b",
+    "messages": [
+      {
+        "id": "msg-1",
+        "role": "assistant",
+        "content": "Hello, world.",
+        "segments": [
+          {
+            "text": "Hello, world."
+          }
+        ],
+        "status": "closed",
+        "owner": "producer"
+      },
+      {
+        "id": "msg-2",
+        "role": "tool",
+        "content": "sunny, 21C",
+        "segments": [
+          {
+            "text": "sunny, 21C"
+          }
+        ],
+        "toolCallId": "call-1",
+        "status": "closed",
+        "owner": "producer"
+      }
+    ],
+    "toolCalls": [
+      {
+        "id": "call-1",
+        "name": "get_weather",
+        "parentMessageId": "msg-1",
+        "arguments": "{\"city\": \"Paris\"}",
+        "status": "resulted",
+        "hasResult": true,
+        "runId": "run-1",
+        "resultMessageId": "msg-2",
+        "resultContent": "sunny, 21C"
+      }
+    ],
+    "sharedState": {
+      "city": "Paris",
+      "units": "metric"
+    },
+    "pendingToolCallIds": []
+  },
+  "diagnostics": [],
+  "shortestInjectionSequence": [
+    "DROP_EVENT"
+  ],
+  "metrics": {
+    "durationMs": 12,
+    "visitedStates": 26
+  },
+  "assumptions": [
+    "使用 AG-UI 1.0 事件语义",
+    "事件到达顺序为权威顺序",
+    "恢复游标为 RejoinLab 本地 sourceIndex；AG-UI 1.0 HTTP+SSE 本身不支持流恢复",
+    "检查点状态来自断线前缀折叠或显式检查点 capturedState"
+  ],
+  "limitations": [
+    "不证明真实 Agent 后端 exactly-once",
+    "不执行真实网络重连",
+    "不证明真实 Agent 后端业务逻辑正确",
+    "不证明真实服务端支持断点恢复",
+    "不覆盖超过 40 条事件的轨迹"
+  ]
+}

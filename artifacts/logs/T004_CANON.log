@@ -1,0 +1,114 @@
+P031 RejoinLab — T004 canon / diff / first-divergence evidence log
+date: 2026-11-23T14:44:33.807Z
+git HEAD: d5aa6f5 (T004 uncommitted by design; coordinator commits)
+commands: npm run test:canonical / test:diff / test:determinism / typecheck
+
+== 1. Canonicalization samples (JCS, RFC 8785) ==
+  canonicalize({"b":1,"a":2}) = {"a":2,"b":1}
+  canonicalize([1,2.5,1e+21,1e-7,0.1]) = [1,2.5,1e+21,1e-7,0.1]
+  canonicalize({"é":"λ","😀":"x"}) = {"é":"λ","😀":"x"}
+  canonicalize("a\"b\\c\nd") = "a\"b\\c\nd"
+  canonicalize({"z":null,"a":true,"m":[null,false]}) = {"a":true,"m":[null,false],"z":null}
+  sha256Hex("") = e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  sha256Hex("abc") = ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+
+== 2. Canonical state sample (rich run: text + tool call + result + snapshot) ==
+  canonical state = {"messages":[{"content":"Hello","id":"m1","owner":"producer","role":"assistant","status":"closed"},{"content":"found it","id":"m2","owner":"producer","role":"tool","status":"closed","toolCallId":"tc1"}],"orderedTimeline":[{"eventType":"RUN_STARTED","kind":"run","runId":"r1"},{"eventType":"TEXT_MESSAGE_START","kind":"message","messageId":"m1"},{"eventType":"TEXT_MESSAGE_CONTENT","kind":"message","messageId":"m1","text":"Hello"},{"eventType":"TOOL_CALL_START","kind":"tool-call","messageId":"m1","toolCallId":"tc1"},{"eventType":"TOOL_CALL_ARGS","kind":"tool-call","text":"{\"q\":\"x\"}","toolCallId":"tc1"},{"eventType":"TOOL_CALL_END","kind":"tool-call","toolCallId":"tc1"},{"eventType":"TEXT_MESSAGE_END","kind":"message","messageId":"m1"},{"eventType":"TOOL_CALL_RESULT","kind":"tool-call","messageId":"m2","toolCallId":"tc1"},{"eventType":"RUN_FINISHED","kind":"run","runId":"r1"}],"pendingToolCallIds":[],"runStatus":"FINISHED","runs":[{"runId":"r1","status":"FINISHED","threadId":"t1"}],"sharedState":{"counter":3,"nested":{"a":"x","b":[1,2]}},"threadId":"t1","toolCalls":[{"arguments":"{\"q\":\"x\"}","hasResult":true,"id":"tc1","name":"search","parentMessageId":"m1","resultContent":"found it","resultMessageId":"m2","runId":"r1","status":"resulted"}]}
+  state hash      = c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82
+  projected keys  = messages, orderedTimeline, pendingToolCallIds, runStatus, runs, sharedState, threadId, toolCalls
+  hash with diagnostics+timestamp+sourceIndex attached = c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82 (must equal state hash above)
+  initial-state hash = 6055826da4b80c35b6f10ebadfdaefb90d8a9e44f9f7ad228a9a00d57342bd2c
+
+== 3. 100x repeat hash (same input -> one hash) ==
+  runs: 100, distinct hashes: 1
+  hash[0..4]: c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82, c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82, c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82, c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82, c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82
+  hash[99]: c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82
+
+== 4. JSON Pointer diff sample (resume drops the TEXT_MESSAGE_CONTENT delta) ==
+  fullHash   = c19e20c8bc368fe55e0a3c0b3175237d688a3c0a731a2af7e9387a2d7953ac82
+  resumeHash = 124ed0f6f80f31c8dd152a02e25608c0c8f2d1834e4af49b815c68cb2feabe70
+  equal      = false
+  firstDifference = {"jsonPointer":"/messages/0/content","expected":"Hello","actual":"","kind":"changed"}
+  diff /messages/0/content kind=changed expected="Hello" actual=""
+  diff /orderedTimeline/2/eventType kind=changed expected="TEXT_MESSAGE_CONTENT" actual="TOOL_CALL_START"
+  diff /orderedTimeline/2/kind kind=changed expected="message" actual="tool-call"
+  diff /orderedTimeline/2/text kind=removed expected="Hello" actual=undefined
+  diff /orderedTimeline/2/toolCallId kind=added expected=undefined actual="tc1"
+  diff /orderedTimeline/3/eventType kind=changed expected="TOOL_CALL_START" actual="TOOL_CALL_ARGS"
+  diff /orderedTimeline/3/messageId kind=removed expected="m1" actual=undefined
+  diff /orderedTimeline/3/text kind=added expected=undefined actual="{\"q\":\"x\"}"
+  diff /orderedTimeline/4/eventType kind=changed expected="TOOL_CALL_ARGS" actual="TOOL_CALL_END"
+  diff /orderedTimeline/4/text kind=removed expected="{\"q\":\"x\"}" actual=undefined
+  diff /orderedTimeline/5/eventType kind=changed expected="TOOL_CALL_END" actual="TEXT_MESSAGE_END"
+  diff /orderedTimeline/5/kind kind=changed expected="tool-call" actual="message"
+  diff /orderedTimeline/5/messageId kind=added expected=undefined actual="m1"
+  diff /orderedTimeline/5/toolCallId kind=removed expected="tc1" actual=undefined
+  diff /orderedTimeline/6/eventType kind=changed expected="TEXT_MESSAGE_END" actual="TOOL_CALL_RESULT"
+  diff /orderedTimeline/6/kind kind=changed expected="message" actual="tool-call"
+  diff /orderedTimeline/6/messageId kind=changed expected="m1" actual="m2"
+  diff /orderedTimeline/6/toolCallId kind=added expected=undefined actual="tc1"
+  diff /orderedTimeline/7/eventType kind=changed expected="TOOL_CALL_RESULT" actual="RUN_FINISHED"
+  diff /orderedTimeline/7/kind kind=changed expected="tool-call" actual="run"
+  diff /orderedTimeline/7/messageId kind=removed expected="m2" actual=undefined
+  diff /orderedTimeline/7/runId kind=added expected=undefined actual="r1"
+  diff /orderedTimeline/7/toolCallId kind=removed expected="tc1" actual=undefined
+  diff /orderedTimeline/8 kind=removed expected={"kind":"run","eventType":"RUN_FINISHED","runId":"r1"} actual=undefined
+  diffStates(full, resume) count = 24
+  diffStates(full, full) count   = 0 (empty diff)
+
+== 5. First-divergence location (§8.6; histories indexed in the expanded sequence) ==
+  firstDivergence = {
+  "sourceIndex": 2,
+  "eventType": "TEXT_MESSAGE_CONTENT",
+  "messageId": "m1",
+  "fullStateHash": "2b587b1f47b66a0bd066c7748e7b72c75b6d1af48f5bea58980e44da88cc42af",
+  "resumeStateHash": "d4321b17461207b472ba83de0f572595328eb6121a656f77cfd1fefefcbe3a49",
+  "differences": [
+    {
+      "jsonPointer": "/messages/0/content",
+      "expected": "Hello",
+      "actual": "",
+      "kind": "changed"
+    },
+    {
+      "jsonPointer": "/orderedTimeline/2",
+      "expected": {
+        "kind": "message",
+        "eventType": "TEXT_MESSAGE_CONTENT",
+        "messageId": "m1",
+        "text": "Hello"
+      },
+      "kind": "removed"
+    }
+  ],
+  "note": "no resume entry at this index; resume state carried forward from sourceIndex 1"
+}
+  identical histories -> null
+
+== 6. Oracle parity (live comparison vs oracle/canonical.py) ==
+  case 0 PASS: {"b":1,"a":2}
+  case 1 PASS: {"z":{"d":[3,{"b":null,"a":true}],"c":2},"a":[]}
+  case 2 PASS: [1,2.5,1e+21,1e-7,0,0.1,1.5e-10,1234567890123456]
+  case 3 PASS: [0.30000000000000004,5e-324,1.7976931348623157e+308,100000000000000000000]
+  case 4 PASS: "a\"b\\c\nd\te\u0001f g"
+  case 5 PASS: {"é":"λ","😀":"x","中":[true,false,null]}
+  case 6 PASS: "lone\ud800x"
+  case 7 PASS: {"z":null,"a":true,"m":[null,false]}
+  case 8 PASS: {"threadId":"t1","runs":[{"runId":"r1","threadId":"t1","status":"FINISHED"}],"me
+  case 9 PASS: {"threadId":null,"runs":[],"messages":[],"toolCalls":[],"sharedState":null,"orde
+  generic + projected-state parity: 10/10 byte-identical
+  KNOWN DIVERGENCE (Oracle format_number uses Python repr(); JCS §3.2.2.3 defers to ES Number::toString):
+    value=10000000000000000 TS=10000000000000000 Oracle=1e+16 DIVERGE
+    value=12300000000000000 TS=12300000000000000 Oracle=1.23e+16 DIVERGE
+    value=0.00001 TS=0.00001 Oracle=1e-5 DIVERGE
+    value=0.000001 TS=0.000001 Oracle=1e-6 DIVERGE
+    value=0.000015 TS=0.000015 Oracle=1.5e-5 DIVERGE
+  Golden fixtures contain no floats in [1e16,1e21) or [1e-6,1e-4) (grep over fixtures/golden + oracle/golden_expected.json: no matches), so no Golden hash is affected.
+  Verdict: TS side is JCS-correct; Oracle needs a fix in oracle/canonical.py (T006-owned file). Per T004 failure fallback, T005 integration pauses until this is resolved.
+
+== 7. Report-hash note ==
+  canonicalHash()/canonicalize() are the reusable primitives for the report hash.
+  Report-hash definition is NOT frozen in T004 (T007 freezes it); metrics.durationMs
+  MUST NOT enter any report hash (PROJECT_BOOK §11 vs §13.2).
+
+end of T004 evidence log.

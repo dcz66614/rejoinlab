@@ -1,0 +1,130 @@
+T012 PERFORMANCE — RejoinLab 性能验证
+startedAt(UTC): 2026-11-24T01:47:11.439Z
+HEAD: 44d59df757e92025908d1fe6d637fa175c659a15
+node: v24.22.1 (linux/x64)
+
+A. 40-event max trace (in-process, production evaluateFixture/analyzeFixture):
+  events: 40 (limit 40)
+  run 1: evaluate 20.88 ms, analyze 43.92 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 2: evaluate 7.04 ms, analyze 76.86 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 3: evaluate 10.00 ms, analyze 31.39 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 4: evaluate 8.79 ms, analyze 37.01 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 5: evaluate 5.57 ms, analyze 24.08 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 6: evaluate 7.94 ms, analyze 16.91 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 7: evaluate 4.24 ms, analyze 14.07 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 8: evaluate 4.14 ms, analyze 15.81 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 9: evaluate 4.48 ms, analyze 14.07 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  run 10: evaluate 3.97 ms, analyze 14.12 ms, verdict=CONSISTENT, visitedStates=69, bfsVisited=3, bfsLimitExceeded=false
+  evaluate: max 20.88 ms, mean 7.70 ms
+  analyze:  max 76.86 ms, mean 28.83 ms
+  [PASS] 40 事件 evaluate 每次 < 1,000 ms — max=20.88 ms over 10 runs
+  [PASS] 40 事件 analyze 每次 < 1,000 ms — max=76.86 ms over 10 runs
+
+B. All 24 Goldens (in-process analyzeFixture, per-golden time + BFS nodes):
+  G01: 12.77 ms, bfsVisited=6, bfsLimitExceeded=false
+  [PASS] G01 analyze < 1,000 ms — 12.77 ms
+  [PASS] G01 BFS 节点 ≤ 5,000 — visited=6
+  G02: 7.25 ms, bfsVisited=5, bfsLimitExceeded=false
+  [PASS] G02 analyze < 1,000 ms — 7.25 ms
+  [PASS] G02 BFS 节点 ≤ 5,000 — visited=5
+  G03: 8.89 ms, bfsVisited=5, bfsLimitExceeded=false
+  [PASS] G03 analyze < 1,000 ms — 8.89 ms
+  [PASS] G03 BFS 节点 ≤ 5,000 — visited=5
+  G04: 2.60 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] G04 analyze < 1,000 ms — 2.60 ms
+  [PASS] G04 BFS 节点 ≤ 5,000 — visited=3
+  G05: 10.11 ms, bfsVisited=8, bfsLimitExceeded=false
+  [PASS] G05 analyze < 1,000 ms — 10.11 ms
+  [PASS] G05 BFS 节点 ≤ 5,000 — visited=8
+  G06: 7.66 ms, bfsVisited=7, bfsLimitExceeded=false
+  [PASS] G06 analyze < 1,000 ms — 7.66 ms
+  [PASS] G06 BFS 节点 ≤ 5,000 — visited=7
+  G07: 3.01 ms, bfsVisited=4, bfsLimitExceeded=false
+  [PASS] G07 analyze < 1,000 ms — 3.01 ms
+  [PASS] G07 BFS 节点 ≤ 5,000 — visited=4
+  G08: 1.88 ms, bfsVisited=1, bfsLimitExceeded=false
+  [PASS] G08 analyze < 1,000 ms — 1.88 ms
+  [PASS] G08 BFS 节点 ≤ 5,000 — visited=1
+  N01: 2.08 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N01 analyze < 1,000 ms — 2.08 ms
+  [PASS] N01 BFS 节点 ≤ 5,000 — visited=3
+  N02: 2.48 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N02 analyze < 1,000 ms — 2.48 ms
+  [PASS] N02 BFS 节点 ≤ 5,000 — visited=3
+  N03: 4.14 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N03 analyze < 1,000 ms — 4.14 ms
+  [PASS] N03 BFS 节点 ≤ 5,000 — visited=3
+  N04: 4.69 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N04 analyze < 1,000 ms — 4.69 ms
+  [PASS] N04 BFS 节点 ≤ 5,000 — visited=3
+  N05: 1.91 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N05 analyze < 1,000 ms — 1.91 ms
+  [PASS] N05 BFS 节点 ≤ 5,000 — visited=3
+  N06: 1.85 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N06 analyze < 1,000 ms — 1.85 ms
+  [PASS] N06 BFS 节点 ≤ 5,000 — visited=3
+  N07: 2.61 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N07 analyze < 1,000 ms — 2.61 ms
+  [PASS] N07 BFS 节点 ≤ 5,000 — visited=3
+  N08: 2.97 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N08 analyze < 1,000 ms — 2.97 ms
+  [PASS] N08 BFS 节点 ≤ 5,000 — visited=3
+  N09: 5.45 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N09 analyze < 1,000 ms — 5.45 ms
+  [PASS] N09 BFS 节点 ≤ 5,000 — visited=3
+  N10: 3.14 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N10 analyze < 1,000 ms — 3.14 ms
+  [PASS] N10 BFS 节点 ≤ 5,000 — visited=3
+  N11: 2.07 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N11 analyze < 1,000 ms — 2.07 ms
+  [PASS] N11 BFS 节点 ≤ 5,000 — visited=3
+  N12: 2.59 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N12 analyze < 1,000 ms — 2.59 ms
+  [PASS] N12 BFS 节点 ≤ 5,000 — visited=3
+  N13: 2.01 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N13 analyze < 1,000 ms — 2.01 ms
+  [PASS] N13 BFS 节点 ≤ 5,000 — visited=3
+  N14: 2.74 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N14 analyze < 1,000 ms — 2.74 ms
+  [PASS] N14 BFS 节点 ≤ 5,000 — visited=3
+  N15: 5.42 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N15 analyze < 1,000 ms — 5.42 ms
+  [PASS] N15 BFS 节点 ≤ 5,000 — visited=3
+  N16: 2.49 ms, bfsVisited=3, bfsLimitExceeded=false
+  [PASS] N16 analyze < 1,000 ms — 2.49 ms
+  [PASS] N16 BFS 节点 ≤ 5,000 — visited=3
+  worst: G01 12.77 ms; max BFS nodes: 8 (G05)
+
+C. 41-event over-limit (10 repeats):
+  events: 41
+  run 1: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 2: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 3: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 4: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 5: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 6: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 7: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 8: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 9: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  run 10: verdict=INCONCLUSIVE_LIMIT, diagnostics=[LIMIT_EXCEEDED]
+  [PASS] 41 事件 10/10 返回 INCONCLUSIVE_LIMIT — 10/10
+
+D. BFS node-budget probe (G01, maxDepth 3, maxNodes 1):
+  limitExceeded=true, sequence=null, visited=2
+  [PASS] 节点预算耗尽 → limitExceeded 且 sequence 为 null — visited=2
+
+E. Real Chromium Worker (production dist chunk, 40-event trace, 5 runs):
+  worker chunk: rejoin.worker-DTc0gUTp.js
+  chromium: 159.0.8154.6
+  run 1: worker durationMs=15.00 ms, round-trip=105.80 ms, verdict=CONSISTENT, visitedStates=69
+  run 2: worker durationMs=14.00 ms, round-trip=75.10 ms, verdict=CONSISTENT, visitedStates=69
+  run 3: worker durationMs=12.00 ms, round-trip=49.80 ms, verdict=CONSISTENT, visitedStates=69
+  run 4: worker durationMs=13.00 ms, round-trip=77.90 ms, verdict=CONSISTENT, visitedStates=69
+  run 5: worker durationMs=42.00 ms, round-trip=76.90 ms, verdict=CONSISTENT, visitedStates=69
+  worker durationMs: max 42.00 ms
+  round-trip: max 105.80 ms
+  [PASS] 真实 Worker 计算时间每次 < 1,000 ms — max=42.00 ms over 5 runs
+  [PASS] 真实 Worker 往返每次 < 1,000 ms — max=105.80 ms over 5 runs
+
+RESULT: PASS (0 failure(s))
+finishedAt(UTC): 2026-11-24T01:47:13.352Z

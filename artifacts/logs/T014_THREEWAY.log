@@ -1,0 +1,7 @@
+freeze tree files: 232
+zip files: 232
+manifest rows: 232
+tree == zip set: True
+zip == manifest set: True
+three-way mismatches: 0 / 232
+THREEWAY: PASS

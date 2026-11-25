@@ -1,0 +1,28 @@
+
+> rejoinlab@1.0.0 verify:licenses
+> esbuild scripts/verify-licenses.ts --bundle --platform=node --format=esm --outfile=scripts/.verify-tmp/verify-licenses.mjs --log-level=error && node scripts/.verify-tmp/verify-licenses.mjs
+
+verify:licenses: 22 checks passed, 0 failed
+  PASS LICENSE contains "MIT License"
+  PASS LICENSE contains "Permission is hereby granted, free of charge"
+  PASS LICENSE contains "Copyright (c) 2026 RejoinLab Contributors"
+  PASS THIRD_PARTY_NOTICES.md "All packages" table has 137 rows (one per installed package)
+  PASS every installed package has a license field
+  PASS no recorded license mismatches
+  PASS no recorded version mismatches
+  PASS no copyleft license present
+  PASS all 137 recorded rows match installed version + license
+  PASS package.json has direct dependencies to check
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "@playwright/test"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "@testing-library/dom"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "@testing-library/react"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "@types/react"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "@types/react-dom"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "@vitejs/plugin-react"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "jsdom"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "react"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "react-dom"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "typescript"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "vite"
+  PASS THIRD_PARTY_NOTICES.md lists direct dependency "vitest"
+verify:licenses: RESULT=PASS

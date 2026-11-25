@@ -1,0 +1,9 @@
+S0 (clean worktree) — 2026-11-23T23:39:49.461Z HEAD fff999da35b97eb776e6239ab197dbd4ae08baf6
+verdict: PASS (parity 24/24, classification 24/24, convergence 24/24, determinism 2400 repeats, pytest 177/177 failed 0 exit 0)
+t40AnalyzeMs: 58.5 ms; worstGolden: G05 10.6 ms; maxBfsVisited: 8
+
+> rejoinlab@1.0.0 verify:s0
+> node scripts/verify-s0.mjs
+
+S0_GATE: verdict=PASS (parity 24/24, classification 24/24, convergence 24/24, determinism 2400 repeats, pytest 177/177 failed 0 exit 0)
+outputs: artifacts/reports/S0_GATE.json, artifacts/reports/S0_REPORT.md, artifacts/manifests/S0_SHA256SUMS.txt

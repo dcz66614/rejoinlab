@@ -1,0 +1,429 @@
+/* P031 RejoinLab — T008: 主界面样式。桌面优先；390px 窄屏改为纵向单列布局。 */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #1a1a1a;
+  background: #f6f6f4;
+  line-height: 1.5;
+}
+
+.app {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.app-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+}
+
+.app-header p {
+  margin: 0;
+  color: #555;
+}
+
+.run-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.run-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+button,
+select,
+input[type="number"],
+input[type="text"] {
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: #eef3ff;
+  border-color: #7a9bd6;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid #1a5fb4;
+  outline-offset: 2px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.panel h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.panel h3 {
+  font-size: 1.05rem;
+}
+
+.field {
+  display: block;
+  margin: 12px 0;
+}
+
+.field > span:first-child,
+.field > legend {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+/* D-T011-01 根因：`.field input { width: 100% }` 命中 <fieldset class="field">
+   内的 radio/checkbox <input>，使其宽达 504px（且 flex-shrink: 0），把 label
+   <span> 推出行外，造成全视口横向溢出（390px 575、500px 685、1280px 1403）。
+   故只对 .field 的直接子项设 100% 宽——radio/checkbox input 不再是直接子项，
+   恢复为固有宽度（13px）；.field 直属的 select / number / text 输入仍为 100%。
+   第一轮 FIX 的 span min-width:0 + overflow-wrap:anywhere 只是把被挤出的 span
+   压成 0 宽逐字断行（“修指标、坏界面”），根因修好后已无作用，故删掉。 */
+.field > select,
+.field > input {
+  width: 100%;
+}
+
+.inline-field {
+  margin: 6px 0;
+}
+
+.inline-field input {
+  width: 100%;
+}
+
+.inline-params {
+  display: block;
+  margin-left: 28px;
+}
+
+.hint {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.meta-list {
+  margin: 12px 0;
+}
+
+.meta-list > div {
+  display: flex;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.meta-list dt {
+  font-weight: 600;
+  min-width: 7em;
+}
+
+.meta-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.drop-zone {
+  border: 2px dashed #7a9bd6;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  background: #f7faff;
+}
+
+.drop-zone.drag-over {
+  background: #dce8ff;
+  border-style: solid;
+}
+
+.drop-zone p {
+  margin: 6px 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.error {
+  background: #fdecea;
+  border: 1px solid #c0392b;
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: #7b1f16;
+}
+
+.parse-errors ul,
+.diagnostic-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.parse-errors li,
+.diagnostic-list li {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin: 8px 0;
+}
+
+.event-list table,
+.divergence table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.event-list th,
+.event-list td,
+.divergence th,
+.divergence td {
+  border: 1px solid #ddd;
+  padding: 4px 6px;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.event-list th,
+.divergence th {
+  background: #f0f0ee;
+}
+
+.radio-row,
+.checkbox-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 8px 0;
+  font-weight: normal;
+}
+
+.radio-row input,
+.checkbox-row input {
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.injection-row {
+  border-top: 1px solid #eee;
+  padding-top: 4px;
+}
+
+.paths {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.path-summary {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.path-summary h3 {
+  margin-top: 0;
+}
+
+.verdict-line {
+  font-size: 1.05rem;
+}
+
+.verdict {
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.verdict-consistent {
+  background: #e6f4ea;
+  border-color: #2e7d32;
+  color: #1b5e20;
+}
+
+.verdict-inconsistent {
+  background: #fdecea;
+  border-color: #c0392b;
+  color: #7b1f16;
+}
+
+.verdict-inconclusive_limit,
+.verdict-invalid_input,
+.verdict-incomplete_trace {
+  background: #fff4e0;
+  border-color: #b26a00;
+  color: #6d4300;
+}
+
+.meta-line {
+  color: #555;
+  font-size: 0.92rem;
+}
+
+.severity-badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.severity-critical {
+  background: #fdecea;
+  border-color: #c0392b;
+  color: #7b1f16;
+}
+
+.severity-warning {
+  background: #fff4e0;
+  border-color: #b26a00;
+  color: #6d4300;
+}
+
+.diagnostic-critical {
+  border-left: 4px solid #c0392b;
+}
+
+.diagnostic-warning {
+  border-left: 4px solid #b26a00;
+}
+
+.diagnostic-list details {
+  margin-top: 6px;
+}
+
+.diagnostic-list summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.diagnostic-list pre {
+  background: #f6f6f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+.result-meta {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 16px;
+}
+
+.result-meta h2 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+}
+
+.result-meta p {
+  margin: 4px 0;
+}
+
+.app-footer {
+  margin-top: 16px;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* 390px 窄屏：纵向单列布局，保证主界面可读（PROJECT_BOOK §12.5）。 */
+@media (max-width: 480px) {
+  .app {
+    padding: 8px;
+  }
+
+  .app-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .layout,
+  .results,
+  .paths {
+    grid-template-columns: 1fr;
+  }
+
+  .run-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .run-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .meta-list > div {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .meta-list dt {
+    min-width: 0;
+  }
+
+  .event-list table,
+  .divergence table {
+    font-size: 0.85rem;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+}

@@ -1,0 +1,72 @@
+{
+ "schema": "rejoinlab.input-fixture/v1",
+ "scenarioId": "input_state",
+ "title": "RUN_STARTED input.state adopted as baseline",
+ "specRef": "PROJECT_BOOK §3.3",
+ "events": [
+  {
+   "sourceIndex": 0,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_STARTED",
+    "threadId": "thread-1",
+    "runId": "run-1",
+    "input": {
+     "threadId": "thread-1",
+     "runId": "run-1",
+     "messages": [],
+     "state": {
+      "count": 7,
+      "theme": "dark"
+     }
+    }
+   }
+  },
+  {
+   "sourceIndex": 1,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 2,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg-1",
+    "delta": "Hello."
+   }
+  },
+  {
+   "sourceIndex": 3,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg-1"
+   }
+  },
+  {
+   "sourceIndex": 4,
+   "sourceEventKey": null,
+   "transportEventId": null,
+   "event": {
+    "type": "RUN_FINISHED",
+    "threadId": "thread-1",
+    "runId": "run-1"
+   }
+  }
+ ],
+ "recovery": {
+  "strategy": "RESUME_FROM_CHECKPOINT",
+  "disconnectAfter": 2,
+  "resumeAfterSourceIndex": 2,
+  "checkpoint": null,
+  "injections": []
+ }
+}

@@ -1,0 +1,50 @@
+$ npx tsc --noEmit -p artifacts/.tsconfig-probe.json
+exit: 2
+tests/core/canonical/canonical.test.ts(11,28): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+tests/core/canonical/oracle-parity.test.ts(50,30): error TS2307: Cannot find module 'node:child_process' or its corresponding type declarations.
+tests/core/canonical/oracle-parity.test.ts(51,52): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/core/canonical/oracle-parity.test.ts(52,24): error TS2307: Cannot find module 'node:os' or its corresponding type declarations.
+tests/core/canonical/oracle-parity.test.ts(53,22): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/core/canonical/oracle-parity.test.ts(141,10): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/core/canonical/oracle-parity.test.ts(217,7): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/e2e/rejoinlab.spec.ts(27,28): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+tests/e2e/rejoinlab.spec.ts(28,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/e2e/rejoinlab.spec.ts(29,18): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/parser/determinism.test.ts(8,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/parser/jsonl.test.ts(8,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/parser/normalize.test.ts(16,8): error TS2724: '"../../src/parser/normalize.js"' has no exported member named 'NormalizedEvent'. Did you mean 'normalizeEvent'?
+tests/parser/sse.test.ts(8,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/replay/golden-helpers.ts(25,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/replay/inject.test.ts(230,10): error TS2352: Conversion of type '{ op: "NOPE"; }' to type 'Injection' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Types of property 'op' are incompatible.
+    Type '"NOPE"' is not comparable to type 'InjectionOperator'.
+tests/replay/inject.test.ts(245,28): error TS2352: Conversion of type 'AGUIEvent' to type 'Record<string, unknown>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'MessagesSnapshotEvent' is not comparable to type 'Record<string, unknown>'.
+    Index signature for type 'string' is missing in type 'MessagesSnapshotEvent'.
+tests/replay/planner.test.ts(214,12): error TS2345: Argument of type '"STEP_STARTED"' is not assignable to parameter of type '"RUN_STARTED" | "RUN_FINISHED" | "RUN_ERROR" | "TEXT_MESSAGE_START" | "TEXT_MESSAGE_CONTENT" | "TEXT_MESSAGE_END" | "TOOL_CALL_START" | "TOOL_CALL_ARGS" | "TOOL_CALL_END" | ... 5 more ... | "TOOL_CALL_CHUNK"'.
+tests/report/export.test.tsx(33,28): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+tests/report/export.test.tsx(106,7): error TS2322: Type '{ finalStateHash: string; messages: never[]; toolCalls: never[]; sharedState: {}; pendingToolCallIds: never[]; runStatus: string; }' is not assignable to type 'PathResult'.
+  Types of property 'runStatus' are incompatible.
+    Type 'string' is not assignable to type 'RunStatus'.
+tests/report/export.test.tsx(107,7): error TS2322: Type '{ finalStateHash: string; messages: never[]; toolCalls: never[]; sharedState: {}; pendingToolCallIds: never[]; runStatus: string; }' is not assignable to type 'PathResult'.
+  Types of property 'runStatus' are incompatible.
+    Type 'string' is not assignable to type 'RunStatus'.
+tests/report/export.test.tsx(338,35): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/report/html.test.ts(22,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/report/html.test.ts(23,22): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/report/html.test.ts(29,10): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/report/html.test.ts(94,12): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/report/html.test.ts(154,12): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/report/json.test.ts(20,28): error TS2307: Cannot find module 'node:crypto' or its corresponding type declarations.
+tests/report/json.test.ts(21,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/report/json.test.ts(22,22): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/report/json.test.ts(81,38): error TS2580: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/report/json.test.ts(86,10): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+tests/s0/gate.test.ts(80,30): error TS2307: Cannot find module 'node:child_process' or its corresponding type declarations.
+tests/s0/gate.test.ts(81,56): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/s0/gate.test.ts(82,31): error TS2307: Cannot find module 'node:url' or its corresponding type declarations.
+tests/s0/gate.test.ts(83,31): error TS2307: Cannot find module 'node:path' or its corresponding type declarations.
+tests/timeline/Timeline.test.tsx(16,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/ui/analyze.test.ts(7,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/ui/components.test.tsx(8,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.
+tests/ui/security.test.ts(10,43): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.

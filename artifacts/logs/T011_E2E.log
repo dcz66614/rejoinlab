@@ -1,0 +1,182 @@
+P031 T011 E2E run #5 FINAL (narrow screenshot moved before the overflow assertion; no assertion changed)
+date: 2026-11-23T17:35:40Z
+node: v24.22.1  npm: 10.9.4
+playwright: Version 1.65.1
+HEAD: d0ddf22 (uncommitted T011 work on top)
+command: npm run test:e2e
+---
+
+> rejoinlab@1.0.0 test:e2e
+> playwright test
+
+
+Running 12 tests using 1 worker
+
+  ✓   1 tests/e2e/rejoinlab.spec.ts:255:1 › 01 首页正常加载 (821ms)
+  ✓   2 tests/e2e/rejoinlab.spec.ts:265:1 › 02 JSONL 文件导入 (826ms)
+  ✓   3 tests/e2e/rejoinlab.spec.ts:273:1 › 03 SSE 文件导入 (685ms)
+  ✓   4 tests/e2e/rejoinlab.spec.ts:281:1 › 04 正常轨迹运行 (1.0s)
+  ✓   5 tests/e2e/rejoinlab.spec.ts:294:1 › 05 重复工具调用诊断（G01，FULL_REPLAY，断线 4） (1.1s)
+  ✓   6 tests/e2e/rejoinlab.spec.ts:308:1 › 06 消息重排诊断（normal，断线 11，MESSAGE_ID_REMAP 留空默认） (1.3s)
+  ✓   7 tests/e2e/rejoinlab.spec.ts:329:1 › 07 状态快照不一致诊断（双快照轨迹，断线 4，STALE_SNAPSHOT） (1.1s)
+  ✓   8 tests/e2e/rejoinlab.spec.ts:342:1 › 08 断线位置修改生效 (592ms)
+  ✓   9 tests/e2e/rejoinlab.spec.ts:356:1 › 09 故障注入修改生效（断线 2，先无注入一致，再加 DROP_EVENT@4） (947ms)
+  ✓  10 tests/e2e/rejoinlab.spec.ts:374:1 › 10 分析取消和重新运行 (1.0s)
+  ✓  11 tests/e2e/rejoinlab.spec.ts:415:1 › 11 JSON 与 HTML 下载（内容校验） (1.1s)
+  ✘  12 tests/e2e/rejoinlab.spec.ts:480:1 › 12 清空内存及窄屏检查 (952ms)
+
+
+  1) tests/e2e/rejoinlab.spec.ts:480:1 › 12 清空内存及窄屏检查 ──────────────────────────────────────────────
+
+    Error: 窄屏不得横向溢出：scrollWidth 575 > innerWidth 390
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 391
+    Received:    575
+
+      507 |     overflow.scrollWidth,
+      508 |     `窄屏不得横向溢出：scrollWidth ${overflow.scrollWidth} > innerWidth ${overflow.innerWidth}`,
+    > 509 |   ).toBeLessThanOrEqual(overflow.innerWidth + 1);
+          |     ^
+      510 |   await expect(page.locator("h1")).toBeVisible();
+      511 |   await expect(
+      512 |     page.getByRole("button", { name: "清空", exact: true }),
+        at /home/hatch/workspace/p031-rejoinlab/tests/e2e/rejoinlab.spec.ts:509:5
+
+    Error Context: test-results/rejoinlab-12-清空内存及窄屏检查/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/rejoinlab-12-清空内存及窄屏检查/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/rejoinlab-12-清空内存及窄屏检查/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/rejoinlab.spec.ts:480:1 › 12 清空内存及窄屏检查 ───────────────────────────────────────────────
+  11 passed (16.9s)
+EXIT:1
+
+================================================================================
+P031 T011 E2E run #6 — FIX-D-T011-01 后跑次（修复者亲自跑，2026-11-23T17:42Z）
+修复：src/ui/styles.css 全局给 .radio-row/.checkbox-row 的 label 子项加
+min-width: 0 + overflow-wrap: anywhere，行内 <code> 加 overflow-wrap: anywhere
+（D-T011-01：27 字符无空格策略名 + flex min-width:auto 撑开 390px 文档）；
+另改写 tests/e2e/rejoinlab.spec.ts #10 头注（Playwright worker 事件在
+new Worker() 构造时即触发，与脚本是否加载完无关），未改动任何断言逻辑。
+基线复核：修复前单跑 #12，scrollWidth 575（断言 Expected <= 391），截图宽 575。
+command: npm run test:e2e
+---
+
+> rejoinlab@1.0.0 test:e2e
+> playwright test
+
+
+Running 12 tests using 1 worker
+
+  ✓   1 tests/e2e/rejoinlab.spec.ts:255:1 › 01 首页正常加载 (1.6s)
+  ✓   2 tests/e2e/rejoinlab.spec.ts:265:1 › 02 JSONL 文件导入 (1.5s)
+  ✓   3 tests/e2e/rejoinlab.spec.ts:273:1 › 03 SSE 文件导入 (1.2s)
+  ✓   4 tests/e2e/rejoinlab.spec.ts:281:1 › 04 正常轨迹运行 (1.9s)
+  ✓   5 tests/e2e/rejoinlab.spec.ts:294:1 › 05 重复工具调用诊断（G01，FULL_REPLAY，断线 4） (1.8s)
+  ✓   6 tests/e2e/rejoinlab.spec.ts:308:1 › 06 消息重排诊断（normal，断线 11，MESSAGE_ID_REMAP 留空默认） (1.8s)
+  ✓   7 tests/e2e/rejoinlab.spec.ts:329:1 › 07 状态快照不一致诊断（双快照轨迹，断线 4，STALE_SNAPSHOT） (1.6s)
+  ✓   8 tests/e2e/rejoinlab.spec.ts:342:1 › 08 断线位置修改生效 (741ms)
+  ✓   9 tests/e2e/rejoinlab.spec.ts:356:1 › 09 故障注入修改生效（断线 2，先无注入一致，再加 DROP_EVENT@4） (929ms)
+  ✓  10 tests/e2e/rejoinlab.spec.ts:374:1 › 10 分析取消和重新运行 (1.9s)
+  ✓  11 tests/e2e/rejoinlab.spec.ts:416:1 › 11 JSON 与 HTML 下载（内容校验） (1.9s)
+  ✓  12 tests/e2e/rejoinlab.spec.ts:481:1 › 12 清空内存及窄屏检查 (1.1s)
+
+  12 passed (23.2s)
+EXIT:0
+
+独立探针（修复后，生产构建 vite preview 390px 首页实测）：
+scrollWidth = 390，innerWidth = 390，右缘 > 391 的元素 0 个。
+artifacts/screenshots/T011_NARROW.png 已由本次测试重跑重新生成，
+实测尺寸 390×15170（修复前 575 宽），确为 390px 宽截图。
+回归：npx tsc --noEmit EXIT 0；npm run test:ui 50 passed（4 文件）EXIT 0。
+
+================================================================================
+P031 T011 E2E run #7 — FIX-D-T011-01 第二轮（修复者亲自跑，2026-11-23T17:55Z）
+背景：第一轮 FIX 被独立复核（重审）否决——span min-width:0 + overflow-wrap:anywhere
+只是把被挤出的 span 压成 0 宽逐字断行（“修指标、坏界面”），标签不可读。
+第二轮按复核定位的真正根因重修，未提交代码，待重新独立复核。
+
+根因更正（M-02，连带更正本日志 run #6 中“390px 文档”的窄化表述）：
+D-T011-01 不是“仅 390px 窄屏”问题，而是全视口横向溢出——修复前真值
+390px scrollWidth 575、500px 685、1280px 1403。真正根因是
+src/ui/styles.css:124-126 的 `.field input { width: 100% }` 命中
+<fieldset class="field"> 内的 radio/checkbox <input>，使其宽达 504px
+（且 flex-shrink: 0），把 label <span> 推出行外。
+
+改动（src/ui/styles.css，净 +11/-3 行）：
+- `.field select, .field input { width: 100% }` 收窄为 `.field > select, .field > input`。
+  radio/checkbox input 不再是 .field 的直接子项，恢复固有宽度 13px；
+  .field 直属的 select / number / text 输入仍为 100%（含 .inline-field 的输入，
+  其 label 本身就是 .field，直接子项选择器仍命中）。
+- 第一轮 FIX 规则全部删除：span 的 min-width:0 + overflow-wrap:anywhere、
+  code 的 overflow-wrap:anywhere。取舍依据——根因修复后实测值与复核
+  “叠加第一轮规则注入验证”的数值逐项相同（见下），证明第一轮规则在
+  正确根因修复后已无任何作用；27 字符策略名在 390px 下无需断行即可容纳。
+- 注释改写为全视口 input 宽度根因（390px 575、500px 685、1280px 1403），
+  并注明第一轮规则“压成 0 宽逐字断行”已被删除的原因。
+
+轻微 M-01（tests/e2e/rejoinlab.spec.ts #10 头注，仅改注释，未改任何断言逻辑）：
+按实测改写——Playwright worker 事件在 worker 线程实际创建时触发（脚本取回后），
+不是 new Worker() 构造时；脚本延迟 3 秒时构造后 500ms 内事件 0 次，加载完后
+才触发 1 次；原 Worker 脚本未加载完即被 terminate，从未产生 worker 事件，
+track 里只有取消时重建的那一个（client.ts cancel() → respawn() 立即 new Worker()，
+其脚本请求是第 2 次、不延迟）。代码路径已核对 src/worker/client.ts:181-216。
+
+#12 追加防回归断言（加强，未放宽原有 scrollWidth 断言；原断言原样保留）：
+390/500/1280 三视口循环——scrollWidth ≤ innerWidth+1、scrollHeight < 6000
+（阈值依据修复后实测 390px 约 2834 / 1280px 约 1724，留约 2 倍裕量；
+第一轮坏界面时 390px 为 15170）、11 个 radio/checkbox input 宽度 ≤ 32
+（实测 13px，根因值 504px）、11 个 label span 宽度 > 0 且左右缘在视口内。
+
+独立探针实测（生产构建 vite preview 首页，修复后，复核注入验证数值的复现）：
+- 390px：scrollWidth 390 = innerWidth，scrollHeight 2834，超限元素 0 个；
+  radio input 13px，radio span 291×72/72/96，checkbox span 292×48~72；fieldset 高 318/646。
+- 500px：scrollWidth 500 = innerWidth，scrollHeight 2434，超限元素 0 个；
+  radio input 13px，radio span 204×120/96/144；fieldset 高 438/814。
+- 1280px：scrollWidth 1280 = innerWidth，scrollHeight 1724，超限元素 0 个；
+  radio input 13px，radio span 475×48/48/72；fieldset 高 246/502。
+与复核注入验证值逐项一致（390 span 291×72、1280 span 475×48、scrollHeight 1724/2834）。
+
+目视证据（修复者亲自打开看过）：
+- artifacts/screenshots/T011_HOME.png（测试重跑重新生成，1280×1724，原 1280×14252）：
+  3 条恢复策略标签与 8 条注入标签全部横排可读，○/□ 紧贴标签左侧。
+- artifacts/screenshots/T011_NARROW.png（测试重跑重新生成，390×2834，原 390×15170）：
+  同上，390px 下 3+8 条标签全部横排可读，无一字一行的竖条。
+- 另有探针截取的两 fieldset 局部图（/tmp/fieldset-strategy-{390,1280}.png、
+  /tmp/fieldset-injection-{390,1280}.png），390px 与 1280px 下标签均横排可读。
+
+command: npm run test:e2e
+---
+
+> rejoinlab@1.0.0 test:e2e
+> playwright test
+
+
+Running 12 tests using 1 worker
+
+  ✓   1 tests/e2e/rejoinlab.spec.ts:255:1 › 01 首页正常加载 (1.2s)
+  ✓   2 tests/e2e/rejoinlab.spec.ts:265:1 › 02 JSONL 文件导入 (778ms)
+  ✓   3 tests/e2e/rejoinlab.spec.ts:273:1 › 03 SSE 文件导入 (750ms)
+  ✓   4 tests/e2e/rejoinlab.spec.ts:281:1 › 04 正常轨迹运行 (1.0s)
+  ✓   5 tests/e2e/rejoinlab.spec.ts:294:1 › 05 重复工具调用诊断（G01，FULL_REPLAY，断线 4） (1.0s)
+  ✓   6 tests/e2e/rejoinlab.spec.ts:308:1 › 06 消息重排诊断（normal，断线 11，MESSAGE_ID_REMAP 留空默认） (1.3s)
+  ✓   7 tests/e2e/rejoinlab.spec.ts:329:1 › 07 状态快照不一致诊断（双快照轨迹，断线 4，STALE_SNAPSHOT） (981ms)
+  ✓   8 tests/e2e/rejoinlab.spec.ts:342:1 › 08 断线位置修改生效 (676ms)
+  ✓   9 tests/e2e/rejoinlab.spec.ts:356:1 › 09 故障注入修改生效（断线 2，先无注入一致，再加 DROP_EVENT@4） (876ms)
+  ✓  10 tests/e2e/rejoinlab.spec.ts:374:1 › 10 分析取消和重新运行 (892ms)
+  ✓  11 tests/e2e/rejoinlab.spec.ts:420:1 › 11 JSON 与 HTML 下载（内容校验） (1.2s)
+  ✓  12 tests/e2e/rejoinlab.spec.ts:485:1 › 12 清空内存及窄屏检查 (859ms)
+
+  12 passed (19.7s)
+EXIT:0
+
+回归：npx tsc --noEmit EXIT 0；npm run test:ui 50 passed（4 文件）EXIT 0。
+未提交代码，待协调员另派独立复核。
