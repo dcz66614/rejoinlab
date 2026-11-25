@@ -1,0 +1,67 @@
+{
+  "project": "P031 RejoinLab",
+  "schema": "rejoinlab.release/v1",
+  "freezeCommit": "4cc2dedb9312f9d86d8a9e68c0f0716b63cb3dcb",
+  "freezeCommitShort": "4cc2ded",
+  "generatedAtUtc": "2026-11-24T01:54:52Z",
+  "sourceZip": {
+    "files": 232,
+    "bytes": 5525120,
+    "sha256": "7835e02ca0d59bc58717c44f84f669aa853dd3bd8768ff3d46cd379a1f43bd09",
+    "md5": "45edecf529b433e0112cdf12e10738dc"
+  },
+  "distZip": {
+    "files": 4,
+    "bytes": 123310,
+    "sha256": "61ee70afc0a717b711c0e1504c09bba4b3d5086ccaa446d95907c41a05296df9",
+    "md5": "ea8426bd317c3b6b2706c591abf19623"
+  },
+  "bundle": {
+    "bytes": 84089757,
+    "sha256": "2d6669a8095a71159336cedd62ee0d6b98e914a12f3c1796eff3969492670ae5",
+    "md5": "a665ae9de854f0815d73daa405b99140",
+    "refs": [
+      "refs/heads/main",
+      "HEAD",
+      "refs/tags/freeze-4cc2ded"
+    ],
+    "note": "created after H1 61938d9; refs main+HEAD at H1, tag freeze-4cc2ded at F"
+  },
+  "manifestCsv": {
+    "rows": 232,
+    "bytes": 28176,
+    "sha256": "6a052d52942ffbfef1b2b4a8aa8b3db32276c6ba3ffa923a75d433c74b34cab6"
+  },
+  "sha256sums": {
+    "lines": 232,
+    "bytes": 22278,
+    "sha256": "d49be9b82d4dfc78b9f4e70633482ff41a56c1a1b1da976e66443f3b3db07948"
+  },
+  "reviewPacks": {
+    "REVIEW_PACK_01.md": {
+      "files": 168,
+      "bytes": 21362,
+      "sha256": "5d42e71532435c67724f4851fb8a6c9b99be3a6b510e20d9c9122bc6485660a5"
+    },
+    "REVIEW_PACK_02.md": {
+      "files": 64,
+      "bytes": 13874,
+      "sha256": "cd94586feda72bde24ba028ac3053ebbdd827866ad521630e42066ce6914c91e"
+    }
+  },
+  "tests": {
+    "typecheck": "exit 0",
+    "vitest": "34 files, 678/678 passed",
+    "oraclePytest": "177 passed",
+    "runGoldens": "24/24 PASS",
+    "e2e": "12/12 passed",
+    "determinism": "RESULT: PASS (300 total runs)",
+    "performance": "RESULT: PASS",
+    "offline": "RESULT: PASS",
+    "privacy": "RESULT: PASS",
+    "security": "RESULT: PASS",
+    "s0Gate": "PASS (parity 24/24, classification 24/24, convergence 24/24, determinism 2400)",
+    "verifyDocs": "87 checks passed, 0 failed",
+    "verifyLicenses": "22 checks passed, 0 failed"
+  }
+}
