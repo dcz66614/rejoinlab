@@ -1,0 +1,9 @@
+{"type": "RUN_STARTED", "threadId": "thread-1", "runId": "run-1"}
+{"type": "STATE_SNAPSHOT", "snapshot": {"counter": 1, "items": ["a"]}}
+{"type": "STATE_DELTA", "delta": [{"op": "replace", "path": "/counter", "value": 2}]}
+{"type": "STATE_DELTA", "delta": [{"op": "add", "path": "/items/1", "value": "b"}]}
+{"type": "STATE_SNAPSHOT", "snapshot": {"counter": 2, "items": ["a", "b"]}}
+{"type": "TEXT_MESSAGE_START", "messageId": "msg-1"}
+{"type": "TEXT_MESSAGE_CONTENT", "messageId": "msg-1", "delta": "hi"}
+{"type": "TEXT_MESSAGE_END", "messageId": "msg-1"}
+{"type": "RUN_FINISHED", "threadId": "thread-1", "runId": "run-1"}

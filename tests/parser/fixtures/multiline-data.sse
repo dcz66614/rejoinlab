@@ -1,0 +1,12 @@
+id: multi-0
+data: {"type": "RUN_STARTED",
+data: "threadId": "thread-1",
+data: "runId": "run-1"}
+
+id: multi-1
+data: {"type":"TEXT_MESSAGE_START","messageId":"msg-1"}
+
+id: multi-2
+data: {"type":"TEXT_MESSAGE_CONTENT",
+data: "messageId": "msg-1",
+data: "delta": "split across data lines"}

@@ -1,0 +1,33 @@
+: keep-alive comment — ignored by the parser
+
+id: evt-0
+data: {"type":"RUN_STARTED","threadId":"thread-1","runId":"run-1"}
+
+id: evt-1
+event: message
+data: {"type":"TEXT_MESSAGE_START","messageId":"msg-1","role":"assistant"}
+
+id: evt-2
+data: {"type":"TEXT_MESSAGE_CONTENT","messageId":"msg-1","delta":"Hello, "}
+
+id: evt-3
+data: {"type":"TEXT_MESSAGE_CONTENT","messageId":"msg-1","delta":""}
+
+id: evt-4
+data: {"type":"TEXT_MESSAGE_END","messageId":"msg-1"}
+
+id: evt-5
+retry: 3000
+data: {"type":"TOOL_CALL_START","toolCallId":"call-1","toolCallName":"get_weather","parentMessageId":"msg-1"}
+
+id: evt-6
+data: {"type":"TOOL_CALL_ARGS","toolCallId":"call-1","delta":"{\"city\": \"Paris\"}"}
+
+id: evt-7
+data: {"type":"TOOL_CALL_END","toolCallId":"call-1"}
+
+id: evt-8
+data: {"type":"TOOL_CALL_RESULT","messageId":"msg-2","toolCallId":"call-1","content":"sunny, 21C"}
+
+id: evt-9
+data: {"type":"RUN_FINISHED","threadId":"thread-1","runId":"run-1"}

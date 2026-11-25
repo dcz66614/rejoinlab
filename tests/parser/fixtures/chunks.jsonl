@@ -1,0 +1,7 @@
+{"type":"RUN_STARTED","threadId":"thread-1","runId":"run-1"}
+{"type":"TEXT_MESSAGE_CHUNK","messageId":"msg-1","role":"assistant","delta":"Hello, "}
+{"type":"TEXT_MESSAGE_CHUNK","delta":"world."}
+{"type":"TEXT_MESSAGE_CHUNK","messageId":"msg-2","delta":"Second message."}
+{"type":"TOOL_CALL_CHUNK","toolCallId":"call-1","toolCallName":"get_weather","delta":"{\"city\":"}
+{"type":"TOOL_CALL_CHUNK","delta":" \"Paris\"}"}
+{"type":"RUN_FINISHED","threadId":"thread-1","runId":"run-1"}
